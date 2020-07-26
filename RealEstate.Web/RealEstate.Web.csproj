@@ -1,0 +1,911 @@
+﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1ABBB89D-612B-4899-A19B-D6C0D20CF8CC}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RealEstate.Web</RootNamespace>
+    <AssemblyName>RealEstate.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferenceLibraries\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferenceLibraries\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferenceLibraries\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferenceLibraries\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=5.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferenceLibraries\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=5.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferenceLibraries\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferenceLibraries\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferenceLibraries\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Cors, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferenceLibraries\System.Web.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferenceLibraries\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ClientApp\Contents\bootstrap.css" />
+    <Content Include="ClientApp\Contents\Common.css" />
+    <Content Include="ClientApp\Contents\FontAwesome\css\font-awesome.min.css" />
+    <Content Include="ClientApp\Contents\FontAwesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="ClientApp\Contents\Images\logo.ico" />
+    <Content Include="ClientApp\Contents\Images\logo.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Black\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Black\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Black\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Black\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Black\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Black\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Black\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Black\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Black\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Black\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Black\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Black\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Black\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Black\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\BlueOpal\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\BlueOpal\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\BlueOpal\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\BlueOpal\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\BlueOpal\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\BlueOpal\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\BlueOpal\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\BlueOpal\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\BlueOpal\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\BlueOpal\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\BlueOpal\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\BlueOpal\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\BlueOpal\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\BlueOpal\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Bootstrap\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Bootstrap\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Bootstrap\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Bootstrap\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Bootstrap\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Bootstrap\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Bootstrap\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Bootstrap\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Bootstrap\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Bootstrap\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Bootstrap\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Bootstrap\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Bootstrap\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Bootstrap\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Default\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Default\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Default\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Default\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Default\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Default\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Default\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Default\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Default\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Default\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Default\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Default\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Default\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Default\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Fiori\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Fiori\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Fiori\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Fiori\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Fiori\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Fiori\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Fiori\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Fiori\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Fiori\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Fiori\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Fiori\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Fiori\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Fiori\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Fiori\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Flat\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Flat\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Flat\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Flat\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Flat\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Flat\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Flat\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Flat\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Flat\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Flat\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Flat\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Flat\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Flat\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Flat\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\DejaVu\LICENSE.txt" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\glyphs\KendoUIGlyphs.svg" />
+    <Content Include="ClientApp\Contents\KendoUI\HighContrast\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\HighContrast\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\HighContrast\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\HighContrast\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\HighContrast\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\HighContrast\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\HighContrast\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\HighContrast\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\HighContrast\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\HighContrast\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\HighContrast\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\HighContrast\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\HighContrast\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\HighContrast\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\images\back.png" />
+    <Content Include="ClientApp\Contents\KendoUI\images\kendoui.svg" />
+    <Content Include="ClientApp\Contents\KendoUI\images\wp8_icons.png" />
+    <Content Include="ClientApp\Contents\KendoUI\images\wp8_inverseicons.png" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.black.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.black.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.blueopal.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.blueopal.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.bootstrap.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.bootstrap.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-bootstrap.core.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-bootstrap.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-fiori.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-material.core.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-material.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-nova.core.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-nova.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-office365.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common.core.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.black.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.blueopal.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.bootstrap.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.default.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.fiori.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.flat.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.highcontrast.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.material.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.materialblack.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.metro.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.metroblack.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.moonlight.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.nova.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.office365.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.silver.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.uniform.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.default.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.default.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.fiori.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.fiori.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.flat.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.flat.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.highcontrast.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.highcontrast.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.material.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.material.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.materialblack.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.materialblack.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.metro.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.metro.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.metroblack.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.metroblack.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.all.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.android.dark.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.android.light.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.blackberry.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.common.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.fiori.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.flat.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.ios.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.material.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.meego.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.nova.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.office365.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.wp8.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.moonlight.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.moonlight.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.nova.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.nova.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.office365.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.office365.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.rtl.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.silver.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.silver.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.uniform.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.uniform.mobile.min.css" />
+    <Content Include="ClientApp\Contents\KendoUI\MaterialBlack\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\MaterialBlack\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\MaterialBlack\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\MaterialBlack\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\MaterialBlack\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\MaterialBlack\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\MaterialBlack\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\MaterialBlack\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\MaterialBlack\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\MaterialBlack\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\MaterialBlack\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\MaterialBlack\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\MaterialBlack\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\MaterialBlack\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Material\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Material\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Material\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Material\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Material\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Material\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Material\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Material\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Material\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Material\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Material\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Material\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Material\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Material\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\MetroBlack\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\MetroBlack\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\MetroBlack\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\MetroBlack\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\MetroBlack\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\MetroBlack\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\MetroBlack\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\MetroBlack\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\MetroBlack\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\MetroBlack\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\MetroBlack\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\MetroBlack\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\MetroBlack\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\MetroBlack\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Metro\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Metro\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Metro\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Metro\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Metro\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Metro\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Metro\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Metro\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Metro\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Metro\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Metro\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Metro\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Metro\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Metro\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Moonlight\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Moonlight\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Moonlight\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Moonlight\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Moonlight\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Moonlight\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Moonlight\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Moonlight\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Moonlight\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Moonlight\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Moonlight\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Moonlight\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Moonlight\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Moonlight\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Nova\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Nova\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Nova\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Nova\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Nova\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Nova\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Nova\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Nova\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Nova\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Nova\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Nova\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Nova\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Nova\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Nova\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Office365\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Office365\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Office365\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Office365\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Office365\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Office365\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Office365\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Office365\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Office365\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Office365\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Office365\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Office365\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Office365\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Office365\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Silver\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Silver\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Silver\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Silver\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Silver\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Silver\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Silver\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Silver\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Silver\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Silver\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Silver\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Silver\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Silver\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Silver\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\brushed-metal.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\dots1.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\dots10.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\dots11.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\dots12.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\dots13.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\dots2.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\dots3.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\dots4.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\dots5.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\dots6.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\dots7.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\dots8.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\dots9.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\glass-lighter.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\glass.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\highlight.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\hsv-gradient.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\hue.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\leather1.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\leather2.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\noise.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\stripe1.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\stripe2.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\stripe3.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\stripe4.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\stripe5.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\stripe6.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\transparency.png" />
+    <Content Include="ClientApp\Contents\KendoUI\textures\transtexture.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Uniform\editor.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Uniform\imagebrowser.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Uniform\indeterminate.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Uniform\loading-image.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Uniform\loading.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Uniform\loading_2x.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Uniform\markers.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Uniform\markers_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Uniform\slider-h.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Uniform\slider-v.gif" />
+    <Content Include="ClientApp\Contents\KendoUI\Uniform\sprite.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Uniform\sprite_2x.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Uniform\sprite_kpi.png" />
+    <Content Include="ClientApp\Contents\KendoUI\Uniform\sprite_kpi_2x.png" />
+    <Content Include="ClientApp\Contents\Login\css\main.css" />
+    <Content Include="ClientApp\Contents\Login\css\util.css" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\css\font-awesome.css" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\css\font-awesome.min.css" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\HELP-US-OUT.txt" />
+    <Content Include="ClientApp\Contents\Login\fonts\Linearicons-Free-v1.0.0\icon-font.min.css" />
+    <Content Include="ClientApp\Contents\Login\fonts\Linearicons-Free-v1.0.0\WebFont\Linearicons-Free.svg" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\OFL.txt" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\OFL.txt" />
+    <Content Include="ClientApp\Contents\Login\fonts\ubuntu\UFL.txt" />
+    <Content Include="ClientApp\Contents\Login\images\icons\favicon.ico" />
+    <Content Include="ClientApp\Contents\Login\images\icons\icon-google.png" />
+    <Content Include="ClientApp\Contents\Login\images\icons\map-marker.png" />
+    <Content Include="ClientApp\Contents\Login\images\icons\symbol-01.png" />
+    <Content Include="ClientApp\Contents\Login\index.html" />
+    <Content Include="ClientApp\Contents\Login\js\main.js" />
+    <Content Include="ClientApp\Contents\Login\vendor\animate\animate.css" />
+    <Content Include="ClientApp\Contents\Login\vendor\animsition\css\animsition.css" />
+    <Content Include="ClientApp\Contents\Login\vendor\animsition\css\animsition.min.css" />
+    <Content Include="ClientApp\Contents\Login\vendor\animsition\js\animsition.js" />
+    <Content Include="ClientApp\Contents\Login\vendor\animsition\js\animsition.min.js" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\css\bootstrap-grid.css" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\css\bootstrap-grid.min.css" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\css\bootstrap-reboot.css" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\css\bootstrap-reboot.min.css" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\css\bootstrap.css" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\css\bootstrap.min.css" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\js\bootstrap.js" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\js\bootstrap.min.js" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\js\popper.js" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\js\popper.min.js" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\js\tooltip.js" />
+    <Content Include="ClientApp\Contents\Login\vendor\countdowntime\countdowntime.js" />
+    <Content Include="ClientApp\Contents\Login\vendor\css-hamburgers\hamburgers.css" />
+    <Content Include="ClientApp\Contents\Login\vendor\css-hamburgers\hamburgers.min.css" />
+    <Content Include="ClientApp\Contents\Login\vendor\daterangepicker\daterangepicker.css" />
+    <Content Include="ClientApp\Contents\Login\vendor\daterangepicker\daterangepicker.js" />
+    <Content Include="ClientApp\Contents\Login\vendor\daterangepicker\moment.js" />
+    <Content Include="ClientApp\Contents\Login\vendor\daterangepicker\moment.min.js" />
+    <Content Include="ClientApp\Contents\Login\vendor\jquery\jquery-3.2.1.min.js" />
+    <Content Include="ClientApp\Contents\Login\vendor\perfect-scrollbar\perfect-scrollbar.css" />
+    <Content Include="ClientApp\Contents\Login\vendor\perfect-scrollbar\perfect-scrollbar.min.js" />
+    <Content Include="ClientApp\Contents\Login\vendor\select2\select2.css" />
+    <Content Include="ClientApp\Contents\Login\vendor\select2\select2.js" />
+    <Content Include="ClientApp\Contents\Login\vendor\select2\select2.min.css" />
+    <Content Include="ClientApp\Contents\Login\vendor\select2\select2.min.js" />
+    <Content Include="ClientApp\Contents\ng-toggle-btn.css" />
+    <Content Include="ClientApp\Contents\nprogress.css" />
+    <Content Include="ClientApp\Contents\Toastr.css" />
+    <Content Include="ClientApp\Scripts\angular-animate.min.js" />
+    <Content Include="ClientApp\Scripts\bootstrap.min.js" />
+    <Content Include="ClientApp\Scripts\moment-jalaali.js" />
+    <Content Include="ClientApp\Scripts\moment.js" />
+    <Content Include="ClientApp\Scripts\ng-toggle-btn.js" />
+    <Content Include="ClientApp\Scripts\nprogress.js" />
+    <Content Include="ClientApp\Scripts\toastr.min.js" />
+    <Content Include="ClientApp\Contents\WebFonts\css\fontiran.css" />
+    <Content Include="ClientApp\Contents\WebFonts\css\style.css" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\svg\iranyekanwebblack.svg" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\svg\iranyekanwebbold.svg" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\svg\iranyekanwebextrablack.svg" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\svg\iranyekanwebextrabold.svg" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\svg\iranyekanweblight.svg" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\svg\iranyekanwebmedium.svg" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\svg\iranyekanwebregular.svg" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\svg\iranyekanwebthin.svg" />
+    <Content Include="ClientApp\Contents\WebFonts\IRANYekan.html" />
+    <Content Include="ClientApp\Contents\WebFonts\WebFonts.png" />
+    <Content Include="ClientApp\Scripts\angular.min.js" />
+    <Content Include="ClientApp\Scripts\app.js" />
+    <Content Include="ClientApp\Scripts\jquery.min.js" />
+    <Content Include="ClientApp\Scripts\kendo.all.min.js" />
+    <Content Include="ClientApp\Scripts\kendo.angular.min.js" />
+    <Content Include="ClientApp\Scripts\ui-bootstrap-tpls.min.js" />
+    <Content Include="Global.asax" />
+    <Content Include="ClientApp\Views\Default\Index.cshtml" />
+    <Content Include="ClientApp\Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Api\AccountController.cs" />
+    <Compile Include="Controllers\View\AccountController.cs" />
+    <Compile Include="Controllers\View\ProfileController.cs" />
+    <Compile Include="Infrastrcuture\Cache\CacheManager.cs" />
+    <Compile Include="Infrastrcuture\Cache\ICache.cs" />
+    <Compile Include="Infrastrcuture\Cache\WebCacheProvider.cs" />
+    <Compile Include="Controllers\Api\SecurityController.cs" />
+    <Compile Include="Controllers\BaseApiController.cs" />
+    <Compile Include="Controllers\BaseViewController.cs" />
+    <Compile Include="Controllers\View\DefaultController.cs" />
+    <Compile Include="Controllers\View\LoginController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastrcuture\ApiResult.cs" />
+    <Compile Include="Infrastrcuture\AppPageView.cs" />
+    <Compile Include="Infrastrcuture\AppViewEngine.cs" />
+    <Compile Include="Infrastrcuture\DataStore.cs" />
+    <Compile Include="Infrastrcuture\Filters\HandleExceptionFilter.cs" />
+    <Compile Include="Infrastrcuture\RequestResponseLogHandler.cs" />
+    <Compile Include="Infrastrcuture\RequestResponseLogMetadata.cs" />
+    <Compile Include="Infrastrcuture\SessionStorage.cs" />
+    <Compile Include="Infrastrcuture\Log\DatabaseLogger.cs" />
+    <Compile Include="Infrastrcuture\Log\FileLogger.cs" />
+    <Compile Include="Infrastrcuture\Log\ILogger.cs" />
+    <Compile Include="Infrastrcuture\Log\LogManager.cs" />
+    <Compile Include="Models\FilterQueryRsponse.cs" />
+    <Compile Include="Models\Security\AuthenticateRequest.cs" />
+    <Compile Include="Models\Security\RefereshTokenRequest.cs" />
+    <Compile Include="Models\Security\UserVM.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Infrastrcuture\Security\Filters\AddChallengeOnUnauthorizedResult.cs" />
+    <Compile Include="Infrastrcuture\Security\Filters\AuthenticationFailureResult.cs" />
+    <Compile Include="Infrastrcuture\Security\Filters\HttpAuthenticationChallengeContextExtensions.cs" />
+    <Compile Include="Infrastrcuture\Security\Filters\JwtAuthenticationAttribute.cs" />
+    <Compile Include="Infrastrcuture\Security\ISecurityProvider.cs" />
+    <Compile Include="Infrastrcuture\Security\JwtSecurityProvider.cs" />
+    <Compile Include="Infrastrcuture\Security\SecurityManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ClientApp\Web.config" />
+    <Content Include="ClientApp\Views\Shared\_BaseLayout.cshtml" />
+    <Content Include="ClientApp\Views\Login\Index.cshtml" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\eot\iranyekanwebblack.eot" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\eot\iranyekanwebbold.eot" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\eot\iranyekanwebextrablack.eot" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\eot\iranyekanwebextrabold.eot" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\eot\iranyekanweblight.eot" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\eot\iranyekanwebmedium.eot" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\eot\iranyekanwebregular.eot" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\eot\iranyekanwebthin.eot" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\ttf\iranyekanwebblack.ttf" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\ttf\iranyekanwebbold.ttf" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\ttf\iranyekanwebextrablack.ttf" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\ttf\iranyekanwebextrabold.ttf" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\ttf\iranyekanweblight.ttf" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\ttf\iranyekanwebmedium.ttf" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\ttf\iranyekanwebregular.ttf" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\ttf\iranyekanwebthin.ttf" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\woff\iranyekanwebblack.woff" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\woff\iranyekanwebbold.woff" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\woff\iranyekanwebextrablack.woff" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\woff\iranyekanwebextrabold.woff" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\woff\iranyekanweblight.woff" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\woff\iranyekanwebmedium.woff" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\woff\iranyekanwebregular.woff" />
+    <Content Include="ClientApp\Contents\WebFonts\fonts\woff\iranyekanwebthin.woff" />
+    <Content Include="ClientApp\Contents\FontAwesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="ClientApp\Contents\FontAwesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="ClientApp\Contents\FontAwesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="ClientApp\Contents\FontAwesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="ClientApp\Contents\FontAwesome\fonts\FontAwesome.otf" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\fonts\fontawesome-webfont.eot" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\fonts\fontawesome-webfont.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\fonts\fontawesome-webfont.woff" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\fonts\fontawesome-webfont.woff2" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\fonts\FontAwesome.otf" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\less\animated.less" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\less\bordered-pulled.less" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\less\core.less" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\less\fixed-width.less" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\less\font-awesome.less" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\less\icons.less" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\less\larger.less" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\less\list.less" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\less\mixins.less" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\less\path.less" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\less\rotated-flipped.less" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\less\screen-reader.less" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\less\stacked.less" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\less\variables.less" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\scss\font-awesome.scss" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\scss\_animated.scss" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\scss\_bordered-pulled.scss" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\scss\_core.scss" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\scss\_fixed-width.scss" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\scss\_icons.scss" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\scss\_larger.scss" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\scss\_list.scss" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\scss\_mixins.scss" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\scss\_path.scss" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\scss\_rotated-flipped.scss" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\scss\_screen-reader.scss" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\scss\_stacked.scss" />
+    <Content Include="ClientApp\Contents\Login\fonts\font-awesome-4.7.0\scss\_variables.scss" />
+    <Content Include="ClientApp\Contents\Login\fonts\Linearicons-Free-v1.0.0\WebFont\Linearicons-Free.eot" />
+    <Content Include="ClientApp\Contents\Login\fonts\Linearicons-Free-v1.0.0\WebFont\Linearicons-Free.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\Linearicons-Free-v1.0.0\WebFont\Linearicons-Free.woff" />
+    <Content Include="ClientApp\Contents\Login\fonts\Linearicons-Free-v1.0.0\WebFont\Linearicons-Free.woff2" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-Black.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-BlackItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-Bold.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-BoldItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-ExtraBold.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-ExtraBoldItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-ExtraLight.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-ExtraLightItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-Italic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-Light.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-LightItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-Medium.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-MediumItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-Regular.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-SemiBold.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-SemiBoldItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-Thin.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\montserrat\Montserrat-ThinItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-Black.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-BlackItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-Bold.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-BoldItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-ExtraBold.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-ExtraBoldItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-ExtraLight.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-ExtraLightItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-Italic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-Light.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-LightItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-Medium.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-MediumItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-Regular.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-SemiBold.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-SemiBoldItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-Thin.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\poppins\Poppins-ThinItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-Black.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-BlackItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-Bold.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-BoldItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-ExtraBold.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-ExtraBoldItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-ExtraLight.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-ExtraLightItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-Italic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-Light.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-LightItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-Medium.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-MediumItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-Regular.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-SemiBold.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-SemiBoldItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-Thin.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\raleway\Raleway-ThinItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\ubuntu\Ubuntu-Bold.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\ubuntu\Ubuntu-BoldItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\ubuntu\Ubuntu-Italic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\ubuntu\Ubuntu-Light.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\ubuntu\Ubuntu-LightItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\ubuntu\Ubuntu-Medium.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\ubuntu\Ubuntu-MediumItalic.ttf" />
+    <Content Include="ClientApp\Contents\Login\fonts\ubuntu\Ubuntu-Regular.ttf" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\css\bootstrap-grid.css.map" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\css\bootstrap-grid.min.css.map" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\css\bootstrap-reboot.css.map" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\css\bootstrap-reboot.min.css.map" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\css\bootstrap.css.map" />
+    <Content Include="ClientApp\Contents\Login\vendor\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="ClientApp\Views\Profile\Index.cshtml" />
+    <Content Include="ClientApp\Views\Account\Index.cshtml" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\DejaVu\DejaVuSans-Bold.ttf" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\DejaVu\DejaVuSans-BoldOblique.ttf" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\DejaVu\DejaVuSans-ExtraLight.ttf" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\DejaVu\DejaVuSans-Oblique.ttf" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\DejaVu\DejaVuSans.ttf" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\DejaVu\DejaVuSansMono-Bold.ttf" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\DejaVu\DejaVuSansMono-BoldOblique.ttf" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\DejaVu\DejaVuSansMono-Oblique.ttf" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\DejaVu\DejaVuSansMono.ttf" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\DejaVu\DejaVuSerif-Bold.ttf" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\DejaVu\DejaVuSerif-BoldItalic.ttf" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\DejaVu\DejaVuSerif-Italic.ttf" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\DejaVu\DejaVuSerif.ttf" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\glyphs\KendoUIGlyphs.eot" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\glyphs\KendoUIGlyphs.ttf" />
+    <Content Include="ClientApp\Contents\KendoUI\fonts\glyphs\KendoUIGlyphs.woff" />
+    <Content Include="ClientApp\Contents\KendoUI\images\kendoui.ttf" />
+    <Content Include="ClientApp\Contents\KendoUI\images\kendoui.woff" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.black.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.black.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.blueopal.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.blueopal.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.bootstrap.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.bootstrap.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-bootstrap.core.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-bootstrap.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-fiori.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-material.core.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-material.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-nova.core.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-nova.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common-office365.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common.core.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.common.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.black.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.blueopal.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.bootstrap.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.default.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.fiori.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.flat.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.highcontrast.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.material.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.materialblack.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.metro.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.metroblack.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.moonlight.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.nova.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.office365.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.silver.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.dataviz.uniform.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.default.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.default.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.fiori.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.fiori.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.flat.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.flat.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.highcontrast.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.highcontrast.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.material.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.material.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.materialblack.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.materialblack.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.metro.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.metro.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.metroblack.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.metroblack.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.all.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.android.dark.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.android.light.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.blackberry.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.common.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.fiori.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.flat.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.ios.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.material.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.meego.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.nova.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.office365.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.mobile.wp8.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.moonlight.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.moonlight.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.nova.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.nova.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.office365.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.office365.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.rtl.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.silver.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.silver.mobile.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.uniform.min.css.map" />
+    <Content Include="ClientApp\Contents\KendoUI\kendo.uniform.mobile.min.css.map" />
+    <None Include="packages.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QueryDesigner\QueryDesigner.csproj">
+      <Project>{d8a7c906-75f9-48b3-990f-3eb122b7990f}</Project>
+      <Name>QueryDesigner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RealEstate.Common\RealEstate.Common.csproj">
+      <Project>{657e8992-8e55-445f-9cae-c1656447b05d}</Project>
+      <Name>RealEstate.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RealEstate.DataAccess\RealEstate.DataAccess.csproj">
+      <Project>{6346657a-391c-4e78-a315-84c1ba78dd68}</Project>
+      <Name>RealEstate.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RealEstate.Domain\RealEstate.Domain.csproj">
+      <Project>{048d9378-80f4-4403-88d4-97a720f407ca}</Project>
+      <Name>RealEstate.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+			<UseIIS>True</UseIIS>
+			<AutoAssignPort>True</AutoAssignPort>
+			<DevelopmentServerPort>65403</DevelopmentServerPort>
+			<DevelopmentServerVPath>/</DevelopmentServerVPath>
+			<IISUrl>http://localhost/RealEstate</IISUrl>
+			<NTLMAuthentication>False</NTLMAuthentication>
+			<UseCustomServer>False</UseCustomServer>
+			<CustomServerUrl>
+			</CustomServerUrl>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
