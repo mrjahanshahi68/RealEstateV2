@@ -1,0 +1,322 @@
+﻿@{
+    Layout = "~/ClientApp/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+	#grid {
+		border-width: 0;
+		height: 100%; /* DO NOT USE !important for setting the Grid height! */
+	}
+
+		#grid .btn {
+			margin: 2px;
+		}
+
+	/*.k-rtl .k-grid-header .k-header {
+		text-align: center;
+	}
+
+	.k-grid td {
+		text-align: center;
+	}*/
+</style>
+<div class="panel panel-default" ng-controller="accountController" ng-init="init()">
+    <div class="panel-heading">
+        <span class="title">مدیریت کاربران</span>
+    </div>
+    <div class="panel-body" style="height:500px;">
+		<div class="grid-toolbar">
+			<button type="button" class="btn btn-primary" ng-click="showUserInfoPopup()">ثبت کاربر</button>
+		</div>
+		<div class="k-rtl" id="window">
+			<div kendo-grid id="grid" k-ng-delay="gridOptions" k-options="gridOptions"></div>
+		</div>
+    </div>
+
+</div>
+ <script type="text/ng-template" id="popup-user-info.html">
+	 <div ng-init="init()">
+		<div class="modal-header">
+			<h3 class="modal-title" id="modal-title">{{modalTitle}}</h3>
+		</div>
+		<div class="modal-body" id="modal-body">
+			<div class="col-xs-12 form-group">
+				<label class="control-label"> نام : </label>
+				<input type="text" value="" class="form-control" ng-model="model.FirstName" placeholder="نام را وارد نمایید" />
+			</div>
+			<div class="col-xs-12 form-group">
+				<label class="control-label">نام خانوادگی : </label>
+				<input type="text" value="" class="form-control" ng-model="model.LastName" placeholder="نام خانوادگی را وارد نمایید" />
+			</div>
+			<div class="col-xs-12 form-group">
+				<label class="control-label"> نام کاربری : </label>
+				<input type="text" value="" class="form-control" ng-model="model.UserName" placeholder="نام کاربری را وارد نمایید" />
+			</div>
+			<div class="col-xs-12 form-group">
+				<label class="control-label"> کلمه عبور : </label>
+				<input type="password" value="" class="form-control" ng-model="model.Password" placeholder="کلمه عبور را وارد نمایید" />
+			</div>
+			<div class="col-xs-12 form-group">
+				<label class="control-label">نوع کاربر :</label>
+				<select ng-model="model.UserType" class="form-control">
+					<option value="">--- نوع کاربر را انتخاب کنید ---</option>
+					<option ng-selected="ut.value == model.UserType" ng-repeat="ut in temp.userTypes"
+							ng-value="ut.value" ng-bind="ut.text"></option>
+				</select>
+			</div>
+			<div class="col-xs-12 form-group">
+				<label class="control-label col-xs-4">وضعیت : </label>
+				<toggle-btn ng-init="model.IsActive" ng-model="model.IsActive" name="isactive" type="checkbox"></toggle-btn>
+			</div>
+		</div>
+		<div class="modal-footer" style="text-align:left">
+			<button class="btn btn-primary" type="button" ng-click="confirm()">تایید</button>
+			<button class="btn btn-warning" type="button" ng-click="closePopup()">انصراف</button>
+		</div>
+	 </div>
+ 	
+ </script>
+<script>
+	app.controller("accountController", function ($scope, $uibModal, dataService, messageService,helper) {
+		$scope.name = 'World';
+		$scope.model = {
+			FirstName: null,
+			LastName: null,
+			UserName: null,
+			Password: null,
+			UserType: null,
+			clear: function () {
+				this.FirstName = null;
+				this.LastName = null;
+				this.UserName = null;
+				this.Password = null;
+				this.UserType = null;
+			}
+		}
+		$scope.temp = {
+			userTypes: [],
+			statuses: [{ value: 0, text: "غیرفعال" }, { value: 1, text: "فعال" }]
+		}
+		$scope.init = function () {
+			for (var key in helper.enums.UserTypes) {
+				$scope.temp.userTypes.push({
+					text: helper.enums.UserTypes[key].text,
+					value: helper.enums.UserTypes[key].value
+				})
+			}
+		}
+
+		$scope.gridOptions = {
+			dataSource: new kendo.data.DataSource({
+				transport: {
+					read: function (options) {
+						var filterParameter = helper.translateToFilterParameter(options.data);
+						console.log(options);
+						dataService.filterBy('account/GetUsers', filterParameter).then(function (result) {
+							options.success(result);
+						});
+					},
+					parameterMap: function (options) {
+						// debugger;
+						console.log(options);
+					}
+				},
+				pageSize:20,
+				serverFiltering: true,
+				serverPaging: true,
+				serverSorting: true,
+				schema: {
+					data: function (e) {
+						return e.Records;
+					},
+					total: function (e) {
+						return e.TotalCount
+					},
+					model: {
+						id: "ID",
+						fields: {
+							ID: { type: "number", editable: false },
+							FirstName: { type: "string" },
+							LastName: { type: "string" },
+							UserName: { type: "string" },
+							UserType: { type: "enum" },
+							IsActive: { type: "boolean" },
+							IsDeleted: { type: "enum" },
+							//NationalCode: { type: "string" },
+							//Mobile: { type: "string" },
+							//Address: { type: "string" },
+							//UserType: { type: "number" },
+							//RegisterDate: { type: "string" },
+						}
+					}
+				}
+			}),
+			sortable: true,
+			pageable: true,
+			scrollable: false,
+			filterable: {
+				extra: false,
+				operators: {
+					string: {
+						eq: "مساوی",
+						neq: "نامساوی",
+						contains:"شامل"
+					},
+					enums: {
+						eq: "مساوی",
+						neq: "نامساوی",
+					},
+					//boolean: {
+					//	eq: "مساوی",
+					//	neq: "نامساوی",
+					//}
+				}
+
+			},
+			//height:"600px",
+			columns:
+			[
+				{
+					title: "نام",
+					field: "FirstName",
+					width: 150,
+				},
+				{
+					title: "نام خانوادگی",
+					field: "LastName",
+					width: 200,
+				},
+				{
+					title: "نام کاربری",
+					field: "UserName",
+					width:200
+				},
+				{
+					title: "نوع کاربر",
+					field: "UserType",
+					values: $scope.temp.userTypes,
+					width: 130,
+				},
+				{
+					title: "وضعیت",
+					field: "IsActive",
+					width: 130,
+					values: $scope.temp.statuses,
+					template: function (e) {
+						if (e.IsActive)
+							return "<span>فعال</span>";
+						return "<span>غیرفعال</span>";
+						//if (e.IsActive)
+						//	return '<toggle-btn ng-init="dataItem.IsActive=true" ng-change="setStatus(dataItem)" ng-model="dataItem.IsActive" name="isactive_' + e.ID + '" type="checkbox"></toggle-btn>'
+						//return '<toggle-btn ng-init="dataItem.IsActive=false" ng-change="setStatus(dataItem)" ng-model="dataItem.IsActive" name="isactive_' + e.ID + '" type="checkbox"></toggle-btn>';
+					}
+				},
+				{
+					title: "تاریخ ثبت",
+					field: "RegisterDate",
+					width: 120,
+					filterable: false,
+					template: function (e) {
+						if (e.RegisterDate)
+							return moment(e.RegisterDate).format('jYYYY/jM/jD');
+						return "";
+					}
+				},
+				{
+					template: function (e) {
+						var commandBtn = "<button class=\"btn btn-primary\" type=\"button\" ng-click=\"edit(dataItem)\">ویرایش</button>";
+						commandBtn += "<button class=\"btn btn-danger\" type=\"button\" ng-click=\"delete(dataItem)\">حذف</button>";
+						commandBtn += "<button class=\"btn btn-success\" type=\"button\" ng-click=\"edit(dataItem)\">انتساب دسترسی</button>";
+						return commandBtn;
+					}
+				}
+			]
+		}
+
+		$scope.showUserInfoPopup = function () {
+			showPopupUserInfo({
+				callback: function (model, closePopup) {
+					dataService.insertEntity("account", model).then(function (item) {
+						messageService.success("عملیات با موفقیت ثبت گردید");
+						$scope.model.clear();
+						$scope.gridOptions.dataSource.read();
+						closePopup();
+					});
+					//console.log(model);
+				}
+			})
+		}
+		$scope.edit = function (data) {
+			showPopupUserInfo({
+				model: {
+					ID: data.ID,
+					FirstName: data.FirstName,
+					LastName: data.LastName,
+					UserName: data.UserName,
+					UserType: data.UserType,
+					IsActive: data.IsActive
+				},
+				callback: function (model, closePopup) {
+					dataService.updateEntity("account", model).then(function (item) {
+						messageService.success("عملیات با موفقیت ثبت گردید");
+						closePopup();
+						$scope.gridOptions.dataSource.read();
+					});
+					closePopup();
+				}
+			})
+		}
+		$scope.delete = function (data) {
+			var id = data.ID;
+			var cnf = confirm("آیا مطمئن هستید؟");;
+			if (cnf) {
+				dataService.deleteEntity("account", id).then(function () {
+					messageService.success("عملیات با موفقیت حذف گردید");
+					$scope.gridOptions.dataSource.read();
+				})
+			}
+		}
+		function showPopupUserInfo(parameters) {
+			$uibModal.open({
+				animation: true,
+				templateUrl: "popup-user-info.html",
+				controller: function ($scope, $uibModalInstance, controllerScope) {
+					$scope.temp = {
+						userTypes: controllerScope.temp.userTypes,
+						isEditMode:false,
+					}
+					if (parameters["model"]) {
+						$scope.model = parameters.model;
+					}
+					else {
+						$scope.model = controllerScope.model;
+					}
+					$scope.init = function () {
+						if ($scope.temp.isEditMode) {
+							$scope.modalTitle = "وایرایش کاربر";
+						}
+						else {
+							$scope.modalTitle = "ثبت کاربر";
+						}
+					}
+
+					$scope.confirm = function () {
+						parameters.callback($scope.model,$scope.closePopup)
+					}
+					$scope.closePopup = function () {
+						$uibModalInstance.close();
+					}
+					$scope.setStatus = function () {
+						debugger;
+					}
+				},
+				resolve:{
+					controllerScope: function() {
+						return $scope;
+					}
+				}
+				//size:""
+			})
+		}
+		//$scope.gridOptions.dataSource.read();
+    });
+</script>

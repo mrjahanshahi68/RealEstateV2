@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <title>@Page.Title</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="~/ClientApp/Contents/Images/logo.ico" />
+	<link type="text/css" rel="stylesheet" href="~/ClientApp/Contents/Common.css"/>
+	<link type="text/css" rel="stylesheet" href="~/ClientApp/Contents/FontAwesome/css/font-awesome.min.css" />
+	<link href="~/ClientApp/Contents/bootstrap.css" rel="stylesheet" />
+	<link href="~/ClientApp/Contents/KendoUI/kendo.common.min.css" rel="stylesheet" />
+	<link href="~/ClientApp/Contents/KendoUI/kendo.default.min.css" rel="stylesheet" />
+	<link href="~/ClientApp/Contents/KendoUI/kendo.rtl.min.css" rel="stylesheet" />
+	<link href="~/ClientApp/Contents/Toastr.css" rel="stylesheet" />
+	<link href="~/ClientApp/Contents/nprogress.css" rel="stylesheet" />
+	<link href="~/ClientApp/Contents/ng-toggle-btn.css" rel="stylesheet" />
+
+
+	<script type="text/javascript" src="~/ClientApp/Scripts/jquery.min.js"></script>
+	<script type="text/javascript" src="~/ClientApp/Scripts/moment.js"></script>
+	<script type="text/javascript" src="~/ClientApp/Scripts/moment-jalaali.js"></script>
+	<script type="text/javascript" src="~/ClientApp/Scripts/bootstrap.min.js"></script>
+	<script type="text/javascript" src="~/ClientApp/Scripts/angular.min.js"></script>
+	<script src="~/ClientApp/Scripts/angular-animate.min.js"></script>
+	<script type="text/javascript" src="~/ClientApp/Scripts/kendo.all.min.js"></script>
+	<script type="text/javascript" src="~/ClientApp/Scripts/kendo.angular.min.js"></script>
+	<script type="text/javascript" src="~/ClientApp/Scripts/ui-bootstrap-tpls.min.js"></script>
+	<script src="~/ClientApp/Scripts/toastr.min.js"></script>
+	<script src="~/ClientApp/Scripts/nprogress.js"></script>
+	<script src="~/ClientApp/Scripts/ng-toggle-btn.js"></script>
+	<script type="text/javascript" src="~/ClientApp/Scripts/app.js"></script>
+	@RenderSection("head", required: false)
+</head>
+<body>
+    @RenderBody()
+
+	@RenderSection("scripts", required: false)
+</body>
+</html>
