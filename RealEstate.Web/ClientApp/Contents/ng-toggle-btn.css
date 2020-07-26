@@ -1,0 +1,145 @@
+/* Toggle Style -- START */ 
+
+.toggle-switch input {
+    position: absolute;
+    z-index: 1;
+    width: 46px;
+    margin: 0 0 0 -4px;
+    height: 24px;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer;
+}
+
+@media (min-width: 1200px) {
+	.toggle-switch .toggle-knob {
+	    height: 11px;
+	    width: 33px;
+	}
+}
+
+/* .toggle-switch input:not(:disabled):checked + .toggle-knob {
+    background: rgba(0,150,136,0.5);
+} */
+
+.toggle-switch .on-label:before, .toggle-switch .off-label:after {
+	content: "\00a0";
+}
+
+.toggle-switch .toggle-knob {
+    display: inline-block;
+    position: relative;
+    width: 35px;
+    height: 12px;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.26);
+    -webkit-transition: background .28s cubic-bezier(0.4,0,0.2,1);
+    transition: background .28s cubic-bezier(0.4,0,0.2,1);
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+@media (min-width: 1200px) {
+	.toggle-switch input:checked + .toggle-knob:before {
+	    left: 18px;
+	    background: #fff;
+	}
+}
+
+@media (min-width: 1200px) {
+	.toggle-switch .toggle-knob:before {
+	    width: 20px;
+	    height: 20px;
+	    top: -5px;
+	}
+}
+
+.toggle-switch .toggle-knob:before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 20px;
+    height: 20px;
+    background: #fafafa;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.28);
+    border-radius: 50%;
+    webkit-transition: left .28s cubic-bezier(0.4,0,0.2,1),background .28s cubic-bezier(0.4,0,0.2,1),box-shadow .28s cubic-bezier(0.4,0,0.2,1);
+    transition: left .28s cubic-bezier(0.4,0,0.2,1),background .28s cubic-bezier(0.4,0,0.2,1),box-shadow .28s cubic-bezier(0.4,0,0.2,1);
+}
+
+.toggle-switch input:checked + .toggle-knob:before {
+    left: 20px;
+}
+
+.toggle-switch input:checked + .toggle-knob, .toggle-switch.on input[disabled]:checked + .toggle-knob,
+.toggle-switch.ondefault input:checked + .toggle-knob, .toggle-switch.offdefault input:not(:checked) + .toggle-knob,
+.toggle-switch.off input:not(:checked) + .toggle-knob {
+	background: rgba(0,0,0,0.26);
+}
+
+.toggle-switch.on input:checked + .toggle-knob, .toggle-switch.onprimary input:checked + .toggle-knob,
+ .toggle-switch.offprimary input:not(:checked) + .toggle-knob{
+    background: rgba(33, 150, 243, 0.50);
+}
+
+.toggle-switch.on input:checked + .toggle-knob:before, .toggle-switch.onprimary input:checked + .toggle-knob:before,
+.toggle-switch.offprimary input:not(:checked) + .toggle-knob:before {
+    background: #2196F3;
+}
+
+.toggle-switch.onsuccess input:not(:disabled):checked + .toggle-knob, .toggle-switch.offsuccess input:not(:checked) + .toggle-knob {
+    background: rgba(0,150,136,0.50);
+}
+
+.toggle-switch.onsuccess input:checked + .toggle-knob:before, .toggle-switch.offsuccess input:not(:checked) + .toggle-knob:before {
+    background: #009688;
+}
+
+.toggle-switch.oninfo input:not(:disabled):checked + .toggle-knob, .toggle-switch.offinfo input:not(:checked) + .toggle-knob {
+    background: rgba(24, 194, 241, 0.50);
+}
+
+.toggle-switch.oninfo input:checked + .toggle-knob:before, .toggle-switch.offinfo input:not(:checked) + .toggle-knob:before {
+    background: #18C2F1;
+}
+
+.toggle-switch.onwarning input:not(:disabled):checked + .toggle-knob, .toggle-switch.offwarning input:not(:checked) + .toggle-knob {
+    background: rgba(255, 152, 0, 0.5);;
+}
+
+.toggle-switch.onwarning input:checked + .toggle-knob:before, .toggle-switch.offwarning input:not(:checked) + .toggle-knob:before {
+    background: #FF9800;
+}
+
+.toggle-switch.ondanger input:not(:disabled):checked + .toggle-knob, .toggle-switch.offdanger input:not(:checked) + .toggle-knob {
+    background: rgba(243, 44, 30, 0.50);
+}
+
+.toggle-switch.ondanger input:checked + .toggle-knob:before, .toggle-switch.offdanger input:not(:checked) + .toggle-knob:before {
+    background: #F32C1E;
+}
+
+.toggle-switch.oninverse input:not(:disabled):checked + .toggle-knob, .toggle-switch.offinverse input:not(:checked) + .toggle-knob {
+    background: rgba(0,0,0,0.50);
+}
+
+.toggle-switch.oninverse input:checked + .toggle-knob:before, .toggle-switch.offinverse input:not(:checked) + .toggle-knob:before {
+    background: #000000;
+}
+
+.toggle-switch.ondefault input:checked + .toggle-knob:before, .toggle-switch.offdefault input:not(:checked) + .toggle-knob:before {
+    background: #FFFFF;
+}
+
+/* For bootstrap styles */
+.form-group .toggle-switch {
+	display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+}
+
+/* Toggle Style -- END */

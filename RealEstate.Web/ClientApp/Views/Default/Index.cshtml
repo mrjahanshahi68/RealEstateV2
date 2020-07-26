@@ -1,0 +1,52 @@
+﻿@model DateTime
+@{
+    Layout = "~/ClientApp/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Default Page";
+}
+
+<style type="text/css">
+
+</style>
+
+<div ng-controller="indexController" ng-init="init()">
+    <h1>@Title</h1>
+    <span>@Model.ToShamsi()</span>
+    <input type="text" ng-model="model.username" />
+    <input type="text" ng-model="model.password" />
+    <button id="btnRun" type="button" ng-click="login()">Click Me!</button>
+</div>
+
+
+<script type="text/javascript">
+    app.controller("indexController", function ($scope, securityManager) {
+        $scope.model = {
+            username: "developer",
+            password:"1",
+        }
+        $scope.init = function () {
+            
+        }
+        $scope.login = function () {
+            securityManager.login($scope.model.username, $scope.model.password);
+        }
+    });
+</script>
+<script>
+     //var p2 = $.ajax({
+    //    url: "/ClientApp/Views/Default/Index.js",
+    //    dataType: "script",
+    //});
+    //var p1 = $.ajax({
+    //    url: "/ClientApp/Views/Default/Helper.js",
+    //    dataType: "script",
+    //})
+    //$.when.apply($, $.ajax("/ClientApp/Views/Default/Helper.js")).then($.ajax("/ClientApp/Views/Default/Index.js"))
+    //Promise.all([$.when.apply($, $.ajax("/ClientApp/Views/Default/Helper.js")).then($.ajax("/ClientApp/Views/Default/Index.js"))])
+    //    .then(function (res) {
+    //        debugger;
+    //    });
+    //Promise.all([p2, p1]).then(function (values) {
+    //    debugger;
+    //    console.log(values);
+    //})
+</script>
