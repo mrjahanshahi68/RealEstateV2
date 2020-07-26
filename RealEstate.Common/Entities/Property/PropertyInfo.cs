@@ -45,7 +45,7 @@ namespace RealEstate.Common.Entities.Property
 		public decimal ReagentLastName { get; set; }
 		public decimal ReagentTel { get; set; }
 
-		
+		public string TestField { get; set; }
 		
 
 		public bool IsLuxury { get; set; }
