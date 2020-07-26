@@ -50,6 +50,7 @@ namespace RealEstate.Common.Entities.Property
 
 		public bool IsLuxury { get; set; }
 		public bool IsShowInSlide { get; set; }
+
 		public bool IsDeleted { get; set; }
 	}
 }
