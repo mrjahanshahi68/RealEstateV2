@@ -1,4 +1,5 @@
-﻿using RealEstate.DataAccess.Security.MapConfigurations;
+﻿using RealEstate.DataAccess.Property.MapConfiguration;
+using RealEstate.DataAccess.Security.MapConfigurations;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -20,6 +21,10 @@ namespace RealEstate.DataAccess
 			modelBuilder.Configurations.Add(new UserMapConfig());
 			modelBuilder.Configurations.Add(new RoleMapConfig());
 			modelBuilder.Configurations.Add(new UserRoleMapConfig());
+			#endregion
+
+			#region Property
+			modelBuilder.Configurations.Add(new PropertyInfoMapConfig());
 			#endregion
 
 			base.OnModelCreating(modelBuilder);

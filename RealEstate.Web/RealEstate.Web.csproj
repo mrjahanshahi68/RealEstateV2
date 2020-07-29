@@ -15,7 +15,7 @@
     <RootNamespace>RealEstate.Web</RootNamespace>
     <AssemblyName>RealEstate.Web</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -571,8 +571,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Api\AccountController.cs" />
+    <Compile Include="Controllers\Api\PropertyInfoController.cs" />
     <Compile Include="Controllers\View\AccountController.cs" />
     <Compile Include="Controllers\View\ProfileController.cs" />
+    <Compile Include="Controllers\View\PropertyInfoController.cs" />
     <Compile Include="Infrastrcuture\Cache\CacheManager.cs" />
     <Compile Include="Infrastrcuture\Cache\ICache.cs" />
     <Compile Include="Infrastrcuture\Cache\WebCacheProvider.cs" />
@@ -597,6 +599,7 @@
     <Compile Include="Infrastrcuture\Log\ILogger.cs" />
     <Compile Include="Infrastrcuture\Log\LogManager.cs" />
     <Compile Include="Models\FilterQueryRsponse.cs" />
+    <Compile Include="Models\Property\PropertyInfoVM.cs" />
     <Compile Include="Models\Security\AuthenticateRequest.cs" />
     <Compile Include="Models\Security\RefereshTokenRequest.cs" />
     <Compile Include="Models\Security\UserVM.cs" />
@@ -841,6 +844,8 @@
     <Content Include="ClientApp\Contents\KendoUI\kendo.silver.mobile.min.css.map" />
     <Content Include="ClientApp\Contents\KendoUI\kendo.uniform.min.css.map" />
     <Content Include="ClientApp\Contents\KendoUI\kendo.uniform.mobile.min.css.map" />
+    <Content Include="ClientApp\Views\PropertyInfo\Index.cshtml" />
+    <Content Include="ClientApp\Views\PropertyInfo\RegisterProperty.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -881,15 +886,16 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-			<UseIIS>True</UseIIS>
-			<AutoAssignPort>True</AutoAssignPort>
-			<DevelopmentServerPort>65403</DevelopmentServerPort>
-			<DevelopmentServerVPath>/</DevelopmentServerVPath>
-			<IISUrl>http://localhost/RealEstate</IISUrl>
-			<NTLMAuthentication>False</NTLMAuthentication>
-			<UseCustomServer>False</UseCustomServer>
-			<CustomServerUrl>
-			</CustomServerUrl>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>65403</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:65403/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

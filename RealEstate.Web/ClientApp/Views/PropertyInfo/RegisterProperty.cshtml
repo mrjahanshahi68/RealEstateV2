@@ -1,0 +1,135 @@
+﻿@{
+    Layout = "~/ClientApp/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+	.col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11 {
+		float: right;
+	}
+	.col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11 {
+		float: right;
+	}
+	.col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11 {
+		float: right;
+	}
+
+	.input-group-addon:last-child {
+		border-right: 0;
+		border-left: unset;
+	}
+	.input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle) {
+		border-top-right-radius: unset;
+		border-bottom-right-radius: unset;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+	.input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child > .btn, .input-group-btn:last-child > .dropdown-toggle, .input-group-btn:first-child > .btn:not(:first-child) {
+		border-bottom-right-radius: 0;
+		border-top-right-radius: 0;
+		border-bottom-left-radius: unset;
+		border-top-left-radius: unset;
+	}
+</style>
+
+<div class="panel panel-default" ng-controller="registerPropertyController" ng-init="init()">
+	<div class="panel-heading">
+		<span class="title" ng-bind="title">ثبت ملک</span>
+	</div>
+	<div class="panel-body" style="min-height:500px;">
+		<div class="row">
+			<div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 form-group">
+				<label>کد ملک :</label>
+				<input type="text" class="form-control" data-toggle="popover" data-content="کد ملک را وارد نمایید" ng-model="model.ReagentTel" placeholder="کد ملک" />
+			</div>
+			<div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 form-group">
+				<label>عنوان ملک : </label>
+				<input type="text" class="form-control" data-toggle="popover" data-content="عنوان ملک را وارد نمایید" ng-model="model.Title" placeholder="عنوان ملک" />
+			</div>
+			<div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 form-group">
+				<label>نوع معامله : </label>
+				<select ng-model="model.PropertyTypeId" class="form-control">
+					<option value="">--- نوع معامله را انتخاب کنید ---</option>
+					<option ng-selected="propType.Id == model.PropertyTypeId" ng-repeat="propType in accessoriesData.propertyTypes"
+							ng-value="propType.Id" ng-bind="propType.Name"></option>
+				</select>
+
+			</div>
+			<div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 form-group">
+				<label>نوع ملک : </label>
+				<select ng-model="model.PropertyTypeId" class="form-control">
+					<option value="">--- نوع ملک را انتخاب کنید ---</option>
+					<option ng-selected="propType.Id == model.PropertyTypeId" ng-repeat="propType in accessoriesData.propertyTypes"
+							ng-value="propType.Id" ng-bind="propType.Name"></option>
+				</select>
+
+			</div>
+			<div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 form-group">
+				<label>نوع سند : </label>
+				<select ng-model="model.DocumentType" class="form-control">
+					<option value="">--- نوع سند را انتخاب کنید ---</option>
+					<option ng-selected="docType.Id == model.DocumentType" ng-repeat="docType in accessoriesData.documentTypes"
+							ng-value="docType.Id" ng-bind="docType.Name"></option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
+				<label>متراژ زمین (متر مربع ) : </label>
+				<input type="number" class="form-control" data-toggle="popover" data-content="مساحت زمین را وارد نمایید"  placeholder="مساحت زمین" />
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
+				<label>متراژ ساختمان (متر مربع) : </label>
+				<input type="number" class="form-control" data-toggle="popover" data-content="مساحت زیربنا را وارد نمایید" ng-model="model.PropertyDetail.BuildingArea" placeholder="مساحت زیربنا" />
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
+				<label>تعداد اتاق خواب : </label>
+				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد اتاق خواب را وارد نمایید" ng-model="model.PropertyDetail.BedRoom" placeholder="تعداد اتاق خواب" />
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
+				<label>تعداد حمام : </label>
+				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد حمام را وارد نمایید" ng-model="model.PropertyDetail.BathRoom" placeholder="تعداد حمام" />
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
+				<label>طبقه ملک: </label>
+				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد حمام را وارد نمایید" ng-model="model.PropertyDetail.BathRoom" placeholder="تعداد حمام" />
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
+				<label>تعداد طبقات : </label>
+				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد حمام را وارد نمایید" ng-model="model.PropertyDetail.BathRoom" placeholder="تعداد حمام" />
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
+				<label>تعداد واحد : </label>
+				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد حمام را وارد نمایید" ng-model="model.PropertyDetail.BathRoom" placeholder="تعداد حمام" />
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
+				<label>سال ساخت : </label>
+				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد حمام را وارد نمایید" ng-model="model.PropertyDetail.BathRoom" placeholder="تعداد حمام" />
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
+				<label>موقعیت ملک: </label>
+				<input type="text" class="form-control" data-toggle="popover" data-content="تعداد حمام را وارد نمایید" ng-model="model.PropertyDetail.BathRoom" placeholder="تعداد حمام" />
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
+				<label>نمای ملک : </label>
+				<input type="text" class="form-control" data-toggle="popover" data-content="تعداد حمام را وارد نمایید" ng-model="model.PropertyDetail.BathRoom" placeholder="تعداد حمام" />
+			</div>
+
+		
+
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<textarea rows="6" class="form-control" ng-model="model.PropertyDetail.Description" placeholder="توضیحات تکمیلی"></textarea>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<script>
+	app.controller("registerPropertyController", function ($scope) {
+		$scope.init = function () {
+			$scope.title = "ثبت ملک";
+		}
+	});
+</script>

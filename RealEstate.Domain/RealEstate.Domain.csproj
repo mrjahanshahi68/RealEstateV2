@@ -52,6 +52,7 @@
     <Compile Include="IBusinessRule.cs" />
     <Compile Include="Log\ExceptionBusinessRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Property\PropertyInfoBusinessRule.cs" />
     <Compile Include="Security\RoleBusinessRule.cs" />
     <Compile Include="Security\UserBusinessRule.cs" />
   </ItemGroup>

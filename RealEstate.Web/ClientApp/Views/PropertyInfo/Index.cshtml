@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/ClientApp/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="panel panel-default" ng-controller="propertyInfoController" ng-init="init()">
+	<div class="panel-heading">
+		<span class="title">مدیریت ملک</span>
+	</div>
+	<div class="panel-body" style="height:500px;">
+		<div class="grid-toolbar">
+			<a  class="btn btn-primary" href="/propertyinfo/registerproperty">ثبت ملک</a>
+		</div>
+		<div class="k-rtl" id="window">
+			<div kendo-grid id="grid" k-ng-delay="gridOptions" k-options="gridOptions"></div>
+		</div>
+	</div>
+
+</div>
+
+<script>
+	app.controller("propertyInfoController", function ($scope) {
+		$scope.init = function () {
+		}
+	});
+</script>
