@@ -43,7 +43,7 @@ namespace RealEstate.Web.Controllers.Api
                 if (errors.Any()) throw new ValidationModelException(errors);
                 #endregion
 
-                var user = Rule.FindUserByUserName("developer");
+                //var user = Rule.FindUserByUserName(parameters.UserName);
                 if (!SecurityManager.SignIn(parameters.UserName, parameters.Password))
                     throw new AuthenticationException("Username or password was wrong");
                 

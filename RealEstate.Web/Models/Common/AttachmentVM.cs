@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 using static RealEstate.Common.AppEnums;
 
-namespace RealEstate.Common.Entities.Common
+namespace RealEstate.Web.Models.Common
 {
-	public class Attachment : LoggableEntity
+	public class AttachmentVM
 	{
 		public string HashKey { get; set; }
 		public ObjectType ObjectType { get; set; }

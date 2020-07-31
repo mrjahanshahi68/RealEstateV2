@@ -11,7 +11,7 @@ namespace RealEstate.Common.Entities.Property
 	{
 		public int PropertyTypeId { get; set; }
 		public int DocumentTypeId { get; set; }
-		public int OwnerId { get; set; }
+		//public int OwnerId { get; set; }
 
 		public string HashKey { get; set; }
 		public string PropertyCode { get; set; }
@@ -40,6 +40,10 @@ namespace RealEstate.Common.Entities.Property
 		public decimal SalePrice { get; set; }
 		public decimal MortgagePrice { get; set; }
 		public decimal RentalPrice { get; set; }
+
+		public decimal FirstName { get; set; }
+		public decimal LastName { get; set; }
+		public decimal Tel { get; set; }
 
 		public decimal ReagentFirstName { get; set; }
 		public decimal ReagentLastName { get; set; }

@@ -13,7 +13,7 @@ namespace RealEstate.DataAccess.Property.MapConfiguration
 		{
 			Property(e => e.PropertyTypeId);
 			Property(e => e.DocumentTypeId);
-			Property(e => e.OwnerId);
+			//Property(e => e.OwnerId);
 			Property(e => e.HashKey);
 			Property(e => e.PropertyCode);
 			Property(e => e.Title);
@@ -37,6 +37,9 @@ namespace RealEstate.DataAccess.Property.MapConfiguration
 			Property(e => e.SalePrice);
 			Property(e => e.MortgagePrice);
 			Property(e => e.RentalPrice);
+			Property(e => e.FirstName);
+			Property(e => e.LastName);
+			Property(e => e.Tel);
 			Property(e => e.ReagentFirstName);
 			Property(e => e.ReagentLastName);
 			Property(e => e.ReagentTel);

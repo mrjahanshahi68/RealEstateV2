@@ -176,6 +176,69 @@
 	.col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11 {
 		float: right;
 	}
+
+	/*#region checkbox and radio*/
+
+	.switch-checkbox.switcher {
+		display: inline-block;
+		padding-left: 15px;
+	}
+
+	.form-group .switch-checkbox.switcher {
+		margin-top: 5px
+	}
+
+	div.switch-checkbox.switcher label,
+	div.radio.switcher label {
+		padding: 0;
+	}
+
+		div.switch-checkbox.switcher label *,
+		div.radio.switcher label * {
+			vertical-align: middle;
+		}
+
+		div.switch-checkbox.switcher label input,
+		div.radio.switcher label input {
+			display: none;
+		}
+
+			div.switch-checkbox.switcher label input + span,
+			div.radio.switcher label input + span {
+				position: relative;
+				display: inline-block;
+				margin-right: 5px;
+				width: 40px;
+				height: 22px;
+				background: #5a5a5a;
+				border: 1px solid #eee;
+				border-radius: 50px;
+				transition: all 0.3s ease-in-out;
+			}
+
+				div.switch-checkbox.switcher label input + span small,
+				div.radio.switcher label input + span small {
+					position: absolute;
+					display: block;
+					width: 50%;
+					height: 100%;
+					background: #fff;
+					border-radius: 50%;
+					transition: all 0.3s ease-in-out;
+					left: 0;
+				}
+
+			div.switch-checkbox.switcher label input:checked + span,
+			div.radio.switcher label input:checked + span {
+				background: #F44336;
+				border-color: #F44336;
+			}
+
+				div.switch-checkbox.switcher label input:checked + span small,
+				div.radio.switcher label input:checked + span small {
+					left: 50%;
+				}
+	/*#endregion*/
 </style>
 <nav>
 	<a class="app-link">

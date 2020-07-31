@@ -27,5 +27,15 @@ namespace RealEstate.Common
                 return issuer;
             }
         }
+		public static string AttachmentFolder
+		{
+			get
+			{
+				var attachmentFolder = ConfigurationManager.AppSettings["AttachmentFolder"];
+				if (string.IsNullOrWhiteSpace(attachmentFolder))
+					throw new NullReferenceException("مسیر پوشه ضمیمه ها در فایل وب کانفیگ مشخص نشده است");
+				return attachmentFolder;
+			}
+		}
     }
 }

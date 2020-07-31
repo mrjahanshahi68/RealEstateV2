@@ -271,6 +271,36 @@ app.directive('radioGroup', [function () {
 		}
 	}
 }]);
+app.directive("switcher", function () {
+	return {
+		restrict: 'E',
+		scope: {
+			ngModel: "=?",
+			ngChange: "&?",
+		},
+		controller: function ($scope) {
+			$scope.switcherClicked = function () {
+				$scope.ngModel = !$scope.ngModel;
+			};
+
+			$scope.$watch(function (scope) { return $scope.ngModel; }, function (newValue, oldValue) {
+				if (newValue != oldValue) {
+					if (typeof ($scope.ngChange) == "function") {
+						$scope.ngChange({
+							status: $scope.ngModel,
+							$event: event,
+							sender: event.target,
+						});
+					}
+				}
+			});
+		},
+		link: function ($scope, $elem, $attr) {
+
+		},
+		template: '<span class="fa" ng-class="{\'fa-toggle-on\':ngModel, \'fa-toggle-off\':!ngModel}" ng-click="switcherClicked()" style="font-size:30px"></span>',
+	};
+});
 app.factory("helper", function (cacheManager) {
 	var helper = {};
 	helper.getFile = function (file) {
@@ -286,6 +316,16 @@ app.factory("helper", function (cacheManager) {
 
 		return JSON.parse(jsonPayload);
 	}
+	helper.getParameterByName = function (name, url) {
+		if (!url) url = window.location.href;
+		name = name.replace(/[\[\]]/g, '\\$&');
+		var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+			results = regex.exec(url);
+		if (!results) return null;
+		if (!results[2]) return '';
+		return decodeURIComponent(results[2].replace(/\+/g, ' '));
+	}
+
 	function translateFilterToWhere(data) {
 		for (var key in data)
 		{
@@ -334,6 +374,62 @@ app.factory("helper", function (cacheManager) {
 				1000: {
 					text: "برنامه نویس",
 					value: 1000
+				}
+			}
+		},
+		get CustomerTypes() {
+			return {
+				Owner: {
+					text: "مالک",
+					value: 1
+				},
+				PropertyApplicant: {
+					text: "متقاضی",
+					value: 2
+				}
+			}
+		},
+		get TransactionTypes() {
+			return {
+				Rent: {
+					text: "اجاره",
+					value: 1
+				},
+				Sale: {
+					text: "فروش",
+					value: 2
+				},
+				PreSel: {
+					text: "پیش فروش",
+					value: 3
+				},
+				Exchange: {
+					text: "معاوضه",
+					value: 4
+				}
+			}
+		},
+		get PropertyStatus() {
+			return {
+				Submitted: {
+					text: "ارسال شد",
+					value: 1
+				},
+				Approved: {
+					text: "تایید شد",
+					value: 2
+				},
+				Sold: {
+					text: "فروخته شد",
+					value: 3
+				},
+				Leased: {
+					text: "اجاره رفته",
+					value: 4
+				},
+				Rejected: {
+					text: "رد شد",
+					value: 5
 				}
 			}
 		},

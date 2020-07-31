@@ -571,6 +571,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Api\AccountController.cs" />
+    <Compile Include="Controllers\Api\CustomerInfoController.cs" />
     <Compile Include="Controllers\Api\PropertyInfoController.cs" />
     <Compile Include="Controllers\View\AccountController.cs" />
     <Compile Include="Controllers\View\ProfileController.cs" />
@@ -598,6 +599,9 @@
     <Compile Include="Infrastrcuture\Log\FileLogger.cs" />
     <Compile Include="Infrastrcuture\Log\ILogger.cs" />
     <Compile Include="Infrastrcuture\Log\LogManager.cs" />
+    <Compile Include="Models\Common\AttachmentVM.cs" />
+    <Compile Include="Models\Common\KeyValueVM.cs" />
+    <Compile Include="Models\Customer\CustomerInfoVM.cs" />
     <Compile Include="Models\FilterQueryRsponse.cs" />
     <Compile Include="Models\Property\PropertyInfoVM.cs" />
     <Compile Include="Models\Security\AuthenticateRequest.cs" />
@@ -856,6 +860,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Attachments\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QueryDesigner\QueryDesigner.csproj">

@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace RealEstate.DataAccess.Property.MapConfiguration
 {
-	public class PropertyTypeMapConfig : EntityMapConfig<PropertyType>
+	public class WelfareMapConfig : EntityMapConfig<Welfare>
 	{
-		public PropertyTypeMapConfig()
+		public WelfareMapConfig()
 		{
 			Property(e => e.Name);
 			Property(e => e.IsDeleted);
 
-			ToTable("PropertyTypes");
+			ToTable("welfares");
 		}
 	}
 }

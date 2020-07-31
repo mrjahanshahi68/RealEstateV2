@@ -49,6 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseBusinessRule.cs" />
+    <Compile Include="Common\AttachmentBusinessRule.cs" />
+    <Compile Include="Common\StateBusinessRule.cs" />
+    <Compile Include="Customer\CustomerInfoBusinessRule.cs" />
     <Compile Include="IBusinessRule.cs" />
     <Compile Include="Log\ExceptionBusinessRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 using static RealEstate.Common.AppEnums;
 
-namespace RealEstate.Common.Entities.Customer
+namespace RealEstate.Web.Models.Customer
 {
-	public class CustomerInfo : LoggableEntity, ILogicalDeletable
+	public class CustomerInfoVM
 	{
+		public int ID { get; set; }
 		public string HashKey { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
