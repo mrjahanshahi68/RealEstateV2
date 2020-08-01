@@ -130,18 +130,18 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row k-rtl">
 			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
 				<label>استان : </label>
-				<select kendo-drop-down-list k-options="stateOptions" class="form-control"></select>
+				<select  kendo-drop-down-list  k-ng-delay="stateOptions" k-options="stateOptions" style="width:100%"></select>
 			</div>
 			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
 				<label>شهر : </label>
-				<select kendo-drop-down-list k-options="cityOptions" class="form-control"></select>
+				<select kendo-drop-down-list k-ng-delay="cityOptions" k-options="cityOptions" style="width:100%"></select>
 			</div>
 			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
 				<label>منطقه : </label>
-				<select kendo-drop-down-list k-options="regionOptions" class="form-control"></select>
+				<select kendo-drop-down-list k-ng-delay="regionOptions" k-options="regionOptions" style="width:100%"></select>
 			</div>
 		</div>
 		<div class="row">
@@ -240,9 +240,14 @@
 			propertyTypes: null,
 			documentTypes: null,
 			welfares: null,
+			states: null,
+			cities: null,
+			regions:null,
 			transactionTypes:null,
 			isEditMode: helper.getParameterByName("hashkey") ? true : false,
-			selectedWelfares:[],
+			selectedWelfares: [],
+			selectedStateId: null,
+			selectedCityId:null,
 		}
 		$scope.init = function () {
 			if ($scope.temp.isEditMode) {
@@ -261,11 +266,59 @@
 						isSelected: false,
 					}
 				});
+				$scope.temp.states = result.States;
+				$scope.temp.cities = result.cities;
+				$scope.temp.regions = result.regions;
 
 				$scope.temp.transactionTypes = Object.keys(helper.enums.TransactionTypes).map(function (item) { return helper.enums.TransactionTypes[item] });
 				$scope.$$phase || $scope.$apply();
+				debugger;
+				$scope.stateOptions.dataSource.success($scope.temp.states.filter(function (item) { return item.ParentId==null}));
+				//$scope.stateOptions.dataSource.read()
 			});
 		}
+		
+		$scope.stateOptions = {
+			dataSource: new kendo.data.DataSource({
+				data: $scope.temp.states,
+			}),
+			dataTextField: "Name",
+			dataValueField: "ID",
+			optionLabel: "انتخاب استان",
+			change: function (dataItem) {
+				var item = this.dataItem();
+				$scope.temp.selectedStateId = item.ID;
+				$scope.cityOptions.dataSource.read();
+				//$scope.cityOptions.dataSource.success($scope.temp.states.filter(function (item) { return item.ParentId == $scope.temp.selectedStateId }));
+			}
+		}
+
+		$scope.cityOptions = {
+			dataSource: new kendo.data.DataSource({
+				data: $scope.temp.states ? $scope.temp.states.filter(function (item) { debugger; return item.ParentId == $scope.temp.selectedStateId }) : null,
+			}),
+			dataTextField: "Name",
+			dataValueField: "ID",
+			optionLabel: "انتخاب شهر",
+			change: function (dataItem) {
+				var item = this.dataItem();
+
+			}
+		}
+
+		$scope.regionOptions = {
+			dataSource: new kendo.data.DataSource({
+				data: $scope.temp.states || [],
+			}),
+			dataTextField: "Name",
+			dataValueField: "ID",
+			optionLabel: "انتخاب منطقه",
+			change: function (dataItem) {
+				var item = this.dataItem();
+
+			}
+		}
+
 
 		$scope.welfareChange = function (e, welfare) {
 			if (e.target.checked) {

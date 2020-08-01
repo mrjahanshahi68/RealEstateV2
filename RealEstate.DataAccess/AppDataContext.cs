@@ -27,6 +27,10 @@ namespace RealEstate.DataAccess
 
 			#region Common
 			modelBuilder.Configurations.Add(new AttachmentMapConfig());
+			modelBuilder.Configurations.Add(new ContactUsMapConfig());
+			modelBuilder.Configurations.Add(new BlogMapConfig());
+			modelBuilder.Configurations.Add(new MessageMapConfig());
+			modelBuilder.Configurations.Add(new StateMapConfig());
 			#endregion
 
 			#region Customer

@@ -51,6 +51,9 @@
     <Compile Include="AppUnitOfWork.cs" />
     <Compile Include="BaseRepository.cs" />
     <Compile Include="Common\MapConfigurations\AttachmentMapConfig.cs" />
+    <Compile Include="Common\MapConfigurations\BlogMapConfig.cs" />
+    <Compile Include="Common\MapConfigurations\ContactUsMapConfig.cs" />
+    <Compile Include="Common\MapConfigurations\MessageMapConfig.cs" />
     <Compile Include="Common\MapConfigurations\StateMapConfig.cs" />
     <Compile Include="Customer\MapConfigurations\CustomerInfoMapConfig.cs" />
     <Compile Include="DataContext.cs" />
