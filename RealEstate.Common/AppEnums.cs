@@ -44,11 +44,11 @@ namespace RealEstate.Common
 		{
 			Property=1,
 		}
-		public enum DocumentType
-		{
-			Registered=1,
+		//public enum DocumentType
+		//{
+		//	Registered=1,
 
-		}
+		//}
 		public enum TransactionType
 		{
 			Rent =1,

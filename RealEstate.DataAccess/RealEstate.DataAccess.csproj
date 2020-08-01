@@ -50,6 +50,9 @@
   <ItemGroup>
     <Compile Include="AppUnitOfWork.cs" />
     <Compile Include="BaseRepository.cs" />
+    <Compile Include="Common\MapConfigurations\AttachmentMapConfig.cs" />
+    <Compile Include="Common\MapConfigurations\StateMapConfig.cs" />
+    <Compile Include="Customer\MapConfigurations\CustomerInfoMapConfig.cs" />
     <Compile Include="DataContext.cs" />
     <Compile Include="EntityMapConfig.cs" />
     <Compile Include="IDataContext.cs" />
@@ -61,6 +64,10 @@
     <Compile Include="Log\MapConfigurations\ExceptionMapConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppDataContext.cs" />
+    <Compile Include="Property\MapConfiguration\DocumentTypeMapConfig.cs" />
+    <Compile Include="Property\MapConfiguration\PropertyInfoMapConfig.cs" />
+    <Compile Include="Property\MapConfiguration\PropertyTypeMapConfig.cs" />
+    <Compile Include="Property\MapConfiguration\WelfareMapConfig.cs" />
     <Compile Include="Security\MapConfigurations\RoleMapConfig.cs" />
     <Compile Include="Security\MapConfigurations\UserMapConfig.cs" />
     <Compile Include="Security\MapConfigurations\UserRoleMapConfig.cs" />
