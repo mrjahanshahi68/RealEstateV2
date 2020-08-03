@@ -1,0 +1,104 @@
+﻿@{
+    Layout = "~/ClientApp/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .inputClass{
+        width:70%;
+    }
+</style>
+<div class="panel panel-default" ng-controller="contactUsController" ng-init="init()">
+    <div class="panel-heading">
+        <span class="title">مدیریت تماس با ما</span>
+    </div>
+    <div class="panel-body" style="height:auto;">
+        <div class="k-rtl register-form" id="window">
+            <div>
+                <input type="text" value="" ng-model="model.ID" style="display:none;" />
+                <div class="col-xs-12 form-group">
+                    <label class="control-label"> تلفن همراه : </label>
+                    <input type="text" value="" class="form-control inputClass" ng-model="model.MobileNumber" placeholder="تلفن همراه را وارد نمایید" />
+                </div>
+                <div class="col-xs-12 form-group">
+                    <label class="control-label"> تلفن ثابت : </label>
+                    <input type="text" value="" class="form-control inputClass" ng-model="model.PhoneNumber" placeholder="تلفن ثابت را وارد نمایید" />
+                </div>
+                <div class="col-xs-12 form-group">
+                    <label class="control-label"> آدرس : </label>
+                    <textarea value="" class="form-control inputClass" ng-model="model.Address"></textarea>
+                </div>
+                <div class="col-xs-12 form-group">
+                    <label class="control-label"> لینک اینستاگرام : </label>
+                    <input type="text" value="" class="form-control inputClass" ng-model="model.LinkUrlInstagram" />
+                </div>
+                <div class="col-xs-12 form-group">
+                    <label class="control-label"> لینک واتس اپ : </label>
+                    <input type="text" value="" class="form-control inputClass" ng-model="model.LinkUrlWhatsapp" />
+                </div>
+                <div class="col-xs-12 form-group">
+                    <label class="control-label"> لینک تلگرام : </label>
+                    <input type="text" value="" class="form-control inputClass" ng-model="model.LinkUrlTelegram" />
+                </div>
+                <div class="col-xs-12 form-group">
+                    <label class="control-label"> پست الکترونیک : </label>
+                    <input type="text" value="" class="form-control inputClass" ng-model="model.LinkUrlGoogle" placeholder="example@yahoo.com" />
+                </div>
+                <div class="col-xs-12 form-group">
+                    <label class="control-label"> لینک Pintrest : </label>
+                    <input type="text" value="" class="form-control inputClass" ng-model="model.LinkUrlPinterest" />
+                </div>
+                <div class="col-xs-12 form-group" style="text-align:left">
+                    <button class="btn btn-primary" type="button" ng-click="edit()">بروزرسانی</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+ 
+<script>
+    debugger;
+    app.controller("contactUsController", function ( $scope, dataService, messageService) {
+        
+        $scope.model = {
+            ID:0,
+            LinkUrlInstagram: null,
+            LinkUrlWhatsapp: null,
+            LinkUrlTelegram: null,
+            LinkUrlPinterest: null,
+            LinkUrlGoogle: null,
+            MobileNumber: null,
+            PhoneNumber: null,
+            Address: null,
+            clear: function () {
+                this.ID = 0;
+                this.LinkUrlWhatsapp = null;
+                this.LinkUrlInstagram = null;
+                this.LinkUrlTelegram = null;
+                this.LinkUrlPinterest = null;
+                this.LinkUrlGoogle = null;
+                this.MobileNumber = null;
+                this.PhoneNumber = null;
+                this.Address = null;
+            }
+        }
+
+        $scope.init = function () {
+            
+            dataService.post('contactUs/GetContactUs').then(function (result) {
+              
+                        $scope.model = result;
+
+                        $scope.$$phase || $scope.$apply()
+                    });
+        }
+
+        $scope.edit = function () {
+            dataService.updateEntity("contactUs", $scope.model).then(function (item) {
+                messageService.success("بروزرسانی با موفقیت انجام شد");
+                $scope.model.clear();
+					});
+
+        }
+    });
+</script>

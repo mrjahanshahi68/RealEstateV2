@@ -248,7 +248,7 @@
 	<div class="account-info">
 		<ul>
 			<li>
-				<span>محمد جهانشاهی خوش آمدید</span>
+				<span ng-bind="fullName"></span>
 			</li>
 			<li>
 				<a>
@@ -267,7 +267,7 @@
 		<ul>
 			<li>
 				<a href="/propertyInfo">
-					<i class="fa fa-building" aria-hidden="true"></i>مدیریت ملک
+					<i class="fa fa-building" aria-hidden="true"></i> ملک
 				</a>
 			</li>
 			<li>
@@ -281,23 +281,38 @@
 				</a>
 			</li>
 			<li>
-				<a>
-					<i class="fa fa-wrench" aria-hidden="true"></i> مدیریت نوع ملک
+				<a href="/propertyType">
+					<i class="fa fa-wrench" aria-hidden="true"></i>  نوع ملک
 				</a>
 			</li>
 			<li>
-				<a>
-					<i class="fa fa-coffee" aria-hidden="true"></i>	 مدیریت امکانات رفاهی
+				<a href="/welfare">
+					<i class="fa fa-coffee" aria-hidden="true"></i>	  امکانات رفاهی
 				</a>
 			</li>
 			<li>
-				<a>
-					<i class="fa fa-map" aria-hidden="true"></i>	 موقیعت های مکانی
+				<a href="/blog">
+					<i class="fa fa-list" aria-hidden="true"></i> پست ها
+				</a>
+			</li>
+			<li>
+				<a href="/contactUs">
+					<i class="fa fa-phone" aria-hidden="true"></i> تماس با ما
+				</a>
+			</li>
+			<li>
+				<a href="/message">
+					<i class="fa fa-file-text" aria-hidden="true"></i> پیام ها
+				</a>
+			</li>
+			<li>
+				<a href="/state"> 
+					<i class="fa fa-map" aria-hidden="true"></i>	  مناطق
 				</a>
 			</li>
 			<li>
 				<a href="/account">
-					<i class="fa fa-user" aria-hidden="true"></i>مدیریت کاربران
+					<i class="fa fa-user" aria-hidden="true"></i> کاربران
 				</a>
 			</li>
 			<li>

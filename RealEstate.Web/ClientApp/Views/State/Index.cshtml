@@ -1,0 +1,302 @@
+﻿@{
+    Layout = "~/ClientApp/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+	.col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11 {
+		float: right;
+	}
+
+	.col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11 {
+		float: right;
+	}
+
+	.col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11 {
+		float: right;
+	}
+</style>
+
+<div class="panel panel-default" ng-controller="stateController" ng-init="init()">
+	<div class="panel-heading">
+		<span class="title">مدیریت ملک</span>
+	</div>
+	<div class="panel-body" style="height:500px;">
+		<div class="grid-toolbar">
+			@*<a  class="btn btn-primary" ng-click="showRegionInfoPopup()">ثبت منطقه</a>*@
+			<div class="row">
+				<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
+					<label>استان : </label>
+					<select kendo-drop-down-list k-ng-delay="stateOptions" k-options="stateOptions" style="width:100%"></select>
+				</div>
+				<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
+					<label>شهر : </label>
+					<select kendo-drop-down-list k-ng-delay="cityOptions" k-options="cityOptions" style="width:100%"></select>
+				</div>
+				<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
+					<label></label>
+					<a class="btn btn-primary" style="display:block" ng-click="showRegionInfoPopup()">ثبت منطقه</a>
+				</div>
+			</div>
+		</div>
+		
+		<div class="k-rtl" id="window">
+			
+			<div kendo-grid id="grid" k-ng-delay="gridOptions" k-options="gridOptions"></div>
+		</div>
+	</div>
+
+	<script type="text/ng-template" id="popup-region-info.html">
+		<div ng-init="init()">
+			<div class="modal-header">
+				<h3 class="modal-title" id="modal-title">{{modalTitle}}</h3>
+			</div>
+			<div class="modal-body" id="modal-body">
+				<div class="col-xs-12 form-group">
+					<label class="control-label"> نام منطقه : </label>
+					<input type="text" value="" class="form-control" ng-model="model.Name" placeholder="نام منطقه را وارد نمایید" />
+				</div>
+			</div>
+			<div class="modal-footer" style="text-align:left">
+				<button class="btn btn-primary" type="button" ng-click="confirm()">تایید</button>
+				<button class="btn btn-warning" type="button" ng-click="closePopup()">انصراف</button>
+			</div>
+		</div>
+
+	</script>
+</div>
+
+<script>
+	app.controller("stateController", function ($scope, $uibModal, dataService, messageService, helper) {
+
+		$scope.model = {
+			ID: 0,
+			Name: null,
+			ParentId: null,
+			Level: -1,
+			clear: function () {
+				this.ID = 0;
+				this.Name = null;
+				this.ParentId = null;
+				this.Level = -1;
+			}
+		}
+		$scope.temp = {
+			statesAndCities: null,
+			selectedStateId: null,
+			selectedCityId: null,
+		}
+		$scope.init = function () {
+			dataService.post('state/getStatesAndCities').then(function (result) {
+				$scope.temp.statesAndCities = result;
+				$scope.$$phase || $scope.$apply();
+				$scope.stateOptions.dataSource.success($scope.temp.statesAndCities.filter(function (item) { return item.ParentId == null }));
+			});
+		}
+
+		$scope.stateOptions = {
+			dataSource: new kendo.data.DataSource({
+				data: $scope.temp.statesAndCities 
+			}),
+			defaultValue: "24",
+			dataTextField: "Name",
+			dataValueField: "ID",
+			optionLabel: "انتخاب استان",
+			change: function (dataItem) {
+				var item = this.dataItem();
+				$scope.temp.selectedStateId = item.ID;
+				//$scope.cityOptions.dataSource.read();
+				$scope.cityOptions.dataSource.success($scope.temp.statesAndCities.filter(function (item) { return item.ParentId == $scope.temp.selectedStateId }));
+			}
+		}
+
+		$scope.cityOptions = {
+			dataSource: new kendo.data.DataSource({
+				data: $scope.temp.statesAndCities 
+			}),
+			
+			dataTextField: "Name",
+			dataValueField: "ID",
+			optionLabel: "انتخاب شهر",
+			change: function (dataItem) {
+				var item = this.dataItem();
+				$scope.temp.selectedCityId = item.ID;
+				$scope.gridOptions.dataSource.read();
+			}
+		}
+
+		$scope.gridOptions = {
+			dataSource: new kendo.data.DataSource({
+				transport: {
+					read: function (options) {
+						debugger;
+						if ($scope.temp.selectedCityId) {
+							if ($.trim(options.data.filter) == "") {
+								options.data.filter = {
+									logic: "and",
+									filters: [].concat({ field: "ParentId", operator: "eq", value: $scope.temp.selectedCityId })
+								}
+							}
+							else {
+								options.data.filter = (options.data.filter.filters || []).concat({ field: "ParentId", operator: "eq", value: $scope.temp.selectedCityId })
+							}
+						}
+						var filterParameter = helper.translateToFilterParameter(options.data);
+						
+						console.log(options);
+						dataService.filterBy('state/GetRegions', filterParameter).then(function (result) {
+							options.success(result);
+						});
+					},
+					parameterMap: function (options) {
+						// debugger;
+						console.log(options);
+					}
+				},
+				pageSize: 20,
+				serverFiltering: true,
+				serverPaging: true,
+				serverSorting: true,
+				schema: {
+					data: function (e) {
+						return e.Records;
+					},
+					total: function (e) {
+						return e.TotalCount
+					},
+					model: {
+						id: "ID",
+						fields: {
+							ID: { type: "number", editable: false },
+							Level: { type: "number", editable: false },
+							Name: { type: "string" },
+						}
+					}
+				}
+			}),
+			sortable: true,
+			pageable: true,
+			scrollable: false,
+			filterable: {
+				extra: false,
+				operators: {
+					string: {
+						eq: "مساوی",
+						neq: "نامساوی",
+						contains: "شامل"
+					},
+					enums: {
+						eq: "مساوی",
+						neq: "نامساوی",
+					},
+				}
+
+			},
+			columns:
+			[
+				{
+					title: "کد شناسه",
+					field: "ID",
+					width: 150,
+				},
+				{
+					title: "نام منطقه",
+					field: "Name",
+					width: 200,
+				},
+				{
+					template: function (e) {
+						var commandBtn = "<button class=\"btn btn-primary\" type=\"button\" ng-click=\"edit(dataItem)\">ویرایش</button>";
+						commandBtn += "<button class=\"btn btn-danger\" type=\"button\" ng-click=\"delete(dataItem)\">حذف</button>";
+						return commandBtn;
+					}
+				}
+			]
+		}
+
+		$scope.showRegionInfoPopup = function () {
+			if ($scope.temp.selectedStateId == null || $scope.temp.selectedCityId == null) {
+				messageService.warn("لطفااستان و شهر را انتخاب نمایید");
+				return;
+			}
+			showRegionPopupInfo({
+				callback: function (model, closePopup) {
+					model.ParentId = $scope.temp.selectedCityId;
+					model.Level = 2;
+					dataService.insertEntity("state", model).then(function (item) {
+						messageService.success("عملیات با موفقیت ثبت گردید");
+						$scope.model.clear();
+						$scope.gridOptions.dataSource.read();
+						closePopup();
+					});
+					//console.log(model);
+				}
+			})
+		}
+		$scope.edit = function (data) {
+			if ($scope.temp.selectedStateId == null && $scope.temp.selectedCityId == null) {
+				messageService.warn("لطفااستان و شهر را انتخاب نمایید");
+				return;
+			}
+			showRegionPopupInfo({
+				model: {
+					ID: data.ID,
+					Name: data.Name,
+					ParentId: data.ParentId,
+					Level: data.Level,
+				},
+				callback: function (model, closePopup) {
+					dataService.updateEntity("state", model).then(function (item) {
+						messageService.success("عملیات با موفقیت ثبت گردید");
+						closePopup();
+						$scope.gridOptions.dataSource.read();
+					});
+					closePopup();
+				}
+			})
+		}
+
+		function showRegionPopupInfo(parameters) {
+			$uibModal.open({
+				animation: true,
+				templateUrl: "popup-region-info.html",
+				controller: function ($scope, $uibModalInstance, controllerScope) {
+					$scope.temp = {
+						//userTypes: controllerScope.temp.userTypes,
+						isEditMode: false,
+					}
+					if (parameters["model"]) {
+						$scope.model = parameters.model;
+						$scope.temp.isEditMode = true;
+					}
+					else {
+						$scope.model = controllerScope.model;
+					}
+					$scope.init = function () {
+						if ($scope.temp.isEditMode) {
+							$scope.modalTitle = "وایرایش منطقه";
+						}
+						else {
+							$scope.modalTitle = "ثبت منطقه";
+						}
+					}
+
+					$scope.confirm = function () {
+						parameters.callback($scope.model, $scope.closePopup)
+					}
+					$scope.closePopup = function () {
+						$uibModalInstance.close();
+					}
+					$scope.setStatus = function () {
+						debugger;
+					}
+				},
+				resolve: {
+					controllerScope: function () {
+						return $scope;
+					}
+				}
+				//size:""
+			})
+		}
+	});
+</script>

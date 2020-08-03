@@ -64,5 +64,11 @@ namespace RealEstate.Common
 			Leased= 4,
 			Rejected=5,
 		}
+		public enum Level
+		{
+			State,
+			City,
+			Region
+		}
 	}
 }

@@ -50,6 +50,8 @@ namespace RealEstate.Common.Entities.Property
 		public decimal ReagentTel { get; set; }
 
 
+		public string SlideImage { get; set; }
+		public string CoverImage { get; set; }
 		public bool IsLuxury { get; set; }
 		public bool IsShowInSlide { get; set; }
 

@@ -1,0 +1,220 @@
+﻿@{
+    Layout = "~/ClientApp/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    #grid {
+        border-width: 0;
+        height: 100%; /* DO NOT USE !important for setting the Grid height! */
+    }
+
+        #grid .btn {
+            margin: 2px;
+        }
+    /*.k-rtl .k-grid-header .k-header {
+        text-align: center;
+    }
+
+    .k-grid td {
+        text-align: center;
+    }*/
+</style>
+<div class="panel panel-default" ng-controller="messageController" ng-init="init()">
+    <div class="panel-heading">
+        <span class="title">مدیریت پیام ها</span>
+    </div>
+    <div class="panel-body" style="height:500px;">
+        <div class="k-rtl" id="window">
+            <div kendo-grid id="grid" k-ng-delay="gridOptions" k-options="gridOptions"></div>
+        </div>
+    </div>
+
+</div>
+<script type="text/ng-template" id="popup-message.html">
+    <div ng-init="init()">
+        <div class="modal-header alert-info">
+            <h3 class="modal-title" id="modal-title">{{modalTitle}}</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="col-xs-12 form-group">
+                
+               <textarea type="text" style="text-align:justify;border:none !important;width:100%;" ng-model="model.Text" readonly="readonly"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer" style="text-align:left">
+            <button class="btn btn-warning" type="button" ng-click="closePopup()">انصراف</button>
+        </div>
+    </div>
+
+</script>
+<script>
+    app.controller("messageController", function ($scope, $uibModal, dataService, messageService, helper) {
+        $scope.name = 'World';
+        $scope.model = {
+            FullName: null,
+            Mobile: null,
+            Email: null,
+            Text: null,
+            clear: function () {
+                this.FullName = null;
+                this.Mobile = null;
+                this.Email = null;
+                this.Text = null;
+            }
+        }
+        $scope.init = function () {
+
+        }
+
+        $scope.gridOptions = {
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: function (options) {
+                        var filterParameter = helper.translateToFilterParameter(options.data);
+                     
+                        dataService.filterBy('message/GetMessages', filterParameter).then(function (result) {
+                            options.success(result);
+                        });
+                    },
+                    parameterMap: function (options) {
+                    }
+                },
+                pageSize: 20,
+                serverFiltering: true,
+                serverPaging: true,
+                serverSorting: true,
+                schema: {
+                    data: function (e) {
+                        return e.Records;
+                    },
+                    total: function (e) {
+                        return e.TotalCount
+                    },
+                    model: {
+                        id: "ID",
+                        fields: {
+                            ID: { type: "number", editable: false },
+                            FullName: { type: "string" },
+                            Mobile: { type: "string" },
+                            Email: { type: "string" },
+                            Text: { type: "string" },
+                            IsDeleted: { type: "enum" },
+                        }
+                    }
+                }
+            }),
+            sortable: true,
+            pageable: true,
+            scrollable: false,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        eq: "مساوی",
+                        neq: "نامساوی",
+                        contains: "شامل"
+                    },
+                    enums: {
+                        eq: "مساوی",
+                        neq: "نامساوی",
+                    },
+                    //boolean: {
+                    //	eq: "مساوی",
+                    //	neq: "نامساوی",
+                    //}
+                }
+
+            },
+            //height:"600px",
+            columns:
+                [
+                    {
+                        title: "نام و نا خانوادگی",
+                        field: "FullName",
+                        width: 150,
+                    },
+                    {
+                        title: "موبایل",
+                        field: "Mobile",
+                        width: 150,
+                    },
+                    {
+                        title: "ایمیل",
+                        field: "Email",
+                        width: 150,
+                    },
+                    {
+                        template: function (e) {
+                            var commandBtn = "<button class=\"btn btn-primary\" type=\"button\" ng-click=\"showItem(dataItem)\">مشاهده متن پیام</button>";
+                            commandBtn += "<button class=\"btn btn-danger\" type=\"button\" ng-click=\"delete(dataItem)\">حذف</button>";
+                            return commandBtn;
+                        }
+                    }
+                ]
+        }
+
+        $scope.showItem = function (data) {
+            showMessageInfo({
+                model: {
+                    ID: data.ID,
+                    FullName: data.FullName,
+                    Mobile: data.Mobile,
+                    Text: data.Text,
+                    Email: data.Email
+                },
+                callback: function (model, closePopup) {
+                    dataService.updateEntity("message", model).then(function (item) {
+                        messageService.success("عملیات با موفقیت ثبت گردید");
+                        $scope.model.clear();
+                        closePopup();
+                        $scope.gridOptions.dataSource.read();
+                    });
+                    closePopup();
+                }
+            })
+        }
+        $scope.delete = function (data) {
+            var id = data.ID;
+            var cnf = confirm("آیا مطمئن هستید؟");;
+            if (cnf) {
+                dataService.deleteEntity("message", id).then(function () {
+                    messageService.success("عملیات با موفقیت حذف گردید");
+                    $scope.gridOptions.dataSource.read();
+                })
+            }
+        }
+        function showMessageInfo(parameters) {
+            $uibModal.open({
+                animation: true,
+                templateUrl: "popup-message.html",
+                controller: function ($scope, $uibModalInstance, controllerScope) {
+                    $scope.temp = {
+                        isEditMode: false,
+                    }
+                    if (parameters["model"]) {
+                        $scope.model = parameters.model;
+                    }
+                    else {
+                        $scope.model = controllerScope.model;
+                    }
+                    $scope.init = function () {
+                            $scope.modalTitle = "مشاهده متن پیام";
+                        
+                    }
+                    $scope.closePopup = function () {
+                        $uibModalInstance.close();
+                    }
+                    $scope.setStatus = function () {
+                        debugger;
+                    }
+                },
+                resolve: {
+                    controllerScope: function () {
+                        return $scope;
+                    }
+                }
+                //size:""
+            })
+        }
+        //$scope.gridOptions.dataSource.read();
+    });
+</script>

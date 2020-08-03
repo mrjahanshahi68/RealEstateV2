@@ -48,6 +48,9 @@
     <Compile Include="Entities\AppUserInfo.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\Common\Attachment.cs" />
+    <Compile Include="Entities\Common\Blog.cs" />
+    <Compile Include="Entities\Common\ContactUs.cs" />
+    <Compile Include="Entities\Common\Message.cs" />
     <Compile Include="Entities\Common\State.cs" />
     <Compile Include="Entities\Customer\CustomerInfo.cs" />
     <Compile Include="Entities\IEntity.cs" />

@@ -1,0 +1,330 @@
+﻿@{
+    Layout = "~/ClientApp/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.7.9/angular-sanitize.js"></script>
+
+<style>
+    #grid {
+        border-width: 0;
+        height: 100%; /* DO NOT USE !important for setting the Grid height! */
+    }
+
+        #grid .btn {
+            margin: 2px;
+        }
+
+    .test {
+    }
+    /*.k-rtl .k-grid-header .k-header {
+        text-align: center;
+    }
+
+    .k-grid td {
+        text-align: center;
+    }*/
+</style>
+<div class="panel panel-default" ng-controller="blogController" ng-init="init()">
+    <div class="panel-heading">
+        <span class="title">مدیریت پست ها</span>
+    </div>
+    <div class="panel-body" style="height:500px;">
+        <div class="grid-toolbar">
+            <button type="button" class="btn btn-primary" ng-click="showBlogInfoPopup()">ثبت پست</button>
+        </div>
+        <div class="k-rtl" id="window">
+            <div kendo-grid id="grid" k-ng-delay="gridOptions" k-options="gridOptions"></div>
+        </div>
+    </div>
+
+</div>
+<script type="text/ng-template" id="popup-blog-info.html">
+    <div ng-init="init()">
+        <div class="modal-header alert-info">
+            <h3 class="modal-title" id="modal-title">{{modalTitle}}</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="col-xs-12 form-group">
+                <label class="control-label">دسته بندی :</label>
+                <select ng-model="model.CategoryId" class="form-control">
+                    <option value="">--- دسته بندی را انتخاب کنید ---</option>
+                    <option ng-selected="ut.value == model.CategoryId" ng-repeat="ut in temp.categories"
+                            ng-value="ut.value" ng-bind="ut.text"></option>
+                </select>
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label"> عنوان : </label>
+                <input type="text" value="" class="form-control" ng-model="model.Title" placeholder="عنوان را وارد نمایید" />
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label">توصیف : </label>
+                <input type="text" value="" class="form-control" ng-model="model.MetaDescription" placeholder="توصیف را وارد نمایید" />
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label"> خلاصه : </label>
+                <textarea value="" class="form-control" ng-model="model.Summery" placeholder="خلاصه را وارد نمایید" />
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label"> لینک خبر : </label>
+                <input type="text" value="" class="form-control" ng-model="model.SlugUrl" placeholder="لینک خبر در صورت وجود  را وارد نمایید" />
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label col-xs-4">وضعیت : </label>
+                <toggle-btn ng-init="model.IsActive" ng-model="model.IsActive" name="isactive" type="checkbox"></toggle-btn>
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label"> متن : </label>
+                <textarea kendo-editor k-ng-model="html"  ng-model="model.Body"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer" style="text-align:left">
+            <button class="btn btn-primary" type="button" ng-click="confirm()">تایید</button>
+            <button class="btn btn-warning" type="button" ng-click="closePopup()">انصراف</button>
+        </div>
+    </div>
+
+</script>
+<script>
+    angular.module("KendoDemos", ["kendo.directives", "ngSanitize"])
+    app.controller("blogController", function ($scope, $uibModal, dataService, messageService, helper) {
+        $scope.name = 'World';
+        $scope.model = {
+            Title: '',
+            Body: '',
+            Summery: '',
+            MetaDescription: null,
+            SlugUrl: null,
+            CategoryId: null,
+            clear: function () {
+                this.Title = null;
+                this.Body = null;
+                this.MetaDescription = null;
+                this.SlugUrl = null;
+                this.Summery = null;
+                this.CategoryId = null;
+            }
+        }
+
+        $scope.temp = {
+            categories: [],
+            statuses: [{ value: 0, text: "غیرفعال" }, { value: 1, text: "فعال" }]
+        }
+        $scope.init = function () {
+            for (var key in helper.enums.Categories) {
+                $scope.temp.categories.push({
+                    text: helper.enums.Categories[key].text,
+                    value: helper.enums.Categories[key].value
+                })
+            }
+        }
+
+        $scope.gridOptions = {
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: function (options) {
+                        var filterParameter = helper.translateToFilterParameter(options.data);
+
+                        dataService.filterBy('blog/GetBlogs', filterParameter).then(function (result) {
+                            options.success(result);
+                        });
+                    },
+                    parameterMap: function (options) {
+
+                    }
+                },
+                pageSize: 20,
+                serverFiltering: true,
+                serverPaging: true,
+                serverSorting: true,
+                schema: {
+                    data: function (e) {
+                        return e.Records;
+                    },
+                    total: function (e) {
+                        return e.TotalCount
+                    },
+                    model: {
+                        id: "ID",
+                        fields: {
+                            ID: { type: "number", editable: false },
+                            Title: { type: "string" },
+                            MetaDescription: { type: "string" },
+                            Body: { type: "string" },
+                            Summery: { type: "string" },
+                            SlugUrl: { type: "string" },
+                            CategoryId: { type: "enum" },
+                            IsActive: { type: "boolean" },
+                            IsDeleted: { type: "enum" }
+                        }
+                    }
+                }
+            }),
+            sortable: true,
+            pageable: true,
+            scrollable: false,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        eq: "مساوی",
+                        neq: "نامساوی",
+                        contains: "شامل"
+                    },
+                    enums: {
+                        eq: "مساوی",
+                        neq: "نامساوی",
+                    },
+                    //boolean: {
+                    //	eq: "مساوی",
+                    //	neq: "نامساوی",
+                    //}
+                }
+
+            },
+            //height:"600px",
+            columns:
+                [
+                    {
+                        title: "عنوان ",
+                        field: "Title",
+                        width: 300,
+                    },
+                    {
+                        title: "دسته بندی",
+                        field: "CategoryId",
+                        values: $scope.temp.categories,
+                        width: 130,
+                    },
+                    {
+                        title: "وضعیت",
+                        field: "IsActive",
+                        width: 130,
+                        values: $scope.temp.statuses,
+                        template: function (e) {
+                            if (e.IsActive)
+                                return "<span>فعال</span>";
+                            return "<span>غیرفعال</span>";
+                            //if (e.IsActive)
+                            //	return '<toggle-btn ng-init="dataItem.IsActive=true" ng-change="setStatus(dataItem)" ng-model="dataItem.IsActive" name="isactive_' + e.ID + '" type="checkbox"></toggle-btn>'
+                            //return '<toggle-btn ng-init="dataItem.IsActive=false" ng-change="setStatus(dataItem)" ng-model="dataItem.IsActive" name="isactive_' + e.ID + '" type="checkbox"></toggle-btn>';
+                        }
+                    },
+                    {
+                        title: "تاریخ ثبت",
+                        field: "PublishDateTime",
+                        width: 120,
+                        filterable: false,
+                        template: function (e) {
+                            if (e.PublishDateTime)
+                                return moment(e.PublishDateTime).format('jYYYY/jM/jD');
+                            return "";
+                        }
+                    },
+                    {
+                        template: function (e) {
+                            var commandBtn = "<button class=\"btn btn-primary\" type=\"button\" ng-click=\"edit(dataItem)\">ویرایش</button>";
+                            commandBtn += "<button class=\"btn btn-danger\" type=\"button\" ng-click=\"delete(dataItem)\">حذف</button>";
+                            commandBtn += "<button class=\"btn btn-success\" type=\"button\" ng-click=\"showItem(dataItem)\">مشاهده جزئیات</button>";
+                            return commandBtn;
+                            width: 400
+                        }
+                    }
+                ]
+        }
+
+        $scope.showBlogInfoPopup = function () {
+            showPopupBlogInfo({
+                callback: function (model, closePopup) {
+                    model.Body = encodeURIComponent(model.Body);
+                    dataService.insertEntity("blog", model).then(function (item) {
+                        messageService.success("عملیات با موفقیت ثبت گردید");
+                        $scope.model.clear();
+                        $scope.gridOptions.dataSource.read();
+                        closePopup();
+                    });
+                    //console.log(model);
+                }
+            })
+        }
+        $scope.edit = function (data) {
+            showPopupBlogInfo({
+                model: {
+                    ID: data.ID,
+                    Title: data.Title,
+                    Body:decodeURIComponent( data.Body),
+                    Summery: data.Summery,
+                    MetaDescription: data.MetaDescription,
+                    SlugUrl: data.SlugUrl,
+                    CategoryId: data.CategoryId,
+                    IsActive: data.IsActive
+                },
+                callback: function (model, closePopup) {
+                    dataService.updateEntity("blog", model).then(function (item) {
+                        messageService.success("عملیات با موفقیت ویرایش گردید");
+                        $scope.model.clear();
+                        closePopup();
+                        $scope.gridOptions.dataSource.read();
+                    });
+                    closePopup();
+                }
+            })
+        }
+        $scope.delete = function (data) {
+            var id = data.ID;
+            var cnf = confirm("آیا مطمئن هستید؟");;
+            if (cnf) {
+                dataService.deleteEntity("blog", id).then(function () {
+                    messageService.success("عملیات با موفقیت حذف گردید");
+                  
+                    $scope.gridOptions.dataSource.read();
+                })
+            }
+        }
+        function showPopupBlogInfo(parameters) {
+            $uibModal.open({
+                animation: true,
+                templateUrl: "popup-blog-info.html",
+                controller: function ($scope, $uibModalInstance, controllerScope) {
+                    $scope.temp = {
+                        categories: controllerScope.temp.categories,
+                        isEditMode: false,
+                    }
+                    if (parameters["model"]) {
+                        $scope.model = parameters.model;
+                    }
+                    else {
+                        $scope.model = controllerScope.model;
+                    }
+                    $scope.init = function () {
+                        if ($scope.temp.isEditMode) {
+                            $scope.modalTitle = "وایرایش پست";
+                        }
+                        else {
+                            $scope.modalTitle = "ثبت پست";
+                        }
+                    }
+
+                    $scope.confirm = function () {
+                        parameters.callback($scope.model, $scope.closePopup)
+                    }
+                    $scope.closePopup = function () {
+                        $uibModalInstance.close();
+                    }
+                    $scope.setStatus = function () {
+                        debugger;
+                    }
+                },
+                resolve: {
+                    controllerScope: function () {
+                        return $scope;
+                    }
+                }
+                //size:""
+            })
+        }
+        //$scope.gridOptions.dataSource.read();
+    });
+
+  
+</script>

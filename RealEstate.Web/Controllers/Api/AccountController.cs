@@ -15,6 +15,7 @@ using QueryDesigner;
 using System.Data.Entity;
 using RealEstate.Common.Exceptions;
 using RealEstate.Web.Models;
+using RealEstate.Common;
 
 namespace RealEstate.Web.Controllers.Api
 {
@@ -73,7 +74,7 @@ namespace RealEstate.Web.Controllers.Api
 				errors.Add(string.Format(MessageTemplate.Required, "کلمه عبور"));
 
 			viewmodel.RegisterDate = DateTime.Now;
-
+			viewmodel.Password = viewmodel.Password.ToMd5().ToBase64();
 			return errors;
 
 		}
@@ -93,7 +94,7 @@ namespace RealEstate.Web.Controllers.Api
 
 			var entity=BusinessRule.FindEntity(viewmodel.ID);
 			if (entity == null) throw new Exception("رکورد مورد نظر یافت نشد");
-
+			viewmodel.Password = viewmodel.Password.ToMd5().ToBase64();
 			viewmodel.RegisterDate = entity.RegisterDate;
 
 
