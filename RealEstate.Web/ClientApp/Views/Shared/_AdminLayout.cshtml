@@ -176,6 +176,69 @@
 	.col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11 {
 		float: right;
 	}
+
+	/*#region checkbox and radio*/
+
+	.switch-checkbox.switcher {
+		display: inline-block;
+		padding-left: 15px;
+	}
+
+	.form-group .switch-checkbox.switcher {
+		margin-top: 5px
+	}
+
+	div.switch-checkbox.switcher label,
+	div.radio.switcher label {
+		padding: 0;
+	}
+
+		div.switch-checkbox.switcher label *,
+		div.radio.switcher label * {
+			vertical-align: middle;
+		}
+
+		div.switch-checkbox.switcher label input,
+		div.radio.switcher label input {
+			display: none;
+		}
+
+			div.switch-checkbox.switcher label input + span,
+			div.radio.switcher label input + span {
+				position: relative;
+				display: inline-block;
+				margin-right: 5px;
+				width: 40px;
+				height: 22px;
+				background: #5a5a5a;
+				border: 1px solid #eee;
+				border-radius: 50px;
+				transition: all 0.3s ease-in-out;
+			}
+
+				div.switch-checkbox.switcher label input + span small,
+				div.radio.switcher label input + span small {
+					position: absolute;
+					display: block;
+					width: 50%;
+					height: 100%;
+					background: #fff;
+					border-radius: 50%;
+					transition: all 0.3s ease-in-out;
+					left: 0;
+				}
+
+			div.switch-checkbox.switcher label input:checked + span,
+			div.radio.switcher label input:checked + span {
+				background: #F44336;
+				border-color: #F44336;
+			}
+
+				div.switch-checkbox.switcher label input:checked + span small,
+				div.radio.switcher label input:checked + span small {
+					left: 50%;
+				}
+	/*#endregion*/
 </style>
 <nav>
 	<a class="app-link">
@@ -185,7 +248,7 @@
 	<div class="account-info">
 		<ul>
 			<li>
-				<span>محمد جهانشاهی خوش آمدید</span>
+				<span ng-bind="fullName"></span>
 			</li>
 			<li>
 				<a>
@@ -203,8 +266,8 @@
         </div>
 		<ul>
 			<li>
-				<a>
-					<i class="fa fa-building" aria-hidden="true"></i>مدیریت ملک
+				<a href="/propertyInfo">
+					<i class="fa fa-building" aria-hidden="true"></i> ملک
 				</a>
 			</li>
 			<li>
@@ -218,23 +281,38 @@
 				</a>
 			</li>
 			<li>
-				<a>
-					<i class="fa fa-wrench" aria-hidden="true"></i> مدیریت نوع ملک
+				<a href="/propertyType">
+					<i class="fa fa-wrench" aria-hidden="true"></i>  نوع ملک
 				</a>
 			</li>
 			<li>
-				<a>
-					<i class="fa fa-coffee" aria-hidden="true"></i>	 مدیریت امکانات رفاهی
+				<a href="/welfare">
+					<i class="fa fa-coffee" aria-hidden="true"></i>	  امکانات رفاهی
 				</a>
 			</li>
 			<li>
-				<a>
-					<i class="fa fa-map" aria-hidden="true"></i>	 موقیعت های مکانی
+				<a href="/blog">
+					<i class="fa fa-list" aria-hidden="true"></i> پست ها
+				</a>
+			</li>
+			<li>
+				<a href="/contactUs">
+					<i class="fa fa-phone" aria-hidden="true"></i> تماس با ما
+				</a>
+			</li>
+			<li>
+				<a href="/message">
+					<i class="fa fa-file-text" aria-hidden="true"></i> پیام ها
+				</a>
+			</li>
+			<li>
+				<a href="/state"> 
+					<i class="fa fa-map" aria-hidden="true"></i>	  مناطق
 				</a>
 			</li>
 			<li>
 				<a href="/account">
-					<i class="fa fa-user" aria-hidden="true"></i>مدیریت کاربران
+					<i class="fa fa-user" aria-hidden="true"></i> کاربران
 				</a>
 			</li>
 			<li>

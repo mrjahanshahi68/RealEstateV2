@@ -49,9 +49,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseBusinessRule.cs" />
+    <Compile Include="Common\AttachmentBusinessRule.cs" />
+    <Compile Include="Common\BlogBusinessRule.cs" />
+    <Compile Include="Common\ContactUsBusinessRule.cs" />
+    <Compile Include="Common\MessageBusinessRule.cs" />
+    <Compile Include="Common\StateBusinessRule.cs" />
+    <Compile Include="Customer\CustomerInfoBusinessRule.cs" />
     <Compile Include="IBusinessRule.cs" />
     <Compile Include="Log\ExceptionBusinessRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Property\PropertyInfoBusinessRule.cs" />
+    <Compile Include="Property\PropertyTypeBusinessRule.cs" />
+    <Compile Include="Property\WelfareBusinessRule.cs" />
     <Compile Include="Security\RoleBusinessRule.cs" />
     <Compile Include="Security\UserBusinessRule.cs" />
   </ItemGroup>

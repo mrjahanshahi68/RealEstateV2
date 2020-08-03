@@ -16,7 +16,7 @@
 					نام کاربری
 				</span>
 				<div class="wrap-input100 validate-input m-b-36" data-validate="Username is required">
-					<input class="input100" type="text" name="username">
+					<input class="input100" type="text" ng-model="model.UserName" name="username">
 					<span class="focus-input100"></span>
 				</div>
 
@@ -27,7 +27,7 @@
 					<span class="btn-show-pass">
 						<i class="fa fa-eye"></i>
 					</span>
-					<input class="input100" type="password" name="pass">
+					<input class="input100" ng-model="model.Password" type="password" name="pass">
 					<span class="focus-input100"></span>
 				</div>
 
@@ -47,15 +47,11 @@
 <script src="~/ClientApp/Contents/Login/js/main.js"></script>
 <script>
 	app.controller("loginController", function ($scope, securityManager) {
-		$scope.model = {
-			username: "developer",
-			password: "1",
-		}
 		$scope.init = function () {
 
 		}
 		$scope.login = function () {
-			securityManager.login($scope.model.username, $scope.model.password);
+			securityManager.login($scope.model.UserName, $scope.model.Password);
 		}
 		
 	});

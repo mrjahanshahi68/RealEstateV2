@@ -3,6 +3,7 @@ using RealEstate.Common.Entities.Security;
 using RealEstate.Common.Exceptions;
 using RealEstate.Domain;
 using RealEstate.Domain.Security;
+using RealEstate.Web.Cache;
 using RealEstate.Web.Infrastrcuture;
 using RealEstate.Web.Infrastrcuture.Filters;
 using RealEstate.Web.Models.Security;
@@ -43,7 +44,7 @@ namespace RealEstate.Web.Controllers.Api
                 if (errors.Any()) throw new ValidationModelException(errors);
                 #endregion
 
-                var user = Rule.FindUserByUserName("developer");
+                //var user = Rule.FindUserByUserName(parameters.UserName);
                 if (!SecurityManager.SignIn(parameters.UserName, parameters.Password))
                     throw new AuthenticationException("Username or password was wrong");
                 
@@ -96,5 +97,25 @@ namespace RealEstate.Web.Controllers.Api
 			}
 		}
 
+		[HttpPost]
+		[JwtAuthentication]
+		public async Task<HttpResponseMessage> GetCurrentUser()
+		{
+			try
+			{
+				if (!IsAuthenticated) throw new AuthenticationException("کاربر فعلی نامعتبر است");
+				var principle = SecurityManager.GetPrinciple(Token);
+				var userName = principle.Identity?.Name;
+				var userInfo = CacheManager.GetValue(userName) as AppUserInfo;
+				return Success(new {
+					UserName=userInfo.Context.UserName,
+					FullName=$"{userInfo.Context.FirstName} {userInfo.Context.LastName}",
+				});
+			}
+			catch (Exception ex)
+			{
+				return await HandleExceptionAsync(ex);
+			}
+		}
 	}
 }

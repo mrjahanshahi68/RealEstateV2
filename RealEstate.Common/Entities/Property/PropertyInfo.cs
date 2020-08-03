@@ -11,7 +11,7 @@ namespace RealEstate.Common.Entities.Property
 	{
 		public int PropertyTypeId { get; set; }
 		public int DocumentTypeId { get; set; }
-		public int OwnerId { get; set; }
+		//public int OwnerId { get; set; }
 
 		public string HashKey { get; set; }
 		public string PropertyCode { get; set; }
@@ -41,13 +41,17 @@ namespace RealEstate.Common.Entities.Property
 		public decimal MortgagePrice { get; set; }
 		public decimal RentalPrice { get; set; }
 
+		public decimal FirstName { get; set; }
+		public decimal LastName { get; set; }
+		public decimal Tel { get; set; }
+
 		public decimal ReagentFirstName { get; set; }
 		public decimal ReagentLastName { get; set; }
 		public decimal ReagentTel { get; set; }
 
-		public string TestField { get; set; }
-		
 
+		public string SlideImage { get; set; }
+		public string CoverImage { get; set; }
 		public bool IsLuxury { get; set; }
 		public bool IsShowInSlide { get; set; }
 

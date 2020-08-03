@@ -24,6 +24,7 @@ namespace RealEstate.Common
             public const string Required = "{0} اجباری می باشد";
 			public const string RecordNotFound = "رکورد مورد نظر یافت نشد";
 			public const string TokenExpired = "توکن منقضی شده است";
+			public const string Repetitious = "عنوان مورد نظر تکراری می باشد.";
 		}
 	}
 }
