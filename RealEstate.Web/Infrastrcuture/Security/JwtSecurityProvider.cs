@@ -119,7 +119,7 @@ namespace RealEstate.Web.Security
 			var tokenExpiryDate = GetRestOfExpiryDate(token);
 			TimeSpan timeSpan = tokenExpiryDate - DateTime.Now;
 			var restOfExpireMinute = timeSpan.TotalMinutes;
-			if (restOfExpireMinute < 0)
+			if (restOfExpireMinute > 0)
 				return true;
 			return false;
 		}

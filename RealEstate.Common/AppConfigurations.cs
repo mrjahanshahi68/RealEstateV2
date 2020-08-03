@@ -37,5 +37,15 @@ namespace RealEstate.Common
 				return attachmentFolder;
 			}
 		}
-    }
+		public static string PropertyImageFolder
+		{
+			get
+			{
+				var propertyImageFolder = ConfigurationManager.AppSettings["PropertyImageFolder"];
+				if (string.IsNullOrWhiteSpace(propertyImageFolder))
+					throw new NullReferenceException("مسیر پوشه تصاویر ملک در فایل وب کانفیگ مشخص نشده است");
+				return propertyImageFolder;
+			}
+		}
+	}
 }

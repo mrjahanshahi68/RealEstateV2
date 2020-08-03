@@ -47,6 +47,9 @@ namespace RealEstate.DataAccess.Property.MapConfiguration
 			Property(e => e.IsShowInSlide);
 			Property(e => e.IsDeleted);
 
+			Property(e => e.SlideImage);
+			Property(e => e.CoverImage);
+
 			ToTable("Properties");
 		}
 	}
