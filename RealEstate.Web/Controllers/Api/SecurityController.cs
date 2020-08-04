@@ -104,12 +104,10 @@ namespace RealEstate.Web.Controllers.Api
 			try
 			{
 				if (!IsAuthenticated) throw new AuthenticationException("کاربر فعلی نامعتبر است");
-				var principle = SecurityManager.GetPrinciple(Token);
-				var userName = principle.Identity?.Name;
-				var userInfo = CacheManager.GetValue(userName) as AppUserInfo;
+				
 				return Success(new {
-					UserName=userInfo.Context.UserName,
-					FullName=$"{userInfo.Context.FirstName} {userInfo.Context.LastName}",
+					UserName=CurrentUser.Context.UserName,
+					FullName=$"{CurrentUser.Context.FirstName} {CurrentUser.Context.LastName}",
 				});
 			}
 			catch (Exception ex)

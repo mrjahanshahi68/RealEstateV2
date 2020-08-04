@@ -28,7 +28,21 @@ namespace RealEstate.Web.Controllers
         protected IBusinessRule<TEntity> BusinessRule { get; set; }
 		public bool IsAuthenticated => SecurityManager.IsAuthenticated(Token);
 		public string Token => SecurityManager.GetToken(Request);
-        public AppUserInfo CurrentUser => IsAuthenticated ? CacheManager.GetValue(Token) as AppUserInfo : throw new AuthenticationException("Not Athenticate");
+        public AppUserInfo CurrentUser
+		{
+			get
+			{
+				if (IsAuthenticated)
+				{
+					var principle = SecurityManager.GetPrinciple(Token);
+					var userName = principle.Identity?.Name;
+					var userInfo = CacheManager.GetValue(userName) as AppUserInfo;
+					return userInfo;
+				}
+				throw new AuthenticationException("Not Athenticate");
+				
+			}
+		}
         #endregion
 
         protected abstract IBusinessRule<TEntity> CreateRule();

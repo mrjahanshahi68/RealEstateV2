@@ -8,6 +8,6 @@ namespace RealEstate.Web.Controllers
 {
     public class BaseViewController : Controller
     {
-       
-    }
+		
+	}
 }

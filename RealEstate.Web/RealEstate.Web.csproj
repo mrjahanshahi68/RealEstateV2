@@ -616,6 +616,7 @@
     <Compile Include="Models\Common\AttachmentVM.cs" />
     <Compile Include="Models\Common\BlogVM.cs" />
     <Compile Include="Models\Common\ContactUsVM.cs" />
+    <Compile Include="Models\Common\ContentInfo.cs" />
     <Compile Include="Models\Common\KeyValueVM.cs" />
     <Compile Include="Models\Common\MessageVM.cs" />
     <Compile Include="Models\Customer\CustomerInfoVM.cs" />

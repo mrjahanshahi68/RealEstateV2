@@ -73,43 +73,43 @@
 		<div class="row">
 			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
 				<label>متراژ زمین  : </label><span style="font-size:11px">(متر مربع)</span>
-				<input type="number" class="form-control" data-toggle="popover" data-content="متراژ زمین را وارد نمایید"  placeholder="متراژ زمین" />
+				<input type="number" class="form-control" data-toggle="popover" data-content="متراژ زمین را وارد نمایید" ng-model="model.LandingArea"  placeholder="متراژ زمین" />
 			</div>
 			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
 				<label>متراژ بنا : </label><span style="font-size:11px">(متر مربع)</span>
-				<input type="number" class="form-control" data-toggle="popover" data-content="متراژ بنا را وارد نمایید" ng-model="model.PropertyDetail.BuildingArea" placeholder="متراژ بنا" />
+				<input type="number" class="form-control" data-toggle="popover" data-content="متراژ بنا را وارد نمایید" ng-model="model.BuildingArea" placeholder="متراژ بنا" />
 			</div>
 			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
 				<label>تعداد اتاق خواب : </label>
-				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد اتاق خواب را وارد نمایید" ng-model="model.PropertyDetail.BedRoom" placeholder="تعداد اتاق خواب" />
+				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد اتاق خواب را وارد نمایید" ng-model="model.BedRoom" placeholder="تعداد اتاق خواب" />
 			</div>
 			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
 				<label>تعداد حمام : </label>
-				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد حمام را وارد نمایید" ng-model="model.PropertyDetail.BathRoom" placeholder="تعداد حمام" />
+				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد حمام را وارد نمایید" ng-model="model.BathRoom" placeholder="تعداد حمام" />
 			</div>
 			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
 				<label>طبقه ملک: </label>
-				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد حمام را وارد نمایید" ng-model="model.PropertyDetail.BathRoom" placeholder="تعداد حمام" />
+				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد حمام را وارد نمایید" ng-model="model.FloorNumber" placeholder="تعداد حمام" />
 			</div>
 			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
 				<label>تعداد طبقات : </label>
-				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد طبقات را وارد نمایید" ng-model="model.PropertyDetail.BathRoom" placeholder="تعداد طبقات" />
+				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد طبقات را وارد نمایید" ng-model="model.Floor" placeholder="تعداد طبقات" />
 			</div>
 			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
 				<label>تعداد واحد : </label>
-				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد واحد را وارد نمایید" ng-model="model.PropertyDetail.BathRoom" placeholder="تعداد واحد" />
+				<input type="number" class="form-control" data-toggle="popover" data-content="تعداد واحد را وارد نمایید" ng-model="model.Apartment" placeholder="تعداد واحد" />
 			</div>
 			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
 				<label>سال ساخت : </label>
-				<input type="number" class="form-control" data-toggle="popover" data-content="سال ساخت را وارد نمایید" ng-model="model.PropertyDetail.BathRoom" placeholder="سال ساخت" />
+				<input type="number" class="form-control" data-toggle="popover" data-content="سال ساخت را وارد نمایید" ng-model="model.ConstructorYear" placeholder="سال ساخت" />
 			</div>
 			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
 				<label>موقعیت ملک: </label>
-				<input type="text" class="form-control" data-toggle="popover" data-content="موقعیت ملک را وارد نمایید" ng-model="model.PropertyDetail.BathRoom" placeholder="موقعیت ملک" />
+				<input type="text" class="form-control" data-toggle="popover" data-content="موقعیت ملک را وارد نمایید" ng-model="model.Position" placeholder="موقعیت ملک" />
 			</div>
 			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
 				<label>نمای ملک : </label>
-				<input type="text" class="form-control" data-toggle="popover" data-content="نمای ملک را وارد نمایید" ng-model="model.PropertyDetail.BathRoom" placeholder="نمای ملک" />
+				<input type="text" class="form-control" data-toggle="popover" data-content="نمای ملک را وارد نمایید" ng-model="model.PropertyView" placeholder="نمای ملک" />
 			</div>
 
 		
@@ -150,7 +150,7 @@
 		<div class="row">
 			<div class="col-xs-12 form-group">
 				<label>توضحیات تکمیلی : </label>
-				<textarea rows="6" class="form-control" ng-model="model.PropertyDetail.Description" placeholder="توضیحات تکمیلی"></textarea>
+				<textarea rows="6" class="form-control" ng-model="model.Description" placeholder="توضیحات تکمیلی"></textarea>
 			</div>
 		</div>
 		<div class="row">
@@ -200,11 +200,11 @@
 			</div>
 			<div class="col-md-3 col-sm-6 col-xs-12">
 				<label>تصویر اسلایدشو :  </label>
-				<input type="file" id="fuCoverImage" />
+				<input type="file" id="fuSlideImage" />
 			</div>
 
 		</div>
-		<div class="row">
+		<div class="row form-group">
 			<div class="box-header" style="padding:0;padding-right: 25px;padding-bottom: 5px;">
 				<button type="button" style="width:200px;margin-bottom:5px;" ng-click="addAttachmentFileUpload()" class="btn btn-primary col-12">
 					اضافه کردن بارگزاری تصویر
@@ -306,13 +306,20 @@
 
 				</div>
 			</div>
+			
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12 form-group text-left">
+				<button type="button" ng-click="save()" class="btn btn-primary" style="width:150px;">ثبت</button>
+			</div>
 		</div>
 	</div>
 
 </div>
 
 <script>
-	app.controller("registerPropertyController", function ($scope, $uibModal, dataService, helper) {
+	app.controller("registerPropertyController", function ($scope, $uibModal, dataService, messageService, helper) {
 
 		$scope.model = {
 			PropertyCode: null,
@@ -336,7 +343,7 @@
 			PropertyView: null,
 			ConstructorYear: null,
 			Welfares: null,
-			StateId: null,
+			RegionId: null,
 			Address: null,
 			Description: null,
 			SalePrice: null,
@@ -353,9 +360,8 @@
 			IsDeleted: null,
 			SlideImage: null,
 			CoverImage: null,
-			Attachments:[]
+			Attachments: []
 		}
-
 		$scope.temp = {
 			propertyTypes: null,
 			documentTypes: null,
@@ -364,10 +370,12 @@
 			transactionTypes:null,
 			isEditMode: helper.getParameterByName("hashkey") ? true : false,
 			selectedWelfares: [],
-			selectedStateId: null,
-			selectedCityId: null,
-			selectedRegionId:null,
+			selectedStateId: 24,
+			selectedCityId: 914,
+			selectedRegionId: null,
+			formData: null,
 		}
+
 		$scope.init = function () {
 			if ($scope.temp.isEditMode) {
 				$scope.title = "ویرایش ملک";
@@ -382,71 +390,88 @@
 					return {
 						Key: item.Key,
 						Value: item.Value,
-						isSelected: false,
+						selected: false,
 					}
 				});
 				$scope.temp.states = result.States;
 				$scope.model.Attachments = [].concat({ FileName: 'انتخاب فایل', attachmentUID: helper.uuidv4() })
 				$scope.temp.transactionTypes = Object.keys(helper.enums.TransactionTypes).map(function (item) { return helper.enums.TransactionTypes[item] });
+
+				$scope.temp.formData = new FormData();
+
+				loadOptions();
+
 				$scope.$$phase || $scope.$apply();
-				debugger;
-				$scope.stateOptions.dataSource.success($scope.temp.states.filter(function (item) { return item.ParentId==null}));
-				//$scope.stateOptions.dataSource.read()
 			});
 		}
+
+		function loadOptions() {
+			$scope.stateOptions = {
+				dataSource: new kendo.data.DataSource({
+					data: $scope.temp.states.filter(function (item) { return item.ParentId == null }),
+				}),
+				value: $scope.temp.selectedStateId,
+				dataTextField: "Name",
+				dataValueField: "ID",
+				optionLabel: "انتخاب استان",
+				change: function (dataItem) {
+					var item = this.dataItem();
+					$scope.temp.selectedStateId = item.ID;
+					$scope.cityOptions.dataSource.read();
+				}
+			}
+			$scope.cityOptions = {
+				dataSource: new kendo.data.DataSource({
+					transport: {
+						read: function (options) {
+							options.success($scope.temp.states.filter(function (item) { return item.ParentId == $scope.temp.selectedStateId }));
+						},
+					},
+				}),
+				value: $scope.temp.selectedCityId,
+				dataTextField: "Name",
+				dataValueField: "ID",
+				optionLabel: "انتخاب شهر",
+				change: function (dataItem) {
+					var item = this.dataItem();
+					$scope.temp.selectedCityId = item.ID;
+					$scope.regionOptions.dataSource.read();
+				}
+			}
+			$scope.regionOptions = {
+				dataSource: new kendo.data.DataSource({
+					transport: {
+						read: function (options) {
+							options.success($scope.temp.states.filter(function (item) { return item.ParentId == $scope.temp.selectedCityId }));
+						},
+					},
+				}),
+				dataTextField: "Name",
+				dataValueField: "ID",
+				optionLabel: "انتخاب منطقه",
+				change: function (dataItem) {
+					var item = this.dataItem();
+					$scope.temp.selectedRegionId = item.ID;
+				}
+			}
+		}
+		function addFileToFormData(name,file) {
+			if ($scope.temp.formData.get(name)) {
+				$scope.temp.formData.set(name, file)
+			}
+			else {
+				$scope.temp.formData.append(name, file)
+			}
+		}
 		
-		$scope.stateOptions = {
-			dataSource: new kendo.data.DataSource({
-				data: $scope.temp.states,
-			}),
-			dataTextField: "Name",
-			dataValueField: "ID",
-			optionLabel: "انتخاب استان",
-			change: function (dataItem) {
-				var item = this.dataItem();
-				$scope.temp.selectedStateId = item.ID;
-				//$scope.cityOptions.dataSource.read();
-				$scope.cityOptions.dataSource.success($scope.temp.states.filter(function (item) { return item.ParentId == $scope.temp.selectedStateId }));
-			}
-		}
-
-		$scope.cityOptions = {
-			dataSource: new kendo.data.DataSource({
-				data: $scope.temp.states 
-			}),
-			dataTextField: "Name",
-			dataValueField: "ID",
-			optionLabel: "انتخاب شهر",
-			change: function (dataItem) {
-				var item = this.dataItem();
-				$scope.temp.selectedCityId = item.ID;
-				//$scope.cityOptions.dataSource.read();
-				$scope.regionOptions.dataSource.success($scope.temp.states.filter(function (item) { return item.ParentId == $scope.temp.selectedCityId }));
-			}
-		}
-
-		$scope.regionOptions = {
-			dataSource: new kendo.data.DataSource({
-				data: $scope.temp.states
-			}),
-			dataTextField: "Name",
-			dataValueField: "ID",
-			optionLabel: "انتخاب منطقه",
-			change: function (dataItem) {
-				var item = this.dataItem();
-				$scope.temp.selectedRegionId = item.ID;
-			}
-		}
-
 
 		$scope.welfareChange = function (e, welfare) {
 			if (e.target.checked) {
-				welfare.isSelected = true;
+				welfare.selected = true;
 			} else {
-				welfare.isSelected = false;
+				welfare.selected = false;
 			}
 		}
-
 		$scope.addAttachmentFileUpload = function () {
 			$scope.model.Attachments.push({ FileName: 'انتخاب فایل', attachmentUID: helper.uuidv4() });
 		}
@@ -457,22 +482,57 @@
 				}
 			}
 		}
+		$scope.save = function () {
+			$scope.model.Welfares = $scope.temp.welfares.filter(function (item) {
+				if (item.selected)
+					return item;
+			});
+			$scope.model.RegionId = $scope.temp.selectedRegionId;
+			debugger;
+			dataService.sendDataAndFiles('propertyInfo/submitProperty', $scope.model, $scope.temp.formData).then(function (result) {
+				messageService.success('عملیات با موفقیت ثبت گردید');
+			});
+		}
+
 		$(document).delegate('[image-attachment]', 'change', function (e) {
 			if (e && e.target) {
+				var uid = $(e.target).attr('attachment-uid');
+				addFileToFormData("Attachmanet-" + uid, e.target.files[0]);
+				//var file = e.target.files[0];
+				//file.attachmentUID = $(e.target).attr('attachment-uid');
+				//helper.getFileInfo(file).start()
+				//	.onProgress(function (e, loaded, total) {
+				//	}).onComplete(function (result, e) {
+				//		if (result) {
+				//			var currentAttachment = $scope.model.Attachments.findById('attachmentUID', result.file.attachmentUID)
+				//			currentAttachment.Content = result.fileReader.base64;
+				//			currentAttachment.FileName = result.fileName;
+				//			currentAttachment.Size = result.size;
+				//			currentAttachment.ContentType = result.contentType;
+				//			$scope.$$phase || $scope.$apply();
+				//		}
+				//	});
+			}
+		});
+		$(document).delegate('#fuCoverImage', 'change', function (e) {
+			if (e && e.target) {
 				var file = e.target.files[0];
-				file.attachmentUID = $(e.target).attr('attachment-uid');
-				helper.getFileInfo(file).start()
-					.onProgress(function (e, loaded, total) {
-					}).onComplete(function (result, e) {
-						if (result) {
-							var currentAttachment = $scope.model.Attachments.findById('attachmentUID', result.file.attachmentUID)
-							currentAttachment.Picture = result.fileReader.base64;
-							currentAttachment.FileName = result.fileName;
-							currentAttachment.Size = result.size;
-							currentAttachment.ContentType = result.contentType;
-							$scope.$$phase || $scope.$apply();
-						}
-					});
+				addFileToFormData("CoverImage", e.target.files[0]);
+			}
+		});
+		$(document).delegate('#fuSlideImage', 'change', function (e) {
+			if (e && e.target) {
+				addFileToFormData("SlideImage", e.target.files[0]);
+				//var file = e.target.files[0];
+
+				//helper.getFileInfo(file).start().onComplete(function (result) {
+				//	$scope.model.SlideImage = {
+				//		Content: result.fileReader.base64,
+				//		FileName: result.fileName,
+				//		Size: result.size,
+				//		ContentType: result.contentType,
+				//	};
+				//});
 			}
 		});
 	});

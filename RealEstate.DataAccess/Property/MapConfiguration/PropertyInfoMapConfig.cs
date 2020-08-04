@@ -31,7 +31,7 @@ namespace RealEstate.DataAccess.Property.MapConfiguration
 			Property(e => e.PropertyView);
 			Property(e => e.ConstructorYear);
 			Property(e => e.Welfares);
-			Property(e => e.StateId);
+			Property(e => e.RegionId);
 			Property(e => e.Address);
 			Property(e => e.Description);
 			Property(e => e.SalePrice);

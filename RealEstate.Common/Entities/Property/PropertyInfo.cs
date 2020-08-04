@@ -33,7 +33,7 @@ namespace RealEstate.Common.Entities.Property
 		public string ConstructorYear { get; set; }
 		public string Welfares { get; set; }
 
-		public int StateId { get; set; }
+		public int RegionId { get; set; }
 		public string Address { get; set; }
 		public string Description { get; set; }
 
@@ -41,13 +41,13 @@ namespace RealEstate.Common.Entities.Property
 		public decimal MortgagePrice { get; set; }
 		public decimal RentalPrice { get; set; }
 
-		public decimal FirstName { get; set; }
-		public decimal LastName { get; set; }
-		public decimal Tel { get; set; }
+		public string FirstName { get; set; }
+		public string LastName { get; set; }
+		public string Tel { get; set; }
 
-		public decimal ReagentFirstName { get; set; }
-		public decimal ReagentLastName { get; set; }
-		public decimal ReagentTel { get; set; }
+		public string ReagentFirstName { get; set; }
+		public string ReagentLastName { get; set; }
+		public string ReagentTel { get; set; }
 
 
 		public string SlideImage { get; set; }

@@ -635,7 +635,6 @@ app.service("dataService", function (messageService, cacheManager) {
 	var httpRequest = function (url, data, method) {
 		return $.ajax({
 			url: baseAddress + url,
-			//type: "json",
 			method: method,
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
@@ -647,6 +646,7 @@ app.service("dataService", function (messageService, cacheManager) {
 			data: data ? JSON.stringify(data) : null,
 		})
 	}
+
 
 	return {
 		post: function (url, data, fullResponse) {
@@ -661,6 +661,43 @@ app.service("dataService", function (messageService, cacheManager) {
 					deffer.resolve(result);
 			})
 			return deffer;
+		},
+		sendDataAndFiles: function (url, data, formData, fullResponse) {
+			if ($.trim(url) != "") {
+				if (url.indexOf("/") == 0) url = url.substr(1);
+			}
+			var deffer = $.Deferred();
+			deffer.promise(requestHandler);
+			if (formData instanceof FormData) {
+				formData.append("parameters", JSON.stringify(data))
+				$.ajax({
+					url: baseAddress + url,
+					method: "POST",
+					processData: false,
+					contentType: false,
+					//contentType: "multipart/form-data",
+					dataType: "json",
+					beforeSend: function (xhr) {
+						var token = cacheManager.getItem("token");
+						//if (!token) document.location.href("/login");
+						xhr.setRequestHeader("authorization", "Bearer " + token);
+					},
+					data: formData,
+				}).done(function (response, x, jQxhr) {
+					var result = processResponse(response, fullResponse);
+					if (typeof result !== "undefined")
+						deffer.resolve(result);
+				})
+			}
+			else {
+				this.post(url, data, fullResponse).success(function (response, x, jQxhr) {
+					var result = processResponse(response, fullResponse);
+					if (typeof result !== "undefined")
+						deffer.resolve(result);
+				})
+			}
+			return deffer;
+			
 		},
 		insertEntity: function (url, entity, fullResponse) {
 			if ($.trim(url) != "") {
@@ -726,7 +763,8 @@ app.service("dataService", function (messageService, cacheManager) {
 					deffer.resolve(result);
 			})
 			return deffer;
-		}
+		},
+
 	}
 });
 app.service("securityManager", function (dataService, cacheManager, helper) {
