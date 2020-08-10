@@ -1,0 +1,624 @@
+﻿@{
+    Layout = "~/ClientApp/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.7.9/angular-sanitize.js"></script>
+
+<style>
+    #grid {
+        border-width: 0;
+        height: 100%; /* DO NOT USE !important for setting the Grid height! */
+    }
+
+        #grid .btn {
+            margin: 2px;
+        }
+
+    .test {
+    }
+    /*.k-rtl .k-grid-header .k-header {
+        text-align: center;
+    }
+
+    .k-grid td {
+        text-align: center;
+    }*/
+</style>
+<div class="panel panel-default" ng-controller="propertyDemandController" ng-init="init()">
+    <div class="panel-heading">
+        <span class="title">مدیریت درخواست های تقاضای ملک</span>
+    </div>
+    <div class="panel-body" style="height:500px;">
+        <div class="grid-toolbar">
+            <button type="button" class="btn btn-primary" ng-click="showPropertyDemandInfoPopup()">ثبت درخواست</button>
+        </div>
+        <div class="k-rtl" id="window" style="overflow:auto">
+            <div kendo-grid id="grid" k-ng-delay="gridOptions" k-options="gridOptions"></div>
+        </div>
+    </div>
+
+</div>
+<script type="text/ng-template" id="popup-propertyDemand-info.html">
+    <div ng-init="init()">
+        <div class="modal-header alert-info">
+            <h3 class="modal-title" id="modal-title">{{modalTitle}}</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div class="col-xs-12 form-group">
+                <label class="control-label">نوع ملک :</label>
+                <select ng-model="model.PropertyType" class="form-control">
+                    <option value="">--- نوع ملک را انتخاب کنید ---</option>
+                    <option ng-selected="propType.Key == model.PropertyType" ng-repeat="propType in temp.propertyTypes"
+                            ng-value="propType.Key " ng-bind="propType.Value"></option>
+                </select>
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label">نوع معامله :</label>
+                <select ng-model="model.TransactionType" class="form-control">
+                    <option value="">--- نوع معامله را انتخاب کنید ---</option>
+                    <option ng-selected="transactionType.value == model.TransactionType" ng-repeat="transactionType in temp.transactionTypes"
+                            ng-value="transactionType.value " ng-bind="transactionType.text"></option>
+                </select>
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label"> حداقل متراژ(متر مربع) : </label>
+                <input type="text" value="" class="form-control" ng-model="model.MinimumArea" placeholder="حداقل متراژ را وارد نمایید" />
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label"> حداکثر متراژ(متر مربع) : </label>
+                <input type="text" value="" class="form-control" ng-model="model.MaximumArea" placeholder="حداکثر متراژ را وارد نمایید" />
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label"> حداقل قیمت(تومان) : </label>
+                <input type="text" value="" class="form-control" ng-model="model.MinimumPrice" placeholder="حداقل قیمت را وارد نمایید" />
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label"> حداکثر قیمت(تومان) : </label>
+                <input type="text" value="" class="form-control" ng-model="model.MaximumPrice" placeholder="حداکثر قیمت را وارد نمایید" />
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label"> نام و نام خانوادگی : </label>
+                <input type="text" value="" class="form-control" ng-model="model.FullName" placeholder="نام و نام خانوادگی را وارد نمایید" />
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label"> موبایل : </label>
+                <input type="text" value="" class="form-control" ng-model="model.MobileNumber" placeholder="موبایل را وارد نمایید" />
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label">استان :</label>
+                <select kendo-drop-down-list k-ng-delay="stateOptions" k-options="stateOptions" style="width:100%"></select>
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label">شهر :</label>
+                <select kendo-drop-down-list k-ng-delay="cityOptions" k-options="cityOptions" style="width:100%"></select>
+            </div>
+
+            <div class="col-xs-12 form-group">
+                <label class="control-label">منطقه :</label>
+                <select kendo-drop-down-list k-ng-delay="regionOptions" k-options="regionOptions" style="width:100%"></select>
+            </div>
+        </div>
+        <div class="modal-footer" style="text-align:left">
+            <button class="btn btn-primary" type="button" ng-click="confirm()">تایید</button>
+            <button class="btn btn-warning" type="button" ng-click="closePopup()">انصراف</button>
+        </div>
+    </div>
+
+</script>
+<script>
+    angular.module("KendoDemos", ["kendo.directives", "ngSanitize"])
+    app.controller("propertyDemandController", function ($scope, $uibModal, dataService, messageService, helper) {
+        $scope.name = 'World';
+        $scope.model = {
+            PropertyType: null,
+            TransactionType: null,
+            MinimumArea: null,
+            MaximumArea: null,
+            MaximumPrice: null,
+            MinimumPrice: null,
+            FullName: null,
+            MobileNumber: null,
+            StateId: null,
+            clear: function () {
+                this.PropertyType = null;
+                this.TransactionType = null;
+                this.MinimumArea = null;
+                this.MaximumArea = null;
+                this.MaximumPrice = null;
+                this.MinimumPrice = null;
+                this.FullName = null;
+                this.MobileNumber = null;
+                this.StateId = null;
+            }
+        }
+
+        $scope.temp = {
+            propertyTypes: null,
+            transactionTypes: [],
+            selectedStateId: null,
+            selectedCityId: null,
+            selectedRegionId: null,
+        }
+        $scope.init = function () {
+
+            for (var key in helper.enums.TransactionTypes) {
+                $scope.temp.transactionTypes.push({
+                    text: helper.enums.TransactionTypes[key].text,
+                    value: helper.enums.TransactionTypes[key].value
+                })
+            }
+
+            dataService.post('propertyInfo/InitializeParameters').then(function (result) {
+               
+                $scope.temp.propertyTypes = result.PropertyTypes;
+                $scope.temp.states = result.States;
+                $scope.$$phase || $scope.$apply();
+                var data = {
+                    propertyTypes: result.PropertyTypes,
+                    states: result.States
+                };
+
+                $scope.stateOptions.dataSource.success($scope.temp.states.filter(function (item) { return item.ParentId == null }));
+                loadOptionGrid(data);
+            });
+        }
+
+        $scope.stateOptions = {
+            dataSource: new kendo.data.DataSource({
+                data: $scope.temp.states,
+            }),
+            dataTextField: "Name",
+            dataValueField: "ID",
+            optionLabel: "انتخاب استان",
+            change: function (dataItem) {
+                var item = this.dataItem();
+                $scope.temp.selectedStateId = item.ID;
+                //$scope.cityOptions.dataSource.read();
+                $scope.cityOptions.dataSource.success($scope.temp.states.filter(function (item) { return item.ParentId == $scope.temp.selectedStateId }));
+            }
+        }
+
+        $scope.cityOptions = {
+            dataSource: new kendo.data.DataSource({
+                data: $scope.temp.states
+            }),
+            dataTextField: "Name",
+            dataValueField: "ID",
+            optionLabel: "انتخاب شهر",
+            change: function (dataItem) {
+                var item = this.dataItem();
+                $scope.temp.selectedCityId = item.ID;
+                //$scope.cityOptions.dataSource.read();
+                $scope.regionOptions.dataSource.success($scope.temp.states.filter(function (item) { return item.ParentId == $scope.temp.selectedCityId }));
+            }
+        }
+
+        $scope.regionOptions = {
+            dataSource: new kendo.data.DataSource({
+                data: $scope.temp.states
+            }),
+            dataTextField: "Name",
+            dataValueField: "ID",
+            optionLabel: "انتخاب منطقه",
+            change: function (dataItem) {
+                var item = this.dataItem();
+                $scope.temp.selectedRegionId = item.ID;
+            }
+        }
+
+        $scope.gridOptions = {
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: function (options) {
+                        var filterParameter = helper.translateToFilterParameter(options.data);
+
+                        dataService.filterBy('propertyDemand/GetPropertyDemands', filterParameter).then(function (result) {
+                            options.success(result);
+                        });
+                    },
+                    parameterMap: function (options) {
+
+                    }
+                },
+                pageSize: 20,
+                serverFiltering: true,
+                serverPaging: true,
+                serverSorting: true,
+                schema: {
+                    data: function (e) {
+                        return e.Records;
+                    },
+                    total: function (e) {
+                        return e.TotalCount
+                    },
+                    model: {
+                        PropertyType: null,
+                        TransactionType: null,
+                        MinimumArea: null,
+                        MaximumArea: null,
+                        MaximumPrice: null,
+                        MinimumPrice: null,
+                        FullName: null,
+                        MobileNumber: null,
+                        StateId: null,
+
+                        id: "ID",
+                        fields: {
+                            ID: { type: "number", editable: false },
+                            PropertyType: { type: "enum" },
+                            TransactionType: { type: "enum" },
+                            StateId: { type: "enum" },
+                            MinimumArea: { type: "int" },
+                            MaximumArea: { type: "int" },
+                            MaximumPrice: { type: "int" },
+                            MinimumPrice: { type: "int" },
+                            FullName: { type: "string" },
+                            MobileNumber: { type: "string" },
+                            InsertUserName: { type: "string" },
+                            IsDeleted: { type: "enum" }
+                        }
+                    }
+                }
+            }),
+            sortable: true,
+            pageable: true,
+            scrollable: true,
+            filterable: {
+                extra: false,
+                operators: {
+                    string: {
+                        eq: "مساوی",
+                        neq: "نامساوی",
+                        contains: "شامل"
+                    },
+                    enums: {
+                        eq: "مساوی",
+                        neq: "نامساوی",
+                    },
+                    //boolean: {
+                    //	eq: "مساوی",
+                    //	neq: "نامساوی",
+                    //}
+                }
+
+            },
+            //height:"600px",
+            columns:
+                [
+                    {
+                        title: "نام و نام خانوادگی ",
+                        field: "FullName",
+                        width: 200,
+                    },
+                    {
+                        title: "موبایل ",
+                        field: "MobileNumber",
+                        width: 200,
+                    },
+                    {
+                        title: "نوع ملک ",
+                        field: "PropertyType",
+                        values: $scope.temp.propertyTypes,
+                        width: 100,
+                    },
+                    //{
+                    //    title: "نوع معامله ",
+                    //    field: "TransactionType",
+                    //    values: $scope.temp.transactionTypes,
+                    //    width: 100,
+                    //},
+                    //{
+                    //    title: "منطقه",
+                    //    field: "StateId",
+                    //    values: $scope.regionOptions,
+                    //    width: 100,
+                    //},
+                    //{
+                    //    title: "حداقل متراژ(متر مربع)",
+                    //    field: "MinimumArea",
+                    //    width: 100,
+                    //},
+                    //{
+                    //    title: "حداکثر متراژ(متر مربع)",
+                    //    field: "MaximumArea",
+                    //    width: 100,
+                    //},
+                    //{
+                    //    title: "حداقل قیمت(تومان)",
+                    //    field: "MinimumPrice",
+                    //    width: 100,
+                    //},
+                    {
+                        title: "حداکثر قیمت(تومان)",
+                        field: "MaximumPrice",
+                        width: 100,
+                    },
+                    //{
+                    //    title: "ثبت کننده",
+                    //    field: "InsertUserName",
+                    //    width: 100,
+                    //},
+                    {
+                        title: "تاریخ ثبت",
+                        field: "InserDateTime",
+                        width: 100,
+                        filterable: false,
+                        template: function (e) {
+                            if (e.InserDateTime)
+                                return moment(e.InserDateTime).format('jYYYY/jM/jD');
+                            return "";
+                        }
+                    },
+                    {
+                        template: function (e) {
+                            var commandBtn = "<button class=\"btn btn-primary\" type=\"button\" ng-click=\"edit(dataItem)\">ویرایش</button>";
+                            commandBtn += "<button class=\"btn btn-danger\" type=\"button\" ng-click=\"delete(dataItem)\">حذف</button>";
+                            return commandBtn;
+                            width: 200
+                        }
+                    }
+                ]
+        }
+       
+
+        $scope.showPropertyDemandInfoPopup = function () {
+            showPopupPropertyDemandInfo({
+                callback: function (model, closePopup) {
+                    model.StateId = $scope.temp.selectedRegionId;
+                    dataService.insertEntity("propertyDemand", model).then(function (item) {
+                        messageService.success("عملیات با موفقیت ثبت گردید");
+                        $scope.model.clear();
+                        $scope.gridOptions.dataSource.read();
+                        closePopup();
+                    });
+                    //console.log(model);
+                }
+            })
+        }
+        $scope.edit = function (data) {
+            showPopupPropertyDemandInfo({
+                model: {
+                    ID: data.ID,
+                    PropertyType: data.PropertyType,
+                    TransactionType: data.TransactionType,
+                    StateId: data.StateId,
+                    MinimumArea: data.MinimumArea,
+                    MaximumArea: data.MaximumArea,
+                    MaximumPrice: data.MaximumPrice,
+                    MinimumPrice: data.MinimumPrice,
+                    MobileNumber: data.MobileNumber,
+                    FullName: data.FullName
+                },
+                callback: function (model, closePopup) {
+                    dataService.updateEntity("propertyDemand", model).then(function (item) {
+                        messageService.success("عملیات با موفقیت ویرایش گردید");
+                        $scope.model.clear();
+                        closePopup();
+                        $scope.gridOptions.dataSource.read();
+                    });
+                    closePopup();
+                }
+            })
+        }
+        $scope.delete = function (data) {
+            var id = data.ID;
+            var cnf = confirm("آیا مطمئن هستید؟");;
+            if (cnf) {
+                dataService.deleteEntity("propertyDemand", id).then(function () {
+                    messageService.success("عملیات با موفقیت حذف گردید");
+                  
+                    $scope.gridOptions.dataSource.read();
+                })
+            }
+        }
+        function showPopupPropertyDemandInfo(parameters) {
+            $uibModal.open({
+                animation: true,
+                templateUrl: "popup-propertyDemand-info.html",
+                controller: function ($scope, $uibModalInstance, controllerScope) {
+                
+                    $scope.temp = {
+                        states: controllerScope.temp.states,
+                        propertyTypes: controllerScope.temp.propertyTypes,
+                        transactionTypes: controllerScope.temp.transactionTypes,
+                        isEditMode: false,
+                    }
+
+
+                    $scope.stateOptions = controllerScope.stateOptions;
+                    $scope.cityOptions = controllerScope.cityOptions;
+                    $scope.regionOptions = controllerScope.regionOptions;
+
+                    if (parameters["model"]) {
+                        $scope.model = parameters.model;
+                    }
+                    else {
+                        $scope.model = controllerScope.model;
+                    }
+                    $scope.init = function () {
+                        if ($scope.temp.isEditMode) {
+                            $scope.modalTitle = "وایرایش درخواست";
+                        }
+                        else {
+                            $scope.modalTitle = "ثبت درخواست";
+                        }
+                    }
+
+                    $scope.confirm = function () {
+                        parameters.callback($scope.model, $scope.closePopup)
+                    }
+                    $scope.closePopup = function () {
+                        $uibModalInstance.close();
+                    }
+                },
+                resolve: {
+                    controllerScope: function () {
+                        return $scope;
+                    }
+                }
+                //size:""
+            })
+        }
+
+        function loadOptionGrid(data) {
+           
+            $scope.gridOptions = {
+                dataSource: new kendo.data.DataSource({
+                    transport: {
+                        read: function (options) {
+                            var filterParameter = helper.translateToFilterParameter(options.data);
+
+                            dataService.filterBy('propertyDemand/GetPropertyDemands', filterParameter).then(function (result) {
+                                options.success(result);
+                            });
+                        },
+                        parameterMap: function (options) {
+
+                        }
+                    },
+                    pageSize: 20,
+                    serverFiltering: true,
+                    serverPaging: true,
+                    serverSorting: true,
+                    schema: {
+                        data: function (e) {
+                            return e.Records;
+                        },
+                        total: function (e) {
+                            return e.TotalCount
+                        },
+                        model: {
+                            PropertyType: null,
+                            TransactionType: null,
+                            MinimumArea: null,
+                            MaximumArea: null,
+                            MaximumPrice: null,
+                            MinimumPrice: null,
+                            FullName: null,
+                            MobileNumber: null,
+                            StateId: null,
+
+                            id: "ID",
+                            fields: {
+                                ID: { type: "number", editable: false },
+                                PropertyType: { type: "enum" },
+                                TransactionType: { type: "enum" },
+                                StateId: { type: "enum" },
+                                MinimumArea: { type: "int" },
+                                MaximumArea: { type: "int" },
+                                MaximumPrice: { type: "int" },
+                                MinimumPrice: { type: "int" },
+                                FullName: { type: "string" },
+                                MobileNumber: { type: "string" },
+                                InsertUserName: { type: "string" },
+                                IsDeleted: { type: "enum" }
+                            }
+                        }
+                    }
+                }),
+                sortable: true,
+                pageable: true,
+                scrollable: false,
+                filterable: {
+                    extra: false,
+                    operators: {
+                        string: {
+                            eq: "مساوی",
+                            neq: "نامساوی",
+                            contains: "شامل"
+                        },
+                        enums: {
+                            eq: "مساوی",
+                            neq: "نامساوی",
+                        },
+                        //boolean: {
+                        //	eq: "مساوی",
+                        //	neq: "نامساوی",
+                        //}
+                    }
+
+                },
+                //height:"600px",
+                columns:
+                    [
+                        {
+                            title: "نام و نام خانوادگی ",
+                            field: "FullName",
+                            width: 300,
+                        },
+                        {
+                            title: "موبایل ",
+                            field: "MobileNumber",
+                            width: 300,
+                        },
+                        {
+                            title: "نوع ملک ",
+                            field: "PropertyType",
+                            values: data.propertyTypes,
+                            width: 130,
+                        },
+                        {
+                            title: "نوع معامله ",
+                            field: "TransactionType",
+                            values: $scope.temp.transactionTypes,
+                            width: 130,
+                        },
+                        {
+                            title: "منطقه",
+                            field: "StateId",
+                            values: data.states,
+                            width: 130,
+                        },
+                        {
+                            title: "حداقل متراژ(متر مربع)",
+                            field: "MinimumArea",
+                            width: 130,
+                        },
+                        {
+                            title: "حداکثر متراژ(متر مربع)",
+                            field: "MaximumArea",
+                            width: 130,
+                        },
+                        {
+                            title: "حداقل قیمت(تومان)",
+                            field: "MinimumPrice",
+                            width: 130,
+                        },
+                        {
+                            title: "حداکثر قیمت(تومان)",
+                            field: "MaximumPrice",
+                            width: 130,
+                        },
+                        {
+                            title: "ثبت کننده",
+                            field: "InsertUserName",
+                            width: 130,
+                        },
+                        {
+                            title: "تاریخ ثبت",
+                            field: "InserDateTime",
+                            width: 120,
+                            filterable: false,
+                            template: function (e) {
+                                if (e.InserDateTime)
+                                    return moment(e.InserDateTime).format('jYYYY/jM/jD');
+                                return "";
+                            }
+                        },
+                        {
+                            template: function (e) {
+                                var commandBtn = "<button class=\"btn btn-primary\" type=\"button\" ng-click=\"edit(dataItem)\">ویرایش</button>";
+                                commandBtn += "<button class=\"btn btn-danger\" type=\"button\" ng-click=\"delete(dataItem)\">حذف</button>";
+                                return commandBtn;
+                                width: 400
+                            }
+                        }
+                    ]
+            }
+        }
+        //$scope.gridOptions.dataSource.read();
+    });
+
+   
+</script>

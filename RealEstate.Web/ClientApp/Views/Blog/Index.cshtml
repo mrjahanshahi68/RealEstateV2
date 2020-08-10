@@ -74,8 +74,14 @@
                 <toggle-btn ng-init="model.IsActive" ng-model="model.IsActive" name="isactive" type="checkbox"></toggle-btn>
             </div>
             <div class="col-xs-12 form-group">
+                    <label class="control-label col-xs-4">تصویر  : </label><span style="font-size:11px">(600 * 600 پیکسل)</span>
+                    <input type="file" image-attachment id="fuCoverImage" />
+              
+
+            </div>
+            <div class="col-xs-12 form-group">
                 <label class="control-label"> متن : </label>
-                <textarea kendo-editor k-ng-model="html"  ng-model="model.Body"></textarea>
+                <textarea kendo-editor k-ng-model="html" ng-model="model.Body"></textarea>
             </div>
         </div>
         <div class="modal-footer" style="text-align:left">
@@ -96,6 +102,7 @@
             MetaDescription: null,
             SlugUrl: null,
             CategoryId: null,
+            Attachment :null,
             clear: function () {
                 this.Title = null;
                 this.Body = null;
@@ -103,6 +110,7 @@
                 this.SlugUrl = null;
                 this.Summery = null;
                 this.CategoryId = null;
+                this.Attachment = null;
             }
         }
 
@@ -237,6 +245,7 @@
             showPopupBlogInfo({
                 callback: function (model, closePopup) {
                     model.Body = encodeURIComponent(model.Body);
+                    model.Attachment = currentAttachment;
                     dataService.insertEntity("blog", model).then(function (item) {
                         messageService.success("عملیات با موفقیت ثبت گردید");
                         $scope.model.clear();
@@ -324,6 +333,26 @@
             })
         }
         //$scope.gridOptions.dataSource.read();
+
+        $(document).delegate('[image-attachment]', 'change', function (e) {
+            if (e && e.target) {
+                var file = e.target.files[0];
+                console.log(file);
+                file.attachmentUID = helper.uuidv4();
+                helper.getFileInfo(file).start()
+                    .onProgress(function (e, loaded, total) {
+                    }).onComplete(function (result, e) {
+                        if (result) {
+                            var currentAttachment = $scope.model.Attachment;
+                            currentAttachment.Picture = result.fileReader.base64;
+                            currentAttachment.FileName = result.fileName;
+                            currentAttachment.Size = result.size;
+                            currentAttachment.ContentType = result.contentType;
+                            $scope.$$phase || $scope.$apply();
+                        }
+                    });
+            }
+        });
     });
 
   

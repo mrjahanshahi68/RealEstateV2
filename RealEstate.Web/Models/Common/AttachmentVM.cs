@@ -12,8 +12,9 @@ namespace RealEstate.Web.Models.Common
 		public ObjectType ObjectType { get; set; }
 		public int ObjectId { get; set; }
 		public string FileName { get; set; }
-		public float FileSize { get; set; }
+		public double? FileSize { get; set; }
 		public string ContentType { get; set; }
+		public string Path { get; set; }
 		//public bool IsDeleted { get; set; }
 	}
 }

@@ -108,9 +108,109 @@ namespace RealEstate.Web.Controllers.Api
 				return Success(new {
 					UserName=CurrentUser.Context.UserName,
 					FullName=$"{CurrentUser.Context.FirstName} {CurrentUser.Context.LastName}",
+					Roles=CurrentUser.Context.Roles.Select(e=>e.Name).ToList(),
+					Email = CurrentUser.Context.Email,
+					NationalCode = CurrentUser.Context.NationalCode,
+					UserType = CurrentUser.Context.UserType,
+					Mobile = CurrentUser.Context.Mobile,
+					RegisterDate = CurrentUser.Context.RegisterDate,
+					Address = CurrentUser.Context.Address,
 				});
 			}
 			catch (Exception ex)
+			{
+				return await HandleExceptionAsync(ex);
+			}
+		}
+
+		[HttpPost]
+		[JwtAuthentication]
+		public async Task<HttpResponseMessage> GetMenus()
+		{
+			try
+			{
+				MenuItemResponse menu = new MenuItemResponse
+				{
+					Guid = Guid.NewGuid().ToString(),
+					Name = "ریشه",
+					Icon = "fa fa-sitemap",
+					MenuItems = new List<MenuItemResponse>
+					{
+						new MenuItemResponse
+						{
+							Guid = Guid.NewGuid().ToString(),
+							Name="داشبورد",
+							Link="/dashboard",
+							Icon="fa fa-dashboard",
+						},
+						new MenuItemResponse
+						{
+							Guid = Guid.NewGuid().ToString(),
+							Name="اطلاعات پایه",
+							Icon="fa fa-cube",
+							MenuItems=new List<MenuItemResponse>
+							{
+								new MenuItemResponse
+								{
+									Guid = Guid.NewGuid().ToString(),
+									Name="رشته ها",
+									Icon="fa fa-cogs",
+									Link="/baseinfo/courses"
+									
+								},
+							}
+						},
+						new MenuItemResponse
+						{
+							Guid = Guid.NewGuid().ToString(),
+							Name="آزمون",
+							Icon="fa fa-test",
+							MenuItems=new List<MenuItemResponse>
+							{
+								new MenuItemResponse
+								{
+									Guid = Guid.NewGuid().ToString(),
+									Name="ساخت آزمون",
+									Icon="fa fa-cogs",
+									Link="/test/create"
+								},
+								new MenuItemResponse
+								{
+									Guid = Guid.NewGuid().ToString(),
+									Name="مدیریت",
+									Icon="fa fa-cogs",
+									Link="/test/manage"
+								}
+							}
+						},
+						new MenuItemResponse
+						{
+							Guid = Guid.NewGuid().ToString(),
+							Name="کاربران",
+							Icon="fa fa-users",
+							MenuItems=new List<MenuItemResponse>
+							{
+								new MenuItemResponse
+								{
+									Guid = Guid.NewGuid().ToString(),
+									Name="ثبت کاربر",
+									Icon="fa fa-user",
+									Link="/user/create"
+								},
+								new MenuItemResponse
+								{
+									Guid = Guid.NewGuid().ToString(),
+									Name="مدیریت",
+									Icon="fa fa-cogs",
+									Link="/user/manage"
+								}
+							}
+						},
+					}
+				};
+				return Success(menu);
+			}
+			catch(Exception ex)
 			{
 				return await HandleExceptionAsync(ex);
 			}

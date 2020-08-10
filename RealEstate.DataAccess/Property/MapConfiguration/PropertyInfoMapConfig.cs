@@ -43,8 +43,8 @@ namespace RealEstate.DataAccess.Property.MapConfiguration
 			Property(e => e.ReagentFirstName);
 			Property(e => e.ReagentLastName);
 			Property(e => e.ReagentTel);
-			Property(e => e.IsLuxury);
-			Property(e => e.IsShowInSlide);
+			//Property(e => e.IsLuxury);
+			//Property(e => e.IsShowInSlide);
 			Property(e => e.IsDeleted);
 
 			Property(e => e.SlideImage);

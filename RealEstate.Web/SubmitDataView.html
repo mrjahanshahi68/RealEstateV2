@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+
+	<script type="text/javascript" src="ClientApp/Scripts/jquery.min.js"></script>
+</head>
+<body>
+	<div>
+		<label>FirstName :</label>
+		<input type="text" id="txtFirstName" />
+	</div>
+	<div>
+		<label>FirstName :</label>
+		<input type="text" id="txtLastName" />
+	</div>
+	<div>
+		<label>FirstName :</label>
+		<input type="file" id="fileUpload1" multiple />
+	</div>
+	<div>
+		<button type="button" id="btnSubmit">Submit</button>
+	</div>
+
+	<script type="text/javascript">
+		function DataFileInfo(file, data) {
+			this.file = file;
+			this.data = data;
+		};
+
+		var dataService = (function () {
+			var postDataAndFiles = function (url, parameters, dataFileInfos) {
+				var _then = null;
+				var promise = (function () {
+					return {
+						then: function (fn) {
+							_then = fn;
+						},
+					};
+				})();
+
+				var ajaxForm = new FormData();
+				ajaxForm.append("Parameters", JSON.stringify(parameters));
+				
+				var fileKeys = [];
+				$(dataFileInfos).each(function (i) {
+					var fileKey = "File_" + i;
+					ajaxForm.append(fileKey, this.file);
+					ajaxForm.append("Data" + fileKey, JSON.stringify(this.data));
+					fileKeys.push(fileKey);
+				});
+
+				ajaxForm.append("FileKeys", JSON.stringify(fileKeys));
+
+				$.ajax({
+					url: url,
+					type: "POST",
+					dataType: "application/json",
+					processData: false,
+					contentType: false,
+					data: ajaxForm,
+					complete: function (jqXHR, statuxText) {
+						if (jqXHR.status == 200) {
+							if (typeof (_then) == "function")
+								_then(JSON.parse(jqXHR.responseText));
+						}
+					}
+				});
+
+				return promise;
+			};
+
+			return {
+				postDataAndFiles: postDataAndFiles,
+			}
+		})();
+
+		$(function () {
+			$("#btnSubmit").on("click", function () {
+				var parameters = {
+					FirstName: $("#txtFirstName").val(),
+					LastName: $("#txtLastName").val(),
+				};
+
+				var files = $.makeArray($("#fileUpload1")[0].files).map(function (e) {
+					return new DataFileInfo(e, {
+						ExtraInfoString: "Extra info value can be passed_" + e.name + "_" + parseInt(Math.random() * 1000000),
+					});
+				});
+
+				dataService.postDataAndFiles("/Api/SubmitData", parameters, files).then(function (result) {
+					console.log(result);
+					debugger;
+				});
+			});
+		});
+	</script>
+</body>
+</html>

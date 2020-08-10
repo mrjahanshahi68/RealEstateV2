@@ -9,6 +9,7 @@ namespace RealEstate.Common
 	public static class AppConstants
 	{
 		public  const int ExpireMinutes = 20;
+		public const int LatestTakeProperty = 6;
         public static class DatabaseSchema
         {
             public const string Security = "Security";

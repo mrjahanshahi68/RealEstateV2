@@ -34,265 +34,11 @@ app.service("cacheManager", function () {
 		}
 	}
 });
-//app.factory("appEnums", function () {
-//	var appEnums = {};
-//	appEnums
-//	return appEnums;
-//});
-app.directive('checkBox', [function () {
-	var scope = {
-		onchange: "&?",
-		textClick: "&?",
-		checkClick: "&?",
-		ngDisabled: "=?",
-		ngModel: "=",
-		userInput: "=?"
-	};
+var DataFileInfo = function (file, data) {
+	this.file = file;
+	this.data = data;
+};
 
-	function link(iScope, iElem, iAttrs, controller) {
-		var initState = true;
-
-		$(iElem).css({ 'user-select': 'none' });
-
-		function triggerOnChange() {
-			if (typeof (iScope.onchange) != "undefined") {
-				var swHandler = $(iElem);
-				var dataItem = undefined;
-				if (swHandler.parents('.k-treelist').length > 0)
-					dataItem = swHandler.parents('.k-treelist').first().data('kendoTreeList').dataItem($(iElem).closest("tr"));
-				else if (swHandler.parents('[kendo-grid]').length > 0)
-					dataItem = swHandler.parents('[kendo-grid]').first().data('kendoGrid').dataItem($(iElem).closest("tr"));
-
-				var eventParams = {
-					target: iElem[0],
-					state: iScope.ngModel,
-					data: dataItem,
-				};
-				iScope.onchange({ event: eventParams });
-			}
-		}
-
-		iScope.checkboxClicked = function () {
-			if (!($.trim(iScope.userInput) != "" && !iScope.userInput))
-				iScope.ngModel = !iScope.ngModel;
-
-			if (typeof (iScope.checkClick) != "undefined") {
-				var swHandler = $(iElem);
-				var dataItem = undefined;
-				if (swHandler.parents('.k-treelist').length > 0)
-					dataItem = swHandler.parents('.k-treelist').first().data('kendoTreeList').dataItem($(iElem).closest("tr"));
-				else if (swHandler.parents('[kendo-grid]').length > 0)
-					dataItem = swHandler.parents('[kendo-grid]').first().data('kendoGrid').dataItem($(iElem).closest("tr"));
-
-				var eventParams = {
-					target: iElem[0],
-					state: iScope.ngModel,
-					data: dataItem,
-				};
-				iScope.checkClick({ event: eventParams });
-			}
-		};
-
-		iScope.textClicked = function () {
-			if (typeof (iScope.textClick) != "undefined") {
-				var swHandler = $(iElem);
-				var dataItem = undefined;
-				if (swHandler.parents('.k-treelist').length > 0)
-					dataItem = swHandler.parents('.k-treelist').first().data('kendoTreeList').dataItem($(iElem).closest("tr"));
-				else if (swHandler.parents('[kendo-grid]').length > 0)
-					dataItem = swHandler.parents('[kendo-grid]').first().data('kendoGrid').dataItem($(iElem).closest("tr"));
-
-				var eventParams = {
-					target: iElem[0],
-					state: iScope.ngModel,
-					data: dataItem,
-				};
-				iScope.textClick({ event: eventParams });
-			}
-		}
-
-		iScope.$watch(function () { return controller.$modelValue; }, function (newValue, oldValue) {
-			if ((newValue != oldValue) || initState) {
-				initState = false;
-			}
-			if (newValue != oldValue) {
-				triggerOnChange();
-			}
-		});
-	};
-
-	function template(elem, attr) {
-		return '<span class="chk-box" ng-class="{\'has-text-click\': textClick}">' +
-			'<i class="fa" ng-class="{\'fa-square-o\': !ngModel, \'fa-check-square\': ngModel}" ng-click="checkboxClicked()"></i>' +
-			'<span ng-click="textClicked()" ng-style="{\'cursor\': (textClick ? \'pointer\' : \'default\')}">' + $(elem).html() + '</span>' +
-			'</span>';
-	}
-
-	return {
-		restrict: 'E',
-		require: 'ngModel',
-		scope: scope,
-		link: link,
-		template: template
-	}
-}]);
-app.directive('yesNo', [function () {
-	
-	var scope = {
-		initValue: "=?",
-		onchange: "&?",
-		yes: "=?",
-		no: "=?",
-		ngDisabled: "=?"
-	};
-
-	function link(iScope, iElem, iAttrs, controller) {
-		debugger;
-		var initState = true, offColor = '#717171', onColor = 'dodgerblue', defaultYesText = "بله", defaultNoText = "خیر";
-		if (iAttrs.themeColor) onColor = iAttrs.themeColor;
-		$(iElem).css({ 'user-select': 'none' });
-		var useBoolean = false;
-		for (var attrKey in iAttrs) {
-			if (attrKey == "boolean") {
-				useBoolean = true;
-				break;
-			}
-		}
-
-		iScope.yes = angular.isDefined(iScope.yes) ? iScope.yes : defaultYesText;
-		iScope.no = angular.isDefined(iScope.no) ? iScope.no : defaultNoText;
-
-		function setState(isInit) {
-			if (controller.$modelValue == offValue())
-				setOffState(isInit);
-			else if (controller.$modelValue == onValue())
-				setOnState(isInit);
-		}
-
-		function setOnState(isInit) {
-			iElem.find("[noRadio] > i").removeClass("fa-dot-circle-o").addClass("fa-circle-o").css('color', offColor);
-			iElem.find("[yesRadio] > i").removeClass("fa-circle-o").addClass("fa-dot-circle-o").css('color', onColor);
-		}
-
-		function setOffState(isInit) {
-			iElem.find("[yesRadio] > i").removeClass("fa-dot-circle-o").addClass("fa-circle-o").css('color', offColor);
-			iElem.find("[noRadio] > i").removeClass("fa-circle-o").addClass("fa-dot-circle-o").css('color', onColor);
-		}
-
-		function triggerOnChange() {
-			if (typeof (iScope.onchange) != "undefined") {
-				var swHandler = $(iElem).find('.switcher-handle'), dataItem = undefined;
-				if (swHandler.parents('.k-treelist').length > 0)
-					dataItem = swHandler.parents('.k-treelist').first().data('kendoTreeList').dataItem($(iElem).closest("tr"));
-				else if (swHandler.parents('[kendo-grid]').length > 0)
-					dataItem = swHandler.parents('[kendo-grid]').first().data('kendoGrid').dataItem($(iElem).closest("tr"));
-
-				var eventParams = {
-					target: iElem[0],
-					state: controller.$modelValue,
-					data: dataItem,
-					onValue: onValue(),
-					offValue: offValue(),
-					isOn: false
-				};
-				eventParams.isOn = eventParams.state == eventParams.onValue;
-				iScope.onchange({ event: eventParams });
-			}
-		}
-
-		var onValue = function () {
-			return useBoolean ? true : 1;
-		}
-		var offValue = function () {
-			return useBoolean ? false : 0;
-		}
-
-		iScope.yesRadioClicked = function (e) {
-			if (iScope.ngDisabled) return;
-			controller.$setViewValue(onValue());
-		}
-
-		iScope.noRadioClicked = function (e) {
-			if (iScope.ngDisabled) return;
-			controller.$setViewValue(offValue());
-		}
-
-		iScope.$watch(function () { return controller.$modelValue; }, function (newValue, oldValue) {
-			var initStateTemp = initState;
-			if ((newValue != oldValue) || initState) {
-				initState = false;
-				setState(initStateTemp);
-			}
-			if (newValue != oldValue) {
-				triggerOnChange();
-			}
-		});
-	};
-
-	function template(elem, attr) {
-		$(elem).addClass('rdo').css({ "display": "block", "min-height": "34px" });
-		return '<span yesRadio ng-click="yesRadioClicked($event)"><i class="fa fa-circle-o" style="cursor:pointer"></i></span>' +
-			'<label yesLable ng-click="yesRadioClicked($event)" ng-bind="yes" style="cursor:pointer"></label>' +
-			'<span noRadio ng-click="noRadioClicked($event)"><i class="fa fa-circle-o" style="cursor:pointer"></i></span>' +
-			'<label noLabel ng-click="noRadioClicked($event)" ng-bind="no" style="cursor:pointer"></label>';
-	}
-
-	return {
-		restrict: 'E',
-		require: 'ngModel',
-		scope: scope,
-		link: link,
-		template: template
-	}
-}]);
-app.directive('radioGroup', [function () {
-	return {
-		restrict: 'E',
-		scope: {
-			ngModel: "=?",
-			options: "=",
-			ngDisabled: "=?"
-		},
-		controller: ["$scope", "$element", "$attrs", function ($scope, $elem, $attrs) {
-			$scope.radioClicked = function (e) {
-				if ($scope.ngDisabled) return;
-				$scope.ngModel = $(e.target).attr("data-item-value");
-			};
-			$scope.radioLabelClicked = function (e) {
-				if ($scope.ngDisabled) return;
-				var dataItemValue = $(e.target).parent().find("[radio-box]").attr("data-item-value");
-				$scope.ngModel = dataItemValue;
-			};
-			var triggerOnChange = function () {
-				if (typeof ($scope.options.change) == "function") {
-					var dataItem = undefined;
-					if ($($elem).parents('.k-treelist').length > 0) {
-						dataItem = $($elem).parents('.k-treelist').first().data('kendoTreeList').dataItem($($elem).closest("tr"));
-					}
-					else if ($($elem).parents('[kendo-grid]').length > 0) {
-						dataItem = $($elem).parents('[kendo-grid]').first().data('kendoGrid').dataItem($($elem).closest("tr"));
-					}
-					var eventParams = {
-						target: $elem[0],
-						value: $scope.ngModel,
-						data: dataItem,
-					};
-					$scope.options.change(eventParams);
-				}
-			}
-
-			$scope.$watch('ngModel', function (newValue, oldValue) {
-				if (newValue != oldValue) {
-					triggerOnChange();
-				}
-			});
-		}],
-		template: function (elem, attr) {
-			$(elem).addClass('rdo');
-			return '<span item-wrapper ng-repeat="rdoItem in options.items"><span><i radio-box class="fa" ng-class="{\'fa-circle-o\':(ngModel != rdoItem.value), \'fa-dot-circle-o\':(ngModel == rdoItem.value)}" data-item-value="{{rdoItem.value}}" data-item-text="{{rdoItem.text}}" ng-click="radioClicked($event)" ng-style="{\'color\':(ngModel == rdoItem.value ? (options.onColor ? options.onColor : \'dodgerblue\') : (options.offColor ? options.offColor : \'#717171\'))}"></i></span><label radio-label ng-bind="rdoItem.text" ng-click="radioLabelClicked($event)"></label></span>';
-		}
-	}
-}]);
 app.directive("switcher", function () {
 	return {
 		restrict: 'E',
@@ -504,6 +250,46 @@ app.factory("helper", function (cacheManager) {
 				}
 			}
 		},
+		get StateLevel() {
+			return {
+				State: {
+					text: "استان",
+					value: 0
+				},
+				City: {
+					text: "شهر",
+					value: 1
+				},
+				Region: {
+					text: "منطقه",
+					value: 2
+				}
+			}
+		},
+		get PropertyStatuses() {
+			return {
+				Submitted: {
+					text: "ارسال شده",
+					value: 1
+				},
+				Approved: {
+					text: "تایید شده",
+					value: 2
+				},
+				Sold: {
+					text: "فروخته شده",
+					value: 3
+				},
+				Leased: {
+					text: "اجاره داده شده",
+					value: 4
+				},
+				Rejected: {
+					text: "رد شده",
+					value: 5
+				}
+			}
+		},
 		get TransactionTypes() {
 			return {
 				Rent: {
@@ -662,42 +448,45 @@ app.service("dataService", function (messageService, cacheManager) {
 			})
 			return deffer;
 		},
-		sendDataAndFiles: function (url, data, formData, fullResponse) {
+		postDataAndFiles: function (url, parameters, dataFileInfos, fullResponse) {
 			if ($.trim(url) != "") {
 				if (url.indexOf("/") == 0) url = url.substr(1);
 			}
+			var ajaxForm = new FormData();
+			ajaxForm.append("Parameters", JSON.stringify(parameters));
+			var fileKeys = [];
+			$(dataFileInfos).each(function (i) {
+				var fileKey = "File_" + i;
+				ajaxForm.append(fileKey, this.file);
+				ajaxForm.append("Data" + fileKey, JSON.stringify(this.data));
+				fileKeys.push(fileKey);
+			});
+			ajaxForm.append("FileKeys", JSON.stringify(fileKeys));
 			var deffer = $.Deferred();
 			deffer.promise(requestHandler);
-			if (formData instanceof FormData) {
-				formData.append("parameters", JSON.stringify(data))
-				$.ajax({
-					url: baseAddress + url,
-					method: "POST",
-					processData: false,
-					contentType: false,
-					//contentType: "multipart/form-data",
-					dataType: "json",
-					beforeSend: function (xhr) {
-						var token = cacheManager.getItem("token");
-						//if (!token) document.location.href("/login");
-						xhr.setRequestHeader("authorization", "Bearer " + token);
-					},
-					data: formData,
-				}).done(function (response, x, jQxhr) {
-					var result = processResponse(response, fullResponse);
-					if (typeof result !== "undefined")
-						deffer.resolve(result);
-				})
-			}
-			else {
-				this.post(url, data, fullResponse).success(function (response, x, jQxhr) {
-					var result = processResponse(response, fullResponse);
-					if (typeof result !== "undefined")
-						deffer.resolve(result);
-				})
-			}
+			var httpRequest = $.ajax({
+				url: baseAddress + url,
+				type: "POST",
+				dataType: "application/json",
+				processData: false,
+				contentType: false,
+				data: ajaxForm,
+				beforeSend: function (xhr) {
+					var token = cacheManager.getItem("token");
+					//if (!token) document.location.href("/login");
+					xhr.setRequestHeader("authorization", "Bearer " + token);
+				},
+				complete: function (jqXHR, statuxText) {
+					if (jqXHR.status == 200) {
+						var response = JSON.parse(jqXHR.responseText);
+						var result = processResponse(response, fullResponse);
+						if (typeof result !== "undefined")
+							deffer.resolve(result);
+					}
+				}
+			});
+
 			return deffer;
-			
 		},
 		insertEntity: function (url, entity, fullResponse) {
 			if ($.trim(url) != "") {

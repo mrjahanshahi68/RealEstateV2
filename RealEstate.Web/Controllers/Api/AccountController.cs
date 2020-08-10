@@ -34,6 +34,7 @@ namespace RealEstate.Web.Controllers.Api
 					throw new ValidationModelException(MessageTemplate.ParameterIsNotDefined);
 
 				var query = BusinessRule.Queryable();
+				var totalCount = await query.CountAsync();
 				if (filter.OrderBy == null)
 				{
 					filter.OrderBy = new List<OrderFilter>
@@ -45,7 +46,6 @@ namespace RealEstate.Web.Controllers.Api
 					};
 				}
 				query = query.Request(filter);
-				var totalCount = await query.CountAsync();
 				var result =await query.ToListAsync();
 				return Success(new FilterQueryRsponse
 				{

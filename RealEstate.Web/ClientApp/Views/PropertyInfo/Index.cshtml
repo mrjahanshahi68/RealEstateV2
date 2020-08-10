@@ -19,8 +19,387 @@
 </div>
 
 <script>
-	app.controller("propertyInfoController", function ($scope) {
+	app.controller("propertyInfoController", function ($scope, $uibModal, dataService, messageService, helper) {
+
+		$scope.temp = {
+			propertyStatuses: null,
+			transactionTypes: null,
+		}
+
 		$scope.init = function () {
+			$scope.temp.transactionTypes = Object.keys(helper.enums.TransactionTypes).map(function (item) { return helper.enums.TransactionTypes[item] });
+			$scope.temp.propertyStatuses = Object.keys(helper.enums.PropertyStatuses).map(function (item) { return helper.enums.PropertyStatuses[item] });
+			loadGridOptions();
+		}
+
+		function loadGridOptions() {
+			$scope.gridOptions = {
+				dataSource: new kendo.data.DataSource({
+					transport: {
+						read: function (options) {
+							var filterParameter = helper.translateToFilterParameter(options.data);
+							console.log(options);
+							dataService.filterBy('PropertyInfo/GetProperties', filterParameter).then(function (result) {
+								options.success(result);
+							});
+						},
+						parameterMap: function (options) {
+							// debugger;
+							console.log(options);
+						}
+					},
+					pageSize: 20,
+					serverFiltering: true,
+					serverPaging: true,
+					serverSorting: true,
+					schema: {
+						data: function (e) {
+							return e.Records;
+						},
+						total: function (e) {
+							return e.TotalCount
+						},
+						model: {
+							id: "ID",
+							fields: {
+								ID: { type: "number", editable: false },
+								PropertyCode: { type: "string" },
+								Title: { type: "string" },
+								Status: { type: "enum" },
+								Type: { type: "enum" },
+								PropertyTypeId: { type: "number" },
+								PropertyTypeName: { type: "string" },
+								DocumentTypeId: { type: "number" },
+								DocumentTypeName: { type: "string" },
+								BuildingArea: { type: "number" },
+								LandingArea: { type: "number" },
+								BathRoom: { type: "number" },
+								BedRoom: { type: "number" },
+								Floor: { type: "number" },
+								FloorNumber: { type: "number" },
+								Apartment: { type: "number" },
+								Position: { type: "string" },
+								PropertyView: { type: "string" },
+								ConstructorYear: { type: "number" },
+								//Welfares: { type: "string" },
+								RegionName: { type: "string" },
+								Address: { type: "string" },
+								SalePrice: { type: "number" },
+								MortgagePrice: { type: "number" },
+								RentalPrice: { type: "number" },
+								FullName: { type: "string" },
+								Tel: { type: "string" },
+								ReagentFullName: { type: "string" },
+								ReagentTel: { type: "string" },
+								IsDeleted: { type: "boolean" },
+							}
+						}
+					}
+				}),
+				sortable: true,
+				pageable: true,
+				scrollable: true,
+				filterable: {
+					extra: false,
+					operators: {
+						string: {
+							eq: "مساوی",
+							neq: "نامساوی",
+							contains: "شامل"
+						},
+						number: {
+							eq: "مساوی",
+							neq: "نامساوی",
+							contains: "شامل",
+							gte: "بزرگتر مساوری",
+							lte: "کوچکتر مساوی",
+						},
+						enums: {
+							eq: "مساوی",
+							neq: "نامساوی",
+						},
+						//boolean: {
+						//	eq: "مساوی",
+						//	neq: "نامساوی",
+						//}
+					}
+
+				},
+				//height:"600px",
+				columns:
+				[
+					{
+						title: "کدملک",
+						field: "PropertyCode",
+						width: "120px",
+						attributes: {
+							style: "text-align: center"
+						}
+						//attributes:"text-align:center"
+					},
+					{
+						title: "عنوان",
+						field: "Title",
+						width: "300px",
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "وضعیت",
+						field: "Status",
+						values: $scope.temp.propertyStatuses,
+						width: "130px;",
+						attributes: {
+							style: "text-align: center"
+						}
+
+					},
+					{
+						title: "معامله",
+						field: "Type",
+						values: $scope.temp.transactionTypes,
+						width: "130px",
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "متراژ بنا",
+						field: "BuildingArea",
+						width: "150px",
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "متراژ زمین",
+						field: "LandingArea",
+						width: "150px",
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "اتاق",
+						field: "BedRoom",
+						width: "110px",
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "حمام",
+						field: "BathRoom",
+						width: "110px",
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "تعداد طبقه",
+						field: "Floor",
+						values: $scope.temp.userTypes,
+						width: "150px",
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "طبقه ملک",
+						field: "FloorNumber",
+						width: "150px",
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "تعداد واحد",
+						field: "Apartment",
+						width: "150px",
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "موقعیت",
+						field: "Position",
+						width: "150px",
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "نما ملک",
+						field: "PropertyView",
+						values: $scope.temp.userTypes,
+						width: "150px",
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "سال ساخت",
+						field: "ConstructorYear",
+						width: "150px",
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "آدرس",
+						field: "Address",
+						width: "300px",
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "مبلغ فروش",
+						field: "SalePrice",
+						values: $scope.temp.userTypes,
+						width: "150px",
+						template: function (e) {
+							if (e.SalePrice)
+								return e.SalePrice
+							return "-";
+						},
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "مبلغ رهن",
+						field: "MortgagePrice",
+						width: "150px",
+						template: function (e) {
+							if (e.MortgagePrice)
+								return e.MortgagePrice
+							return "-";
+						},
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "مبلغ اجاره",
+						field: "RentalPrice",
+						width: "150px",
+						template: function (e) {
+							if (e.RentalPrice)
+								return e.RentalPrice
+							return "-";
+						},
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "امکانات رفاهی",
+						field: "Welfares",
+						width: "400px",
+						filterable: false,
+						template: function (e) {
+							var text = "";
+							for (var i = 0; i < e.Welfares.length; i++) {
+								text += e.Welfares[i].Name + " - ";
+							}
+							if ($.trim(text) != "")
+								return '<span>' + text.substr(0, text.length - 3);
+							return '<span>ندارد</span>';
+						}
+					},
+					{
+						title: "نام مالک",
+						field: "FullName",
+						width: "150px",
+						template: function (e) {
+							if ($.trim(e.FullName) != "")
+								return e.FullName
+							return '-';
+						},
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "شماره مالک",
+						field: "Tel",
+						width: "150px",
+						template: function (e) {
+							if (e.Tel)
+								return e.Tel
+							return '-';
+						},
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "نام معرف",
+						field: "ReagentFullName",
+						width: "150px",
+						template: function (e) {
+							if ($.trim(e.ReagentFullName)!="")
+								return e.ReagentFullName
+							return '-';
+						},
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "شماره معرف",
+						field: "ReagentTel",
+						width: "150px",
+						template: function (e) {
+							if (e.ReagentTel)
+								return e.ReagentTel
+							return '-';
+						},
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
+						title: "تاریخ ثبت",
+						field: "RegisterDate",
+						width: "150px",
+						filterable: false,
+						template: function (e) {
+							if (e.RegisterDate)
+								return moment(e.RegisterDate).format('jYYYY/jM/jD');
+							return "-";
+						}
+					},
+					{
+						width:"200px",
+						template: function (e) {
+							var commandBtn = "<button class=\"btn btn-primary\" type=\"button\" ng-click=\"edit(dataItem)\">ویرایش</button>";
+							commandBtn += "<button class=\"btn btn-danger\" type=\"button\" ng-click=\"delete(dataItem)\">حذف</button>";
+							//commandBtn += "<button class=\"btn btn-success\" type=\"button\" ng-click=\"edit(dataItem)\">انتساب دسترسی</button>";
+							return commandBtn;
+						}
+					}
+				]
+			}
+		}
+
+		$scope.edit = function (dataItem) {
+			if (dataItem) {
+				document.location.href = "propertyInfo/RegisterProperty?id=" + dataItem.ID;
+			}
+		}
+		$scope.delete = function (dataItem) {
+			if (dataItem) {
+				var conf = confirm("آیا مطمئن هستید؟");
+				if (conf) {
+					dataService.deleteEntity("propertyInfo", { ID: dataItem.ID }).then(function (result) {
+						$scope.gridOptions.dataSource.read();
+						messageService.success("عملیات با موفیت انجام شده");
+					});
+				}
+			}
 		}
 	});
 </script>

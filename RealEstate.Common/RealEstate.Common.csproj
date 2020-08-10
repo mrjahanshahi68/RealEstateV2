@@ -59,6 +59,7 @@
     <Compile Include="Entities\LoggableEntity.cs" />
     <Compile Include="Entities\Log\Exception.cs" />
     <Compile Include="Entities\Property\DocumentType.cs" />
+    <Compile Include="Entities\Property\PropertyDemand.cs" />
     <Compile Include="Entities\Property\PropertyInfo.cs" />
     <Compile Include="Entities\Property\PropertyType.cs" />
     <Compile Include="Entities\Property\Welfare.cs" />

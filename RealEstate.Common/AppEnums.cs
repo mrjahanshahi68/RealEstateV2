@@ -60,7 +60,7 @@ namespace RealEstate.Common
 		{
 			Submitted=1,
 			Approved=2,
-			Sold=3,
+			Sold=3,	
 			Leased= 4,
 			Rejected=5,
 		}

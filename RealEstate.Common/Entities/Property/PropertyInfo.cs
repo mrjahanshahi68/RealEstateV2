@@ -21,25 +21,25 @@ namespace RealEstate.Common.Entities.Property
 		public PropertyStatus Status { get; set; }
 		public TransactionType Type { get; set; }
 
-		public float BuildingArea { get; set; }
-		public float LandingArea { get; set; }
-		public int BathRoom { get; set; }
-		public int BedRoom { get; set; }
-		public int Floor { get; set; }
-		public int FloorNumber { get; set; }
-		public int Apartment { get; set; }
+		public double? BuildingArea { get; set; }
+		public double? LandingArea { get; set; }
+		public int? BathRoom { get; set; }
+		public int? BedRoom { get; set; }
+		public int? Floor { get; set; }
+		public int? FloorNumber { get; set; }
+		public int? Apartment { get; set; }
 		public string Position { get; set; }
 		public string PropertyView { get; set; }
-		public string ConstructorYear { get; set; }
+		public int? ConstructorYear { get; set; }
 		public string Welfares { get; set; }
 
 		public int RegionId { get; set; }
 		public string Address { get; set; }
 		public string Description { get; set; }
 
-		public decimal SalePrice { get; set; }
-		public decimal MortgagePrice { get; set; }
-		public decimal RentalPrice { get; set; }
+		public decimal? SalePrice { get; set; }
+		public decimal? MortgagePrice { get; set; }
+		public decimal? RentalPrice { get; set; }
 
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
@@ -52,8 +52,8 @@ namespace RealEstate.Common.Entities.Property
 
 		public string SlideImage { get; set; }
 		public string CoverImage { get; set; }
-		public bool IsLuxury { get; set; }
-		public bool IsShowInSlide { get; set; }
+		//public bool IsLuxury { get; set; }
+		//public bool IsShowInSlide { get; set; }
 
 		public bool IsDeleted { get; set; }
 	}

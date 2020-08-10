@@ -1,0 +1,117 @@
+﻿@model RealEstate.Web.Models.FilterQueryRsponse
+@{
+    Layout = "~/ClientApp/Views/Shared/_UserLayout.cshtml";
+}
+
+
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section spad set-bg" data-setbg="/ClientApp/img/breadcrumb-bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <h4>پست ها</h4>
+                    <div class="bt-option">
+                        <a href="/home"> صفحه اصلی<i class="fa fa-home"></i></a>
+                        <span>مطالب آموزشی</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Blog Section Begin -->
+<section class="blog-section spad">
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-lg-12">
+                <div class="blog-item-list">
+  
+                    @{ 
+                        var blogs = Model.Records as List<RealEstate.Web.Models.Common.BlogVM>;
+                    }
+                    @foreach (var item in blogs)
+                    {
+                        <div class="blog-item">
+                            <div class="bi-pic">
+                                <img src="/ClientApp/img/blog/blog-2.jpg" alt="">
+                            </div>
+                            <div class="bi-text">
+                                <h5><a href="@(Url.Action("BlogDetails","BlogUser",new { a=item.ID}))">@item.Title</a></h5>
+                                <ul>
+                                    @*<li>by <span>Jonathan Doe</span></li>*@
+                                    <li>@item.PublishDateTime.ToShamsi()</li>
+                                </ul>
+                                <p>@item.Summery...</p>
+                                <a href="@(Url.Action("BlogDetails","BlogUser",new { a=item.ID}))" class="read-more"><span class="arrow_left"></span> ادامه مطلب</a>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+                @{
+                    var filter = new QueryDesigner.FilterContainer();
+                    filter.Take = 4;
+                    filter.Skip = 0;//(pageNumber -1) * take
+                    int pageCount = Model.TotalCount / 4;
+                    if (Model.TotalCount % 4 != 0)
+                    {
+                        pageCount = pageCount + 1;
+                    }
+                    
+                }
+            <div class="blog-pagination property-pagination ">
+                @*<a href="#" class="icon"><span class="arrow_left"></span></a>*@
+                @for (int i = 0; i < pageCount; i++)
+                {
+                    <a onclick="loadBlogByPage(@i)">@(i + 1)</a>
+                }
+
+            </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<script>
+        function loadBlogByPage(pageNumber) {
+        var filter = {
+            take: 4,
+            skip: pageNumber * 4,
+        }
+        $.ajax({
+            url: "BlogUser/GetBlogs",
+            method: "post",
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify(filter)
+        }).done(function (result) {
+            var array = result.Records;
+            var str = "";
+            for (var i = 0; i < array.length; i++) {
+                
+                str += "<div class=\"blog-item\">"+
+                            "<div class=\"bi-pic\">"+
+                                "<img src=\"/ClientApp/img/blog/blog-2.jpg\" alt=\"\">"+
+                            "</div>"+
+                            "<div class=\"bi-text\">"+
+                    "<h5><a href='BlogUser/BlogDetails/?a=" + array[i].ID+"'>" + array[i].Title+"</a></h5>"+
+                                "<ul>"+
+                                    @*<li>by <span>Jonathan Doe</span></li>*@
+                    "<li>" + moment(array[i].PublishDateTime).format('jYYYY/jM/jD') +"</li>"+
+                                "</ul>"+
+                                "<p>"+array[i].Summery+"</p>"+
+                       "<a href='BlogUser/BlogDetails/?a=" + array[i].ID +"' class=\"read-more\">"+"<span class=\"arrow_left\"></span> ادامه مطلب</a>"+
+                            "</div>"+
+                        "</div>";
+            }
+
+            $('.blog-item-list').html(str);
+        })
+    }
+</script>
+<!-- Blog Section End -->

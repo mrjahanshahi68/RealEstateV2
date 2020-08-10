@@ -27,16 +27,30 @@ namespace RealEstate.Web.Infrastrcuture
         
         private RequestResponseLogMetadata BuildRequestMetadata(RequestResponseLogMetadata logMetadata,HttpRequestMessage request)
         {
-            
-            var content = request.Content.ReadAsStringAsync();
-            var result = content.Result;
+			if (request.Content.IsMimeMultipartContent())
+			{
+				
 
-            logMetadata.RequestContent = result;
-            logMetadata.RequestMethod = request.Method.Method;
-            logMetadata.RequestTimestamp = DateTime.Now;
-            logMetadata.RequestUri = request.RequestUri.ToString();
+				logMetadata.RequestContent = "multipart/form-data";
+				logMetadata.RequestMethod = request.Method.Method;
+				logMetadata.RequestTimestamp = DateTime.Now;
+				logMetadata.RequestUri = request.RequestUri.ToString();
 
-            return logMetadata;
+				return logMetadata;
+			}
+			else
+			{
+				var content = request.Content.ReadAsStringAsync();
+				var result = content.Result;
+
+				logMetadata.RequestContent = result;
+				logMetadata.RequestMethod = request.Method.Method;
+				logMetadata.RequestTimestamp = DateTime.Now;
+				logMetadata.RequestUri = request.RequestUri.ToString();
+
+				return logMetadata;
+			}
+           
         }
         private RequestResponseLogMetadata BuildResponseMetadata(RequestResponseLogMetadata logMetadata, HttpResponseMessage response)
         {

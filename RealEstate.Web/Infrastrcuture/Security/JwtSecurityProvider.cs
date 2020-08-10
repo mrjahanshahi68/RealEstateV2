@@ -64,7 +64,7 @@ namespace RealEstate.Web.Security
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject= identity,
-                Expires = now.AddMinutes(expireMinutes),
+                Expires = now.AddHours(expireMinutes),
                 SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature, SecurityAlgorithms.Sha256Digest),
             };
 

@@ -68,6 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppDataContext.cs" />
     <Compile Include="Property\MapConfiguration\DocumentTypeMapConfig.cs" />
+    <Compile Include="Property\MapConfiguration\PropertyDemandMapConfig.cs" />
     <Compile Include="Property\MapConfiguration\PropertyInfoMapConfig.cs" />
     <Compile Include="Property\MapConfiguration\PropertyTypeMapConfig.cs" />
     <Compile Include="Property\MapConfiguration\WelfareMapConfig.cs" />

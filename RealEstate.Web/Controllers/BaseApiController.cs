@@ -24,7 +24,7 @@ namespace RealEstate.Web.Controllers
         where TEntityVM:class
     {
         #region Properties
-        private Mapper mapper { get; set; }
+        protected Mapper Mapper { get; set; }
         protected IBusinessRule<TEntity> BusinessRule { get; set; }
 		public bool IsAuthenticated => SecurityManager.IsAuthenticated(Token);
 		public string Token => SecurityManager.GetToken(Request);
@@ -50,7 +50,7 @@ namespace RealEstate.Web.Controllers
         public BaseApiController()
         {
             BusinessRule = CreateRule();
-            mapper = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<TEntityVM, TEntity>()));
+            Mapper = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<TEntityVM, TEntity>()));
         }
 
         #region Response
@@ -193,11 +193,11 @@ namespace RealEstate.Web.Controllers
 		#region Translate
 		protected virtual TEntity MapEntityVmToEntity(TEntityVM vm)
 		{
-			return mapper.Map<TEntity>(vm);
+			return Mapper.Map<TEntity>(vm);
 		}
 		protected virtual TEntityVM MapEntityToEntityVm(TEntity entity)
 		{
-			return mapper.Map<TEntityVM>(entity);
+			return Mapper.Map<TEntityVM>(entity);
 		}
 		#endregion
 

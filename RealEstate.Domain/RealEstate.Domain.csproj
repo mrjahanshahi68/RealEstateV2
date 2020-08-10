@@ -58,6 +58,7 @@
     <Compile Include="IBusinessRule.cs" />
     <Compile Include="Log\ExceptionBusinessRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Property\PropertyDemandBusinessRule.cs" />
     <Compile Include="Property\PropertyInfoBusinessRule.cs" />
     <Compile Include="Property\PropertyTypeBusinessRule.cs" />
     <Compile Include="Property\WelfareBusinessRule.cs" />

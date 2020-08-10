@@ -122,7 +122,7 @@
 			<div>
 				<div class="switch-checkbox switcher" ng-repeat="welfare in temp.welfares">
 					<label for="welfare_{{welfare.Key}}">
-						<input ng-click="welfareChange($event,welfare)" data-value="{{welfare.Key}}" welfare-switch type="checkbox" id="welfare_{{welfare.Key}}" ng-checked="welfare.isSelected ? 'checked' : ''">
+						<input ng-click="welfareChange($event,welfare)" data-value="{{welfare.Key}}" welfare-switch type="checkbox" id="welfare_{{welfare.Key}}" ng-checked="welfare.selected ? 'checked' : ''">
 						<span><small></small></span>
 						<small ng-bind="welfare.Value"></small>
 					</label>
@@ -140,7 +140,7 @@
 			</div>
 			<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 form-group">
 				<label>منطقه : </label>
-				<select kendo-drop-down-list k-ng-delay="regionOptions" k-options="regionOptions" style="width:100%"></select>
+				<select kendo-drop-down-list id="drpRegion" k-ng-delay="regionOptions" k-options="regionOptions" style="width:100%"></select>
 			</div>
 			<div class="col-sm-6 col-xs-12 form-group">
 				<label>آدرس : </label>
@@ -194,22 +194,34 @@
 			</div>
 		</div>
 		<div class="row form-group">
-			<div class="col-md-3 col-sm-6 col-xs-12">
+			<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
 				<label>تصویر اصلی ملک : </label><span style="font-size:11px">(500 * 500 پیکسل)</span>
 				<input type="file" id="fuCoverImage" />
+				<img src="{{model.CoverImagePath}}" style="width:150px;height:auto" />
 			</div>
-			<div class="col-md-3 col-sm-6 col-xs-12">
+			<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
 				<label>تصویر اسلایدشو :  </label>
 				<input type="file" id="fuSlideImage" />
+				<img src="{{model.SlideImagePath}}" style="width:150px;height:auto"/>
 			</div>
 
 		</div>
-		<div class="row form-group">
-			<div class="box-header" style="padding:0;padding-right: 25px;padding-bottom: 5px;">
+		<div class="row">
+			<div class="col-xs-12 form-group">
+				<label>تصاویر : </label>
+				<input type="file" id="attachments" multiple />
+				<div class="col-lg-1 col-md-2 col-sm-3 col-xs-4" ng-repeat="attach in temp.attachments track by $index">
+					<img src="{{attach.Path}}" style="width:100%;height:100px" />
+				</div>
+			</div>
+		</div>
+		<div class="row form-group" style="display:none;">
+			
+			@*<div class="box-header" style="padding:0;padding-right: 25px;padding-bottom: 5px;">
 				<button type="button" style="width:200px;margin-bottom:5px;" ng-click="addAttachmentFileUpload()" class="btn btn-primary col-12">
 					اضافه کردن بارگزاری تصویر
 				</button>
-			</div>
+			</div>*@
 			<style>
 	  @@media (max-width:767px){
 		  .btn.col-12 {
@@ -273,7 +285,7 @@
 		    padding-bottom:10px
 		  }
 			</style>
-			<div class="box-body attachment-form" ng-repeat="attachment in model.Attachments track by $index">
+			<div class="box-body attachment-form" ng-repeat="attachment in model.Attachments track by $index" >
 				<div class="col-lg-12 col-md-12 col-xs-12">
 					<div class="row">
 						<div class="col-sm-6 col-xs-12 attachment-container">
@@ -282,7 +294,7 @@
 								<label for="attach_{{attachment.attachmentUID}}">
 									{{attachment.FileName}}
 								</label>
-								<button type="button" class="btn btn-danger remove" ng-click="deleteAttachmentFileUpload($index)"> <i class="fa fa-minus-square" aria-label="true"></i></button>
+								<button type="button" class="btn btn-danger remove" ng-click="deleteAttachmentFileUpload($index,attachment.attachmentUID)"> <i class="fa fa-minus-square" aria-label="true"></i></button>
 							</div>
 
 						</div>
@@ -311,6 +323,11 @@
 
 		<div class="row">
 			<div class="col-xs-12 form-group text-left">
+				<select ng-model="model.Status" style="width:200px;display: inline-block;" class="form-control">
+					@*<option value="">--- نوع ملک را انتخاب کنید ---</option>*@
+					<option ng-selected="status.value == model.Status" ng-repeat="status in temp.propertyStatuses"
+							ng-value="status.value" ng-bind="status.text"></option>
+				</select>
 				<button type="button" ng-click="save()" class="btn btn-primary" style="width:150px;">ثبت</button>
 			</div>
 		</div>
@@ -330,7 +347,7 @@
 			PropertyCode: null,
 			Title: null,
 			UrlTitle: null,
-			Status: null,
+			Status: 1,
 			Type: null,
 			BuildingArea: null,
 			LandingArea: null,
@@ -355,30 +372,34 @@
 			ReagentFirstName: null,
 			ReagentLastName: null,
 			ReagentTel: null,
-			IsLuxury: null,
-			IsShowInSlide: null,
-			IsDeleted: null,
-			SlideImage: null,
-			CoverImage: null,
-			Attachments: []
+
+			//IsLuxury: null,
+			//IsShowInSlide: null,
+			SlideImagePath: null,
+			CoverImagePath: null,
+			IsDeleted: false,
 		}
 		$scope.temp = {
+			selectedId: 0,
 			propertyTypes: null,
 			documentTypes: null,
 			welfares: null,
 			states: null,
 			transactionTypes:null,
-			isEditMode: helper.getParameterByName("hashkey") ? true : false,
+			isEditMode: helper.getParameterByName("id") ? true : false,
 			selectedWelfares: [],
 			selectedStateId: 24,
 			selectedCityId: 914,
 			selectedRegionId: null,
 			formData: null,
+			attachments: [],
+			propertyStatuses: [],
 		}
 
 		$scope.init = function () {
 			if ($scope.temp.isEditMode) {
 				$scope.title = "ویرایش ملک";
+				$scope.temp.selectedId = helper.getParameterByName("id");
 			}
 			else {
 				$scope.title = "ثبت ملک";
@@ -394,21 +415,57 @@
 					}
 				});
 				$scope.temp.states = result.States;
-				$scope.model.Attachments = [].concat({ FileName: 'انتخاب فایل', attachmentUID: helper.uuidv4() })
 				$scope.temp.transactionTypes = Object.keys(helper.enums.TransactionTypes).map(function (item) { return helper.enums.TransactionTypes[item] });
+				$scope.temp.propertyStatuses = Object.keys(helper.enums.PropertyStatuses).map(function (item) { return helper.enums.PropertyStatuses[item] });
+				var region = $scope.temp.states.filter(function (item) {
+					if (item.ParentId == $scope.temp.selectedCityId && item.Name == 'منطقه ندارد') {
+						return item;
+					}
+				})[0];
+				if (region) {
+					$scope.temp.selectedRegionId = region.ID;
+				}
+				if ($scope.temp.isEditMode) {
+					dataService.post("propertyInfo/GetProperty", { ID: $scope.temp.selectedId }).then(function (result) {
+						$scope.model = result;
+						$scope.model.CoverImagePath = "/" + $scope.model.CoverImagePath;
+						$scope.model.SlideImagePath = "/" + $scope.model.SlideImagePath;
+						$scope.temp.attachments = $scope.model.Attachments.map(function (item) { return item; });
 
-				$scope.temp.formData = new FormData();
+						$scope.temp.selectedStateId = $scope.model.StateId;
+						$scope.temp.selectedCityId = $scope.model.CityId;
+						$scope.temp.selectedRegionId = $scope.model.RegionId;
 
-				loadOptions();
+						for (var i = 0; i < $scope.temp.attachments.length; i++) {
+							$scope.temp.attachments[i].Path = "/" + $scope.temp.attachments[i].Path;
+						}
+						for (var i = 0; i < $scope.temp.welfares.length; i++) {
+							var curWelfare = $scope.temp.welfares[i];
+							for (var j = 0; j < $scope.model.Welfares.length; j++) {
+								if ($scope.model.Welfares[j].ID == curWelfare.Key) {
+									curWelfare.selected = true;
+									break;
+								}
+							}
+						}
+						loadOptions();
+						$scope.$$phase || $scope.$apply();
+					});
+				}
+				else {
+					loadOptions();
+					$scope.$$phase || $scope.$apply();
+				}
+				
 
-				$scope.$$phase || $scope.$apply();
+				
 			});
 		}
 
 		function loadOptions() {
 			$scope.stateOptions = {
 				dataSource: new kendo.data.DataSource({
-					data: $scope.temp.states.filter(function (item) { return item.ParentId == null }),
+					data: $scope.temp.states.filter(function (item) { return item.ParentId == null && item.Level == helper.enums.StateLevel.State.value }),
 				}),
 				value: $scope.temp.selectedStateId,
 				dataTextField: "Name",
@@ -417,14 +474,16 @@
 				change: function (dataItem) {
 					var item = this.dataItem();
 					$scope.temp.selectedStateId = item.ID;
+					$scope.temp.selectedCityId = null;
 					$scope.cityOptions.dataSource.read();
+					$scope.regionOptions.dataSource.read();
 				}
 			}
 			$scope.cityOptions = {
 				dataSource: new kendo.data.DataSource({
 					transport: {
 						read: function (options) {
-							options.success($scope.temp.states.filter(function (item) { return item.ParentId == $scope.temp.selectedStateId }));
+							options.success($scope.temp.states.filter(function (item) { return item.ParentId == $scope.temp.selectedStateId && item.Level == helper.enums.StateLevel.City.value }));
 						},
 					},
 				}),
@@ -436,26 +495,39 @@
 					var item = this.dataItem();
 					$scope.temp.selectedCityId = item.ID;
 					$scope.regionOptions.dataSource.read();
+					var region = $scope.temp.states.filter(function (item) {
+						if (item.ParentId == $scope.temp.selectedCityId && item.Name == 'منطقه ندارد') {
+							return item;
+						}
+					})[0];
+					if (region) {
+						$scope.temp.selectedRegionId = region.ID;
+						var regionDropDown = $("#drpRegion").data("kendoDropDownList");
+						regionDropDown.value($scope.temp.selectedRegionId);
+					}
+					$scope.$$phase || $scope.$apply();
 				}
 			}
 			$scope.regionOptions = {
 				dataSource: new kendo.data.DataSource({
 					transport: {
 						read: function (options) {
-							options.success($scope.temp.states.filter(function (item) { return item.ParentId == $scope.temp.selectedCityId }));
+							debugger;
+							options.success($scope.temp.states.filter(function (item) { return item.ParentId == $scope.temp.selectedCityId && item.Level == helper.enums.StateLevel.Region.value }));
 						},
 					},
 				}),
+				value: $scope.temp.selectedRegionId,
 				dataTextField: "Name",
 				dataValueField: "ID",
-				optionLabel: "انتخاب منطقه",
+				//optionLabel: "انتخاب منطقه",
 				change: function (dataItem) {
 					var item = this.dataItem();
 					$scope.temp.selectedRegionId = item.ID;
 				}
 			}
 		}
-		function addFileToFormData(name,file) {
+		function addFile(name,file) {
 			if ($scope.temp.formData.get(name)) {
 				$scope.temp.formData.set(name, file)
 			}
@@ -463,7 +535,9 @@
 				$scope.temp.formData.append(name, file)
 			}
 		}
-		
+		function removeFile(name) {
+			$scope.temp.formData.remove(name)
+		}
 
 		$scope.welfareChange = function (e, welfare) {
 			if (e.target.checked) {
@@ -475,64 +549,83 @@
 		$scope.addAttachmentFileUpload = function () {
 			$scope.model.Attachments.push({ FileName: 'انتخاب فایل', attachmentUID: helper.uuidv4() });
 		}
-		$scope.deleteAttachmentFileUpload = function (index) {
+		$scope.deleteAttachmentFileUpload = function (index,uid) {
 			for (var i = 0; i < $scope.model.Attachments.length; i++) {
 				if (i == index) {
 					$scope.model.Attachments.splice(i, 1);
+					removeFileFromFormData("Attachments-" + uid);
 				}
 			}
 		}
 		$scope.save = function () {
-			$scope.model.Welfares = $scope.temp.welfares.filter(function (item) {
-				if (item.selected)
-					return item;
-			});
+			$scope.model.Welfares = [];
+			for (var i = 0; i < $scope.temp.welfares.length; i++) {
+				var item = $scope.temp.welfares[i];
+				if (item.selected) {
+					$scope.model.Welfares.push({ ID: item.Key, Name: item.Value })
+				}
+			}
+
+			$scope.model.StateId = $scope.temp.selectedStateId;
+			$scope.model.CityId = $scope.temp.selectedCityId;
 			$scope.model.RegionId = $scope.temp.selectedRegionId;
+
+			$scope.temp.attachments = [];
+			for (var i = 0; i < $("#attachments")[0].files.length; i++) {
+				var file = $("#attachments")[0].files[i];
+				$scope.temp.attachments.push(new DataFileInfo(file, {
+					ExtraInfoString: "Attachment",
+				}))
+			}
+			var coverImageFile = $("#fuCoverImage")[0].files[0];
+			if (coverImageFile) {
+				$scope.temp.attachments.push(new DataFileInfo(coverImageFile, {
+					ExtraInfoString: "CoverImage"
+				}))
+			}
+			var slideImageFile = $("#fuSlideImage")[0].files[0];
+			if (slideImageFile) {
+				$scope.temp.attachments.push(new DataFileInfo(slideImageFile, {
+					ExtraInfoString:  "SlideImage" ,
+				}))
+			}
 			debugger;
-			dataService.sendDataAndFiles('propertyInfo/submitProperty', $scope.model, $scope.temp.formData).then(function (result) {
+			var tempCoverImagePath = $scope.model.CoverImagePath;
+			var tempSlideImagePath = $scope.model.SlideImagePath;
+			$scope.model.CoverImagePath = null;
+			$scope.model.SlideImagePath = null;
+			dataService.postDataAndFiles('propertyInfo/SubmitProperty', $scope.model, $scope.temp.attachments).then(function (result) {
 				messageService.success('عملیات با موفقیت ثبت گردید');
+				$scope.model.CoverImagePath = tempCoverImagePath;
+				$scope.model.SlideImagePath = tempSlideImagePath;
+				$scope.$$phase || $scope.$apply();
 			});
 		}
 
 		$(document).delegate('[image-attachment]', 'change', function (e) {
 			if (e && e.target) {
 				var uid = $(e.target).attr('attachment-uid');
-				addFileToFormData("Attachmanet-" + uid, e.target.files[0]);
-				//var file = e.target.files[0];
-				//file.attachmentUID = $(e.target).attr('attachment-uid');
-				//helper.getFileInfo(file).start()
-				//	.onProgress(function (e, loaded, total) {
-				//	}).onComplete(function (result, e) {
-				//		if (result) {
-				//			var currentAttachment = $scope.model.Attachments.findById('attachmentUID', result.file.attachmentUID)
-				//			currentAttachment.Content = result.fileReader.base64;
-				//			currentAttachment.FileName = result.fileName;
-				//			currentAttachment.Size = result.size;
-				//			currentAttachment.ContentType = result.contentType;
-				//			$scope.$$phase || $scope.$apply();
-				//		}
-				//	});
+				addFile("Attachments-" + uid, e.target.files[0]);
 			}
 		});
 		$(document).delegate('#fuCoverImage', 'change', function (e) {
 			if (e && e.target) {
 				var file = e.target.files[0];
-				addFileToFormData("CoverImage", e.target.files[0]);
+				helper.getFileInfo(file).start()
+					.onComplete(function (result) {
+						$scope.model.CoverImagePath = result.fileReader.base64;	
+						$scope.$$phase || $scope.$apply();
+					});
 			}
 		});
 		$(document).delegate('#fuSlideImage', 'change', function (e) {
 			if (e && e.target) {
-				addFileToFormData("SlideImage", e.target.files[0]);
-				//var file = e.target.files[0];
-
-				//helper.getFileInfo(file).start().onComplete(function (result) {
-				//	$scope.model.SlideImage = {
-				//		Content: result.fileReader.base64,
-				//		FileName: result.fileName,
-				//		Size: result.size,
-				//		ContentType: result.contentType,
-				//	};
-				//});
+				var file = e.target.files[0];
+				helper.getFileInfo(file).start()
+					.onComplete(function (result) {
+						$scope.model.SlideImagePath = result.fileReader.base64;
+						$scope.$$phase || $scope.$apply();
+					});
 			}
 		});
 	});

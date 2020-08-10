@@ -22,6 +22,7 @@ namespace RealEstate.Web
             config.MapHttpAttributeRoutes();
 
 			config.Formatters.XmlFormatter.SupportedMediaTypes.Add(new System.Net.Http.Headers.MediaTypeHeaderValue("multipart/form-data"));
+			//config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream"));
 
 			config.Routes.MapHttpRoute("DefaultApiWithId", "Api/{controller}/{id}", new { id = RouteParameter.Optional }, new { id = @"\d+" });
             config.Routes.MapHttpRoute("DefaultApiWithAction", "Api/{controller}/{action}");
