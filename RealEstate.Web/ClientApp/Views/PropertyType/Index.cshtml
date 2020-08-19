@@ -42,10 +42,10 @@
 				<label class="control-label"> نام : </label>
 				<input type="text" value="" class="form-control" ng-model="model.Name" placeholder="عنوان را وارد نمایید" />
 			</div>
-			<div class="col-xs-12 form-group">
+			@*<div class="col-xs-12 form-group">
 				<label class="control-label col-xs-4">وضعیت : </label>
 				<toggle-btn ng-init="model.IsActive" ng-model="model.IsActive" name="isactive" type="checkbox"></toggle-btn>
-			</div>
+			</div>*@
 		</div>
 		<div class="modal-footer" style="text-align:left">
 			<button class="btn btn-primary" type="button" ng-click="confirm()">تایید</button>
@@ -75,14 +75,13 @@
 				transport: {
 					read: function (options) {
 						var filterParameter = helper.translateToFilterParameter(options.data);
-						console.log(options);
+					
                         dataService.filterBy('propertyType/GetPropertyTypes', filterParameter).then(function (result) {
 							options.success(result);
 						});
 					},
 					parameterMap: function (options) {
-						// debugger;
-						console.log(options);
+						
 					}
 				},
 				pageSize:20,
@@ -137,20 +136,20 @@
 					field: "Name",
 					width: 150,
 				},
-				{
-					title: "وضعیت",
-					field: "IsActive",
-					width: 130,
-					values: $scope.temp.statuses,
-					template: function (e) {
-						if (e.IsActive)
-							return "<span>فعال</span>";
-						return "<span>غیرفعال</span>";
-						//if (e.IsActive)
-						//	return '<toggle-btn ng-init="dataItem.IsActive=true" ng-change="setStatus(dataItem)" ng-model="dataItem.IsActive" name="isactive_' + e.ID + '" type="checkbox"></toggle-btn>'
-						//return '<toggle-btn ng-init="dataItem.IsActive=false" ng-change="setStatus(dataItem)" ng-model="dataItem.IsActive" name="isactive_' + e.ID + '" type="checkbox"></toggle-btn>';
-					}
-				},
+				//{
+				//	title: "وضعیت",
+				//	field: "IsActive",
+				//	width: 130,
+				//	values: $scope.temp.statuses,
+				//	template: function (e) {
+				//		if (e.IsActive)
+				//			return "<span>فعال</span>";
+				//		return "<span>غیرفعال</span>";
+				//		//if (e.IsActive)
+				//		//	return '<toggle-btn ng-init="dataItem.IsActive=true" ng-change="setStatus(dataItem)" ng-model="dataItem.IsActive" name="isactive_' + e.ID + '" type="checkbox"></toggle-btn>'
+				//		//return '<toggle-btn ng-init="dataItem.IsActive=false" ng-change="setStatus(dataItem)" ng-model="dataItem.IsActive" name="isactive_' + e.ID + '" type="checkbox"></toggle-btn>';
+				//	}
+				//},
 				{
 					template: function (e) {
 						var commandBtn = "<button class=\"btn btn-primary\" type=\"button\" ng-click=\"edit(dataItem)\">ویرایش</button>";
@@ -221,7 +220,7 @@
 							$scope.modalTitle = "وایرایش نوع ملک";
 						}
 						else {
-							$scope.modalTitle = "ثبت ملک";
+                            $scope.modalTitle = "ثبت نوع ملک";
 						}
 					}
 

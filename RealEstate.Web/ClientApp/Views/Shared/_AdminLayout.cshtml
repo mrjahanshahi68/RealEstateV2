@@ -240,106 +240,153 @@
 				}
 	/*#endregion*/
 </style>
+@{
+	bool isAdmin = Request.Url.AbsoluteUri.ToLower().IndexOf("registerpropertyguest") == -1 ? true : false;
+}
 <nav>
-	<a class="app-link">
-		<img class="app-logo" src="~/ClientApp/Contents/Images/logo.png" />
-		<span class="app-title">@AppTitle</span>
-	</a>
-	<div class="account-info">
-		<ul>
-			<li>
-				<span ng-bind="fullName"></span>
-			</li>
-			<li>
-				<a>
-					<i class="fa fa-sign-out"></i>
-				</a>
-			</li>
-		</ul>
-		
-	</div>
-</nav>
-<aside>
-	<div class="sidebar-menu">
-        <div class="menu-header">
-            <span>فهرست</span>
-        </div>
-		<ul>
-			<li>
-				<a href="/propertyInfo">
-					<i class="fa fa-building" aria-hidden="true"></i> ملک
-				</a>
-			</li>
-			<li>
-				<a>
-					<i class="fa fa-inbox" aria-hidden="true"></i>ملک های سپرده شده
-				</a>
-			</li>
-			<li>
-				<a>
-					<i class="fa fa-upload" aria-hidden="true"></i>متقاضیان ملک
-				</a>
-			</li>
-			<li>
-				<a href="/propertyType">
-					<i class="fa fa-wrench" aria-hidden="true"></i>  نوع ملک
-				</a>
-			</li>
-			<li>
-				<a href="/welfare">
-					<i class="fa fa-coffee" aria-hidden="true"></i>	  امکانات رفاهی
-				</a>
-			</li>
-			<li>
-				<a href="/blog">
-					<i class="fa fa-list" aria-hidden="true"></i> پست ها
-				</a>
-			</li>
-			<li>
-				<a href="/contactUs">
-					<i class="fa fa-phone" aria-hidden="true"></i> تماس با ما
-				</a>
-			</li>
-			<li>
-				<a href="/message">
-					<i class="fa fa-file-text" aria-hidden="true"></i> پیام ها
-				</a>
-			</li>
-			<li>
-				<a href="/state"> 
-					<i class="fa fa-map" aria-hidden="true"></i>	  مناطق
-				</a>
-			</li>
-			<li>
-				<a href="/account">
-					<i class="fa fa-user" aria-hidden="true"></i> کاربران
-				</a>
-			</li>
-			<li>
-				<a>
-					<i class="fa fa-lock" aria-hidden="true" ></i>تغییر پسورد
-				</a>
-			</li>
-		</ul>
-	</div>
 	
-</aside>
-<main>
-	<div class="container-fluid">
-		<div class="page-title">
-			@RenderSection("pageTitle",required:false)
-		</div>
-		@RenderBody()
-	</div>
+	@if (isAdmin)
+	{
+		<a class="app-link">
+			<img class="app-logo" src="~/ClientApp/Contents/Images/logo.png" />
+			<span class="app-title">@AppTitle</span>
+		</a>
+		<div class="account-info">
+			<ul>
+				<li>
+					<span ng-bind="fullName"></span>
+				</li>
+				<li>
+					<a ng-click="loggout()">
+						<i class="fa fa-sign-out"></i>
+					</a>
+				</li>
+			</ul>
 
-</main>
+		</div>
+	}
+	else
+	{
+		<a class="app-link" href="/">
+			<img class="app-logo" src="~/ClientApp/Contents/Images/logo.png" />
+			<span class="app-title">املاک ViP</span>
+		</a>
+		<div class="account-info" style="padding-left: 0;">
+			<ul>
+				<li>
+					<a href="/" class="btn btn-primary">
+						<i class="fa fa-home"></i>
+						بازگشت به صفحه اصلی
+					</a>
+				</li>
+			</ul>
+
+		</div>
+	}
+</nav>
+
+@if (isAdmin)
+{
+	<aside>
+		<div class="sidebar-menu">
+			<div class="menu-header">
+				<span>فهرست</span>
+			</div>
+			<ul>
+				<li>
+					<a href="/propertyInfo">
+						<i class="fa fa-building" aria-hidden="true"></i> ملک
+					</a>
+				</li>
+				@*<li>
+					<a>
+						<i class="fa fa-inbox" aria-hidden="true"></i>ملک های سپرده شده
+					</a>
+				</li>*@
+				<li>
+					<a href="/propertyDemand">
+						<i class="fa fa-upload" aria-hidden="true"></i>متقاضیان ملک
+					</a>
+				</li>
+				<li>
+					<a href="/propertyType">
+						<i class="fa fa-wrench" aria-hidden="true"></i>  نوع ملک
+					</a>
+				</li>
+				<li>
+					<a href="/welfare">
+						<i class="fa fa-coffee" aria-hidden="true"></i>	  امکانات رفاهی
+					</a>
+				</li>
+				<li>
+					<a href="/blog">
+						<i class="fa fa-list" aria-hidden="true"></i> پست ها
+					</a>
+				</li>
+				<li>
+					<a href="/contactUs">
+						<i class="fa fa-phone" aria-hidden="true"></i> تماس با ما
+					</a>
+				</li>
+				<li>
+					<a href="/message">
+						<i class="fa fa-file-text" aria-hidden="true"></i> پیام ها
+					</a>
+				</li>
+				<li>
+					<a href="/state">
+						<i class="fa fa-map" aria-hidden="true"></i>	  مناطق
+					</a>
+				</li>
+				<li>
+					<a href="/account">
+						<i class="fa fa-user" aria-hidden="true"></i> کاربران
+					</a>
+				</li>
+				<li>
+					<a href="/account/ChangePassWord">
+						<i class="fa fa-lock" aria-hidden="true"></i>تغییر پسورد
+					</a>
+				</li>
+			</ul>
+		</div>
+
+	</aside>
+}
+
+@if (isAdmin)
+{
+	<main>
+		<div class="container-fluid">
+			<div class="page-title">
+				@RenderSection("pageTitle", required: false)
+			</div>
+			@RenderBody()
+		</div>
+
+	</main>
+}
+else
+{
+	<main style="right:0;">
+		<div class="container-fluid">
+			<div class="page-title">
+				@RenderSection("pageTitle", required: false)
+			</div>
+			@RenderBody()
+		</div>
+
+	</main>
+}
+
 
 <footer>
 
 </footer>
 @section scripts{	
 @*<script src="~/ClientApp/Scripts/bootstrap.min.js"></script>*@
-
+<script src="~/ClientApp/Scripts/Numeral/numeral.js"></script>
+<script src="~/ClientApp/Scripts/Numeral/locales/fa-IR.js"></script>
 <script>
 	NProgress.start();
 	$(document).ready(function () {

@@ -13,19 +13,22 @@ namespace RealEstate.DataAccess.Common.MapConfigurations
 		public BlogMapConfig()
 		{
 			Property(e => e.Title);
+			Property(e => e.UrlTitle);
 			Property(e => e.Body);
 			Property(e => e.Summery);
+			Property(e => e.HashKey);
 			Property(e => e.SlugUrl);
 			Property(e => e.CategoryId);
 			Property(e => e.Discriminator);
 			Property(e => e.MetaDescription);
 			Property(e => e.Sort);
 			Property(e => e.ViewNumber);
+			Property(e => e.Image);
 			Property(e => e.IsActive);
 			Property(e => e.IsDeleted);
 			Property(e => e.PublishDateTime);
 
-		ToTable("Blogs");
+			ToTable("Blogs");
 		}
 	}
 }

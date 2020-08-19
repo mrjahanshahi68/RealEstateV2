@@ -29,7 +29,7 @@ namespace RealEstate.Web.Controllers.Api
 	[JwtAuthentication]
 	public class PropertyInfoController : BaseApiController<PropertyInfo,PropertyInfoVM>
     {
-		private string PropertyFolder => Path.Combine(AppDomain.CurrentDomain.BaseDirectory , AppConfigurations.PropertyImageFolder);
+		private string PropertyFolder => Path.Combine(AppDomain.CurrentDomain.BaseDirectory , AppConfigurations.AttachmentFolder,"Properties");
 		public PropertyInfoController()
 		{
 
@@ -81,8 +81,8 @@ namespace RealEstate.Web.Controllers.Api
 					throw new ValidationModelException(MessageTemplate.ParameterIsNotDefined);
 
 				var errors = new List<string>();
-				if (string.IsNullOrWhiteSpace(parameters.PropertyCode))
-					errors.Add(string.Format(MessageTemplate.Required, "کدملک"));
+				//if (string.IsNullOrWhiteSpace(parameters.PropertyCode))
+				//	errors.Add(string.Format(MessageTemplate.Required, "کدملک"));
 				if (string.IsNullOrWhiteSpace(parameters.Title))
 					errors.Add(string.Format(MessageTemplate.Required, "عنوان"));
 				if (!parameters.Type.HasValue)
@@ -109,7 +109,7 @@ namespace RealEstate.Web.Controllers.Api
 					{
 						var propertyInfoRepo = uow.Repository<PropertyInfo>();
 						var attachmentRepo = uow.Repository<Attachment>();
-						var coverImageFile = fileDataRequestParameters.Files.Where(e => e.FileData.ExtraInfoString == "CoverImage").SingleOrDefault();
+						var coverImageFile = fileDataRequestParameters.Files.Where(e => e.FileData.ExtraInfoString == "CoverImage").FirstOrDefault();
 						var slideImageFile = fileDataRequestParameters.Files.Where(e => e.FileData.ExtraInfoString == "SlideImage").SingleOrDefault();
 						var entity = Mapper.Map<PropertyInfo>(parameters);
 						entity.Welfares = Newtonsoft.Json.JsonConvert.SerializeObject(parameters.Welfares);
@@ -126,6 +126,7 @@ namespace RealEstate.Web.Controllers.Api
 								string coverImagePath = Path.Combine(PropertyFolder, entity.HashKey, $"CoverImage_{entity.CoverImage}");
 								if (File.Exists(coverImagePath))
 									File.Delete(coverImagePath);
+								entity.CoverImage = coverImageFile.HttpPostedFile?.FileName;
 							}
 							if (slideImageFile == null)
 								entity.SlideImage = dbEntity.SlideImage;
@@ -134,16 +135,55 @@ namespace RealEstate.Web.Controllers.Api
 								string slideImagePath = Path.Combine(PropertyFolder, entity.HashKey, $"SlideImage_{entity.CoverImage}");
 								if (File.Exists(slideImagePath))
 									File.Delete(slideImagePath);
+								entity.SlideImage = slideImageFile.HttpPostedFile?.FileName;
 							}
+							if (string.IsNullOrWhiteSpace(dbEntity.PropertyCode))
+							{
+								string propertyCode = string.Empty;
+								var lastProperty = await uow.Repository<PropertyInfo>().Queryable().Where(e=>e.PropertyCode!=null).OrderByDescending(e => e.ID).FirstOrDefaultAsync();
+								if (lastProperty == null)
+									propertyCode = 100.ToString();
+								else
+								{
+									propertyCode = (Convert.ToInt32(lastProperty.PropertyCode) + 1).ToString();
+								}
+								entity.PropertyCode = propertyCode;
+							}
+							else
+							{
+								entity.PropertyCode =dbEntity.PropertyCode ;
+							}
+							
 							entity.InsertDateTime = dbEntity.InsertDateTime;
 							entity.InsertUserId = dbEntity.InsertUserId;
 							entity.UpdateDateTime = DateTime.Now;
 							entity.UpdateUserId = CurrentUser.UserId;
 
 							uow.Repository<PropertyInfo>().Update(entity);
+
+
+							var attchments=uow.Repository<Attachment>().Queryable().Where(e => e.ObjectType == ObjectType.Property && e.ObjectId == entity.ID).ToList();
+							var deletedAttachments = parameters.Attachments?.Where(e => e.IsDeleted).Select(e=>new Attachment {
+								ID=e.ID,
+							}).ToList();
+
+							foreach (var item in deletedAttachments)
+							{
+								uow.Repository<Attachment>().Delete(item);
+							}
+
 						}
 						else
 						{
+							string propertyCode = string.Empty;
+							var lastProperty =await uow.Repository<PropertyInfo>().Queryable().Where(e=>e.PropertyCode!=null).OrderByDescending(e => e.ID).FirstOrDefaultAsync();
+							if (lastProperty == null)
+								propertyCode = 100.ToString();
+							else
+							{
+								propertyCode = (Convert.ToInt32(lastProperty.PropertyCode) + 1).ToString();
+							}
+							entity.PropertyCode = propertyCode;
 							string hashkey = string.Empty;
 							while (true)
 							{
@@ -217,6 +257,56 @@ namespace RealEstate.Web.Controllers.Api
 				return await HandleExceptionAsync(ex);
 			}
 		}
+		[HttpPost]
+		[Authorize]
+		public async Task<HttpResponseMessage> DeleteProperty(PropertyInfoVM parameters)
+		{
+			DbContextTransaction transaction = null;
+			try
+			{
+				if (parameters == null)
+					throw new ValidationModelException(MessageTemplate.ParameterIsNotDefined);
+				if (parameters.ID == 0)
+					throw new ValidationModelException(MessageTemplate.InvalidIdentity);
+				
+				using(var dbContext=new AppDataContext())
+				{
+					//transaction = dbContext.Database.BeginTransaction();
+					using (var uow= new UnitOfWork<AppDataContext>(dbContext))
+					{
+						var entity =  uow.Repository<PropertyInfo>().Find(parameters.ID);
+						if (entity == null)
+							throw new ValidationModelException(MessageTemplate.RecordNotFound);
+
+						var attchments =await uow.Repository<Attachment>().Queryable().Where(e => e.ObjectType == ObjectType.Property && e.ObjectId == entity.ID).ToListAsync();
+						foreach (var item in attchments)
+						{
+							uow.Repository<Attachment>().Delete(item);
+						}
+
+						//await uow.SaveChangeAsync();
+
+						//entity.IsDeleted = true;
+						entity.UpdateDateTime = DateTime.Now;
+						entity.UpdateUserId = CurrentUser.UserId;
+						uow.Repository<PropertyInfo>().Delete(entity);
+
+						await uow.SaveChangeAsync();
+
+						var currentDirectory = Path.Combine(PropertyFolder, entity.HashKey);
+						if (Directory.Exists(currentDirectory))
+							Directory.Delete(currentDirectory,true);
+					}
+					//transaction.Commit();
+				}
+				return Success(parameters.ID);
+			}
+			catch(Exception ex)
+			{
+				//if (transaction != null) transaction.Rollback();
+				return await HandleExceptionAsync(ex);
+			}
+		}
 
 		[HttpPost]
 		public async Task<HttpResponseMessage> GetProperties(FilterContainer filter)
@@ -284,22 +374,40 @@ namespace RealEstate.Web.Controllers.Api
 								Status=property.Status,
 								RegisterDate=property.InsertDateTime,
 								IsDeleted=property.IsDeleted,
-								
+								RegisterBy=property.InsertUserId==AppConstants.GuestUserId ? 0 : 1,
 							};
-
+				
 				if (filter.OrderBy == null)
 				{
 					filter.OrderBy = new List<OrderFilter>
 					{
 						new OrderFilter
 						{
-							Field="ID",
+							Field="RegisterDate",
+							Order=OrderFilterType.Desc,
 						}
 					};
 				}
-				var totalCount = await query.CountAsync();
-				query = query.Request(filter);
-				var result = await query.ToListAsync();
+				if (filter.Where?.Operands?.Where(e => e.Field == "Type").Any()??false)
+				{
+					var item = filter.Where.Operands.Where(e => e.Field == "Type").FirstOrDefault();
+					filter.Where.Operands.Remove(item);
+					TransactionType? type = null;
+					type = (TransactionType?)(Convert.ToInt32(item.Value));
+					query = query.Where(e => e.Type == type);
+					if (!filter.Where.Operands.Any()) filter.Where = null;
+				}
+				if (filter.Where?.Operands?.Where(e => e.Field == "Status").Any() ?? false)
+				{
+					var item = filter.Where.Operands.Where(e => e.Field == "Status").FirstOrDefault();
+					filter.Where.Operands.Remove(item);
+					PropertyStatus status = (PropertyStatus)(Convert.ToInt32(item.Value));
+					query = query.Where(e => e.Status == status);
+					if (!filter.Where.Operands.Any()) filter.Where = null;
+				}
+
+				var resultQuery = query.Request(filter);
+				var result = await resultQuery.ToListAsync();
 				result.ForEach(prop => {
 					prop.Welfares = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WelfareVM>>(prop.WelfaresString);
 					if (!string.IsNullOrWhiteSpace(prop.CoverImage))
@@ -307,7 +415,9 @@ namespace RealEstate.Web.Controllers.Api
 					if (!string.IsNullOrWhiteSpace(prop.SlideImage))
 						prop.SlideImagePath = $"{AppConfigurations.PropertyImageFolder}/{prop.HashKey}/SlideImage_{prop.SlideImage}";
 				});
-
+				filter.Skip = 0;
+				filter.Take = 10000000;
+				var totalCount = query.Request(filter).CountAsync().Result;
 				return Success(new FilterQueryRsponse {
 					Records=result,
 					TotalCount=totalCount,
@@ -400,6 +510,7 @@ namespace RealEstate.Web.Controllers.Api
 					attachments =await BusinessRule.UnitOfWork.Repository<Attachment>().Queryable().Where(e => e.ObjectType == ObjectType.Property && e.ObjectId== parameters.ID).ToListAsync();
 					result.Attachments = attachments.Select(e => new AttachmentVM
 					{
+						ID=e.ID,
 						FileName=e.FileName,
 						HashKey=e.HashKey,
 						ObjectId=e.ObjectId,

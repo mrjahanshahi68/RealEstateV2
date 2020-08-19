@@ -6,6 +6,7 @@ namespace RealEstate.Common.Entities.Common
 	public class Blog : LoggableEntity, ILogicalDeletable
 	{
 		public string Title { get; set; }
+		public string UrlTitle { get; set; }
 		public string Summery { get; set; }
 		public string Body { get; set; }
 		public string MetaDescription { get; set; }
@@ -14,6 +15,8 @@ namespace RealEstate.Common.Entities.Common
 		public int? Sort { get; set; }
 		public string Discriminator { get; set; }
 		public short CategoryId { get; set; }
+		public string Image { get; set; }
+		public string HashKey { get; set; }
 		public bool IsActive { get; set; }
 		public bool IsDeleted { get; set; }
 		public DateTime PublishDateTime { get; set; }

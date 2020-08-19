@@ -16,8 +16,14 @@ namespace RealEstate.DataAccess.Common.MapConfigurations
 			Property(e => e.ObjectId);
 			Property(e => e.FileName);
 			Property(e => e.FileSize);
+			
 			Property(e => e.ContentType);
+
+			Ignore(e => e.FileUnit);
+			Ignore(e => e.IsDeleted);
 			//Property(e => e.IsDeleted);
+
+			ToTable("Attachments");
 		}
 	}
 }

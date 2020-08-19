@@ -1,0 +1,288 @@
+﻿@model RealEstate.Web.Models.Views.PropertyDemandCreateVM
+@{
+    Layout = "~/ClientApp/Views/Shared/_UserLayout.cshtml";
+}
+    <script>
+	var states = @Html.Raw(Json.Encode(Model.States));
+	var cities = @Html.Raw(Json.Encode(Model.Cities));
+	var regions = @Html.Raw(Json.Encode(Model.Regions));
+    </script>
+<style>
+
+    .btnClose {
+        float: right;
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1;
+        color: #000;
+        text-shadow: 0 1px 0 #fff;
+        opacity: .5;
+    }
+
+    .nice-select {
+        width: 550px !important;
+        height: auto !important;
+    }
+
+        .nice-select.open .list {
+            width: 550px !important;
+            right: 0 !important;
+        }
+
+    .rtl {
+        direction:rtl;
+    }
+</style>
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section spad set-bg" data-setbg="/ClientApp/img/propertyDemand.jpg
+         ">
+    <div class="container">
+        <div class="row rtl">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <h4>تقاضای ملک</h4>
+                    <div class="bt-option">
+                        <a href="/home"><i class="fa fa-home"></i> صفحه اصلی</a>
+                        <span>تقاضای ملک</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Contact Form Section Begin -->
+<section class="contact-form-section spad">
+    <div class="container">
+        <div class="row rtl">
+            <div class="col-lg-12">
+                <div class="cf-content">
+                    <div class="cc-title">
+                        <h4>ثبت تقاضای ملک</h4>
+
+                    </div>
+
+                    <div class="cc-form" >
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                نوع ملک :
+                                @Html.DropDownListFor(m => m.PropertyType, ViewData["PropertyTypesSelectList"] as SelectList, new { @class = "form-control", style = "direction:rtl;width: 560px !important;" })
+
+
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                نوع معامله :
+                                @Html.DropDownListFor(m => m.TransactionType, ViewData["TransactionTypesSelectList"] as SelectList, new { @class = "form-control", style = "direction:rtl;width: 560px !important;" })
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.Label("نام و نام خانوادگی : ")
+                                @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", placeholder = "نام و نام خانوادگی", style = "direction:rtl" })
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                @Html.Label("موبایل : ")
+                                @Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control", placeholder = "09111111111", style = "direction:ltr" })
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.Label("حداقل متراژ : ")
+                                @Html.TextBoxFor(m => m.MinimumArea, new { @class = "form-control", placeholder = "حداقل متراژ", style = "direction:rtl" })
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                @Html.Label("حداکثر متراژ : ")
+                                @Html.TextBoxFor(m => m.MaximumArea, new { @class = "form-control", placeholder = "حداکثر متراژ", style = "direction:rtl" })
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.Label("حداقل قیمت : ")
+
+                                @Html.TextBoxFor(m => m.MinimumPrice, new { @class = "form-control", placeholder = "حداقل قیمت", style = "direction:rtl" })
+                            </div>
+                            <div class="form-group col-md-6">
+                                @Html.Label("حداکثر قیمت : ")
+                                @Html.TextBoxFor(m => m.MaximumPrice, new { @class = "form-control", placeholder = "حداکثر قیمت", style = "direction:rtl" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                استان :
+                                <select class="form-control" id="drp-state">
+                                    <option value="">همه استان ها</option>
+                                    @foreach (var item in Model.States)
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
+                                </select>
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                شهر :
+                                <select class="form-control" id="drp-city">
+                                    <option value="">همه شهر ها</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                منطقه :
+
+                                <select class="form-control" id="drp-region">
+                                    <option value="">همه مناطق</option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <button type="button" class="site-btn" onclick="insertDemand()">ثبت تقاضا</button>
+                    </div>
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="btnClose" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">پیغام</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Contact Form Section End -->
+
+<script type="text/javascript">
+    var _urlGetCasCadeCities = '@(Url.Action("GetCasCadeCities", "Home"))';
+    var _urlGetCasCadeStates = '@(Url.Action("GetCasCadeStates", "Home"))';
+    var _urlInsertPropertyDemand = '@(Url.Action("InsertPropertyDemand", "Home"))';
+
+    $(function () {
+        $("#drp-province2").change(function () {
+                var a = $(this).val();
+            $.ajax({
+                url: window._urlGetCasCadeCities,
+                method: "post",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify({ a: a }),
+                success: function (result) {
+
+                    if (result.success) {
+                        $("#drp-city2").html("");
+                        for (var i = 0; i < result.da.length; i++) {
+
+                            var str = "<option value='" + result.da[i].ID + "'>" + result.da[i].Name + "'</option>'";
+                            $("#drp-city2").html(str);
+                        }
+
+                    }
+                }
+            });
+        });
+
+        $("#drp-city2").change(function () {
+            var b = $("#drp-city2").val();
+           
+            $.ajax({
+                url: window._urlGetCasCadeStates,
+                method: "post",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify({ b: b }),
+                success: function (result) {
+                   
+                    if (result.success) {
+                        $("#drp-state2").html("");
+                        for (var i = 0; i < result.da.length; i++) {
+                          
+                            var str = "<option value='" + result.da[i].ID + "'>" + result.da[i].Name + "'</option>'";
+
+                            $("#drp-state2").html(str);
+
+                        }
+
+
+                    }
+                }
+            });
+        });
+    });
+
+    function insertDemand() {
+        var model = {
+            PropertyType: $("#PropertyType option:selected").val(),
+            TransactionType: $("#TransactionType option:selected").val(),
+            FullName: $("#FullName").val(),
+            MobileNumber: $("#MobileNumber").val(),
+            MinimumArea: $("#MinimumArea").val(),
+            MaximumArea: $("#MaximumArea").val(),
+            MinimumPrice: $("#MinimumPrice").val(),
+            MaximumPrice: $("#MaximumPrice").val(),
+            ProvinceId: $("#drp-state option:selected").val(),
+            CityId: $("#drp-city option:selected").val(),
+            StateId: $("#drp-region option:selected").val()
+            };
+
+        $.ajax({
+            url: window._urlInsertPropertyDemand,
+                method: "post",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(model)
+            }).done(function (result) {
+
+                if (result.success) {
+                    $('#myModal').modal('toggle');
+                    $('#myModal').modal('show');
+
+                    $(".modal-body").css("color", "#24d237");
+                    $(".modal-header").addClass("alert-success");
+                    $(".modal-body").html("ثبت با موفقیت انجام شد");
+
+                    $("#FullName").val("");
+                    $("#MobileNumber").val("");
+                    $("#MinimumArea").val("");
+                    $("#MaximumArea").val("");
+                    $("#MinimumPrice").val("");
+                    $("#MaximumPrice").val("");
+                    $("#drp-state option:selected").val("");
+                    $("#drp-city option:selected").val("");
+                    $("#drp-region option:selected").val("");
+                }
+                else if (!result.success) {
+
+                    var str = "";
+                    for (var i = 0; i < result.errors.length; i++) {
+                        str += result.errors[i] + "<br/>";
+                    }
+
+                    $('#myModal').modal('toggle');
+                    $('#myModal').modal('show');
+                    $(".modal-header").addClass("alert-warning");
+                    $(".modal-body").css("color", "#fb3737");
+                    $(".modal-body").html(str);
+                }
+            });
+    }
+
+
+
+</script>

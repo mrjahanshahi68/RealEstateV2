@@ -43,6 +43,7 @@ namespace RealEstate.Common
 		public enum ObjectType
 		{
 			Property=1,
+			Blog=2,
 		}
 		//public enum DocumentType
 		//{
@@ -69,6 +70,15 @@ namespace RealEstate.Common
 			State,
 			City,
 			Region
+		}
+		public enum Categories
+		{
+			Learning = 1
+		}
+		public enum FileUnit
+		{
+			KB=1,
+			MG=2,
 		}
 	}
 }

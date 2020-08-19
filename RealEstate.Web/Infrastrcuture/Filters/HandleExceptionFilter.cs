@@ -43,25 +43,22 @@ namespace RealEstate.Web.Infrastrcuture.Filters
                 }
                 errorMessages.Add(exceptionMessage);
             }
-            
-            //new Thread(new ThreadStart(() =>
-            //{
-            //    var request = actionExecutedContext.Request;
-            //    var exepurl = request.RequestUri.ToString();
-            //    var exceptionLog = new Common.Entities.Log.Exception
-            //    {
-            //        ActionName = request.RequestUri.GetApiAction(),
-            //        ExceptionMsg = exception.Message,
-            //        ExceptionSource = exception.StackTrace.ToString(),
-            //        ExceptionType = exceptionMessage.GetType().Name.ToString(),
-            //        ExceptionURL = request.RequestUri.ToString(),
-            //        IPAddress = GetClientIp(request),
-            //        Logdate = DateTime.Now,
-            //    };
-            //    LogManager.WriteLog<DatabaseLogger>(exceptionLog);
-            //})).Start();
 
-            var response = new HttpResponseMessage
+			var request = actionExecutedContext.Request;
+			var exepurl = request.RequestUri.ToString();
+			var exceptionLog = new Common.Entities.Log.Exception
+			{
+				ActionName = request.RequestUri.GetApiAction(),
+				ExceptionMsg = exception.Message,
+				ExceptionSource = exception.StackTrace.ToString(),
+				ExceptionType = exceptionMessage.GetType().Name.ToString(),
+				ExceptionURL = request.RequestUri.ToString(),
+				//IPAddress = GetClientIp(request),
+				Logdate = DateTime.Now,
+			};
+			LogManager.WriteLog<DatabaseLogger>(exceptionLog);
+
+			var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
                 Content = new ObjectContent(

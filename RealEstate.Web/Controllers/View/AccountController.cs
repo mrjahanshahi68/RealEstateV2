@@ -8,10 +8,15 @@ namespace RealEstate.Web.Controllers.View
 {
     public class AccountController : Controller
     {
-        // GET: Account
-        public ActionResult Index()
-        {
-            return View();
-        }
-    }
+		// GET: Account
+		public ActionResult Index()
+		{
+			return View();
+		}
+
+		public ActionResult ChangePassWord()
+		{
+			return View();
+		}
+	}
 }

@@ -1,0 +1,907 @@
+﻿@model  RealEstate.Web.Models.Views.HomeVM
+
+@{
+    Layout = "~/ClientApp/Views/Shared/_UserLayout.cshtml";
+}
+<script>
+	var states = @Html.Raw(Json.Encode(Model.States));
+	var cities = @Html.Raw(Json.Encode(Model.Cities));
+	var regions = @Html.Raw(Json.Encode(Model.Regions));
+</script>
+
+<!-- Hero Section Begin -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hs-slider owl-carousel">
+			@foreach (var item in Model.LuxuryProperties)
+			{
+				<div class="hs-item set-bg" data-setbg="/@item.SlideImagePath">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="hc-inner-text">
+								<div class="hc-text">
+									<h4><a href="/property/@item.HashKey/@item.UrlTitle">@item.Title</a></h4>
+									<p><span class="icon_pin_alt"></span> @item.RegionName</p>
+									<div class="label">@item.TransactionTypeName</div>
+									@if (item.Type == AppEnums.TransactionType.Rent)
+									{
+										if (item.MortgagePrice.HasValue)
+										{
+											if (item.MortgagePrice.Value == 0)
+											{
+												<h5>رایگان<span>/ رهن</span></h5>
+											}
+											else
+											{
+												<h5>@item.MortgagePrice.Value.ToString("n0")<span>/ رهن</span></h5>
+											}
+
+										}
+										else
+										{
+											<h5>توافقی<span>/ رهن</span></h5>
+										}
+										if (item.RentalPrice.HasValue)
+										{
+											if (item.RentalPrice.Value == 0)
+											{
+												<h5>رایگان<span>/ ماهانه</span></h5>
+											}
+											else
+											{
+												<h5>@item.RentalPrice.Value.ToString("n0")<span>/ ماهانه</span></h5>
+											}
+										}
+										else
+										{
+											<h5>توافقی<span>/ ماهانه</span></h5>
+										}
+									}
+									else if (item.Type == AppEnums.TransactionType.PreSel || item.Type == AppEnums.TransactionType.Sale)
+									{
+										if (item.SalePrice.HasValue)
+										{
+											if (item.SalePrice.Value == 0)
+											{
+												<h5>رایگان<span>/ فروش</span></h5>
+											}
+											else
+											{
+												<h5>@item.SalePrice.Value.ToString("n0")<span>/ فروش</span></h5>
+											}
+										}
+										else
+										{
+											<h5>توافقی<span>/ فروش</span></h5>
+										}
+									}
+								</div>
+								<div class="hc-widget">
+									<ul class="rtl">
+										<li><i class="fa fa-object-group"></i>@item.LandingArea متر </li>
+										<li><i class="fa fa-building"></i> @item.BuildingArea متر </li>
+										<li><i class="fa fa-bed"></i>@item.BedRoom  </li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+<!-- Search Section Begin -->
+<style>
+	 .search-btn {
+		font-size: 14px;
+		height: 46px;
+		background: #00C89E;
+		color: #ffffff;
+		border: none;
+		cursor: pointer;
+		text-transform: uppercase;
+		font-weight: 600;
+		margin-right: 20px;
+	}
+	 @@media (min-width:768px){
+		 .search-btn{
+			 width:200px;
+		 }
+	 }
+	@@media (min-width:420px) {
+		.search-btn {
+			width: 100%;
+		}
+	}
+	.search-input {
+		width: 100%;
+		padding: 15px;
+		border: 1px solid #ddd;
+		border-radius: 55px;
+	}
+</style>
+
+<section class="search-section spad">
+    <div class="container">
+        <div class="row">
+            @*<div class="col-lg-6 col-md-12">
+                <div class="change-btn">
+                    <div class="cb-item">
+						<label for="cb-rent" class="active">
+							برای اجاره
+							<input type="radio" id="cb-rent">
+						</label>
+                        <label for="cb-rent" data-val="1">
+                            برای اجاره
+                            <input type="radio" id="cb-rent">
+                        </label>
+                    </div>
+                    <div class="cb-item">
+                        <label for="cb-sale" data-val="2">
+                            برای خرید
+                            <input type="radio" id="cb-sale">
+                        </label>
+                    </div>
+					<div class="cb-item">
+						<label for="cb-sale" data-val="3">
+							برای پیش فروش
+							<input type="radio" id="cb-presell">
+						</label>
+					</div>
+					<div class="cb-item">
+						<label for="cb-sale" data-val="4">
+							برای معاوضه
+							<input type="radio" id="cb-exchange">
+						</label>
+					</div>
+					
+                </div>
+            </div>*@
+            <div class="col-md-12">
+                <div class="section-title">
+                    <h3>چه جایی رو شما دوست دارید؟</h3>
+                </div>
+            </div>
+
+        </div>
+		
+		<div class="search-container row rtl" style="display:none;">
+			<div class="col-md-12">
+				<input type="search" class="search-input" id="search-input" placeholder="جستجو براساس عنوان، مکان، نوع ملک" />
+			</div>
+		</div>
+		<div class="search-container row rtl">
+			<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 form-group">
+				<select class="form-control" id="drp-state">
+					<option value="">همه استان ها</option>
+					@foreach (var item in Model.States)
+					{
+						<option value="@item.ID">@item.Name</option>
+					}
+				</select>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 form-group">
+				<select class="form-control" id="drp-city">
+					<option value="">همه شهر ها</option>
+				</select>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 form-group">
+				<select class="form-control" id="drp-region">
+					<option value="">همه مناطق</option>
+				</select>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 form-group">
+				<select class="form-control" id="drp-type">
+					<option value="">نوع معامله</option>
+					<option value="1">اجاره</option>
+					<option value="2">فروش</option>
+					<option value="3">پیش فروش</option>
+					<option value="4">معاوضه</option>
+				</select>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 form-group">
+				<select class="form-control" id="drp-propertytype">
+					<option value="">نوع ملک</option>
+					@foreach (var item in Model.PropertyTypes)
+					{
+						<option value="@item.ID">@item.Name</option>
+					}
+				</select>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 form-group">
+				<select class="form-control" id="drp-bedroom">
+					<option value="0">فاقد اتاق خواب</option>
+					<option value="1">یک</option>
+					<option value="2">دو</option>
+					<option value="3">سه</option>
+					<option value="4">بیش از سه</option>
+				</select>
+			</div>
+		</div>
+		<div class="more-option rtl">
+			<div class="accordion" id="accordionExample">
+				<div class="card">
+					<div class="card-heading active">
+						<a data-toggle="collapse" data-target="#collapseOne">
+							موارد بیشتر برای جستجو
+						</a>
+					</div>
+					<div id="collapseOne" class="collapse" data-parent="#accordionExample">
+						<div class="card-body row">
+							<div class="col-md-6 col-sm-12 d-none" id="sale-container">
+								<div class="row">
+									<label class="col-md-12">
+										قیمت فروش :
+									</label>
+									<div class="col-6 form-group">
+										<input type="text" id="sale-min-price" numeral class="form-control" placeholder="از" />
+									</div>
+									<div class="col-6 form-group">
+										<input type="text" id="sale-max-price" numeral class="form-control" placeholder="تا" />
+									</div>
+								</div>
+								
+							</div>
+							<div class="col-md-6 col-sm-12 d-none" id="mortgage-container">
+								<div class="row">
+									<label class="col-md-12">
+										قیمت رهن :
+									</label>
+									<div class="col-6 form-group">
+										<input type="text" id="mortgage-min-price" numeral class="form-control" placeholder="از" />
+									</div>
+									<div class="col-6 form-group">
+										<input type="text" id="mortgage-max-price" numeral class="form-control" placeholder="تا" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6 col-sm-12 d-none" id="rental-container">
+								<div class="row">
+									<label class="col-md-12">
+										قیمت اجاره :
+									</label>
+									<div class="col-6 form-group">
+										<input type="text" id="rental-min-price" numeral class="form-control" placeholder="از" />
+									</div>
+									<div class="col-6 form-group">
+										<input type="text" id="rental-max-price" numeral class="form-control" placeholder="تا" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6 col-sm-12" id="landing-container">
+								<div class="row">
+									<label class="col-md-12">
+										متراژ زیربنا :
+									</label>
+									<div class="col-6 form-group">
+										<input type="text" id="landing-min-area" numeral class="form-control" placeholder="از" />
+									</div>
+									<div class="col-6 form-group">
+										<input type="text" id="landing-max-area" numeral class="form-control" placeholder="تا" />
+									</div>
+								</div>
+
+							</div>
+							<div class="col-md-6 col-sm-12" id="building-container">
+								<div class="row">
+									<label class="col-md-12">
+										متراژ بنا :
+									</label>
+									<div class="col-6 form-group">
+										<input type="text" id="building-min-area" numeral class="form-control" placeholder="از" />
+									</div>
+									<div class="col-6 form-group">
+										<input type="text" id="building-max-area" numeral class="form-control" placeholder="تا" />
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-12 text-left">
+				<button type="button" id="btn-search"  class="search-btn">جستجو</button>
+			</div>
+		</div>
+    </div>
+</section>
+<!-- Search Section End -->
+<!-- Property Section Begin -->
+<section class="property-section latest-property-section spad">
+    <div class="container">
+        <div class="row">
+            @*<div class="col-lg-7">
+                <div class="property-controls">
+                    <ul>
+                        <li data-filter=".apart">آپارتمان</li>
+                        <li data-filter=".house">خانه</li>
+                        <li data-filter=".office">اداری</li>
+                        <li data-filter=".hotel">هتل</li>
+                        <li data-filter=".restaurent">رستوران</li>
+                        <li data-filter="all">همه</li>
+                    </ul>
+                </div>
+            </div>*@
+            <div class="col-lg-12">
+                <div class="section-title property-filter-title" >
+                    <h3>املاک اخیر</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row property-filter rtl">
+			@foreach (var item in Model.LatestProperties)
+			{
+				<div class="col-lg-4 col-md-6 mix all house">
+					<div class="property-item">
+						<div class="pi-pic set-bg" data-setbg="/@item.CoverImagePath">
+							<img src="/@item.CoverImagePath" class="cover-image" />
+							@if (item.Type == AppEnums.TransactionType.Rent)
+							{
+								<div class="label">اجاره</div>
+							}
+							else if (item.Type == AppEnums.TransactionType.Sale)
+							{
+								<div class="label c-red">فروش</div>
+							}
+							else if (item.Type == AppEnums.TransactionType.PreSel)
+							{
+								<div class="label c-magenta">پیش فروش</div>
+							}
+							else if (item.Type == AppEnums.TransactionType.PreSel)
+							{
+								<div class="label c-magenta">معاوضه</div>
+							}
+						</div>
+						<div class="pi-text">
+							@if (item.Type == AppEnums.TransactionType.Rent)
+							{
+								if (item.MortgagePrice.HasValue)
+								{
+									if (item.MortgagePrice.Value == 0)
+									{
+										<div class="pt-price"><span>رهن </span>  <span>رایگان</span> </div>
+									}
+									else
+									{
+										<div class="pt-price"><span>رهن </span>  <span>@item.MortgagePrice.Value.ToString("n0")</span> </div>
+									}
+
+								}
+								else
+								{
+									<div class="pt-price"><span>رهن </span>  <span>توافقی</span> </div>
+								}
+								if (item.RentalPrice.HasValue)
+								{
+									if (item.RentalPrice.Value == 0)
+									{
+										<div class="pt-price"><span>اجاره </span>  <span>رایگان</span> </div>
+									}
+									else
+									{
+										<div class="pt-price"><span>اجاره</span>  <span>@item.RentalPrice.Value.ToString("n0")</span> </div>
+									}
+
+								}
+								else
+								{
+									<div class="pt-price"><span>رهن </span>  <span>توافقی</span> </div>
+								}
+							}
+							else if (item.Type == AppEnums.TransactionType.Sale)
+							{
+								if (item.SalePrice.HasValue)
+								{
+									if (item.SalePrice.Value == 0)
+									{
+										<div class="pt-price sale-price"><span>فروش </span>  <span>رایگان</span> </div>
+									}
+									else
+									{
+										<div class="pt-price sale-price"><span>فروش </span>  <span>@item.SalePrice.Value.ToString("n0")</span> </div>
+									}
+
+								}
+								else
+								{
+									<div class="pt-price sale-price"><span>فروش </span>  <span>توافقی</span> </div>
+								}
+
+							}
+							else if (item.Type == AppEnums.TransactionType.PreSel)
+							{
+								if (item.SalePrice.HasValue)
+								{
+									<div class="pt-price" style="height: 64px;"><span>پیش فروش </span>  <span>@item.SalePrice.Value.ToString("n0")</span> </div>
+								}
+							}
+							
+							<h5 class="property-title"><a href="/property/@item.HashKey/@item.UrlTitle">@item.Title</a></h5>
+							<p> @item.RegionName &nbsp;<span class="icon_pin_alt"></span></p>
+							<ul style="direction:rtl">
+								@if (item.LandingArea.HasValue)
+								{
+									<li><i class="fa fa-object-group"></i> @item.LandingArea متر</li>
+								}
+								else
+								{
+								<li><i class="fa fa-bed"></i> نامشخص  </li>
+
+								}
+								@if (item.BuildingArea.HasValue)
+								{
+									<li><i class="fa fa-building"></i>  @item.BuildingArea متر </li>
+								}
+								else
+								{
+									<li><i class="fa fa-bed"></i> نامشخص  </li>
+								}
+								@if (item.BedRoom.HasValue)
+								{
+									<li><i class="fa fa-bed"></i> @item.BedRoom  </li>
+								}
+								else
+								{
+									<li><i class="fa fa-bed"></i> فاقد اتاق  </li>
+								}
+								
+								
+								
+							</ul>
+							<div class="pi-agent">
+								<div class="pa-item">
+									<div class="pa-info">
+										<h6>کدملک  </h6>
+										@*<img src="~/Attachments/Properties/posted-by/pb-1.jpg" alt="">*@
+									</div>
+									<div class="pa-text">
+										@item.PropertyCode
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			}            
+        </div>
+		<div class="row rtl">
+			<div class="col-12 text-center">
+				<button type="button" id="btn-loadmore" class="btn btn-outline-danger">موارد بیشتر</button>
+			</div>
+		</div>
+    </div>
+</section>
+<div style="display:none">
+	<!-- Property Section End -->
+	<!-- Chooseus Section Begin -->
+	<section class="chooseus-section spad set-bg" data-setbg="/ClientApp/img/chooseus/chooseus-bg.jpg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="chooseus-text">
+						<div class="section-title">
+							<h4>Why choose us</h4>
+						</div>
+						<p>
+							تبدیل آنلاین اعداد فارسی به انگلیسی و اعداد انگلیسی به فارسی تبدیل آنلاین اعداد فارسی به انگلیسی و اعداد انگلیسی به فارسی تبدیل آنلاین اعداد فارسی به انگلیسی و اعداد انگلیسی به فارسی
+						</p>
+					</div>
+					<div class="chooseus-features">
+						<div class="cf-item">
+							<div class="cf-pic">
+								<img src="/ClientApp/img/chooseus/chooseus-icon-1.png" alt="">
+							</div>
+							<div class="cf-text">
+								<h5>تبدیل اعداد انگلیسی به فارسی</h5>
+								<p>برای تبدیل اعداد انگلیسی به فارسی و برعکس عدد مد نظر را در کادر مربوطه وارد کنید تا خودکار تبدیل شود. </p>
+							</div>
+						</div>
+						<div class="cf-item">
+							<div class="cf-pic">
+								<img src="/ClientApp/img/chooseus/chooseus-icon-2.png" alt="">
+							</div>
+							<div class="cf-text">
+								<h5>تبدیل اعداد انگلیسی به فارسی</h5>
+								<p>برای تبدیل اعداد انگلیسی به فارسی و برعکس عدد مد نظر را در کادر مربوطه وارد کنید تا خودکار تبدیل شود. </p>
+							</div>
+						</div>
+						<div class="cf-item">
+							<div class="cf-pic">
+								<img src="/ClientApp/img/chooseus/chooseus-icon-3.png" alt="">
+							</div>
+							<div class="cf-text">
+								<h5>تبدیل اعداد انگلیسی به فارسی</h5>
+								<p>برای تبدیل اعداد انگلیسی به فارسی و برعکس عدد مد نظر را در کادر مربوطه وارد کنید تا خودکار تبدیل شود. </p>
+							</div>
+						</div>
+						<div class="cf-item">
+							<div class="cf-pic">
+								<img src="/ClientApp/img/chooseus/chooseus-icon-4.png" alt="">
+							</div>
+							<div class="cf-text">
+								<h5>تبدیل اعداد انگلیسی به فارسی</h5>
+								<p>برای تبدیل اعداد انگلیسی به فارسی و برعکس عدد مد نظر را در کادر مربوطه وارد کنید تا خودکار تبدیل شود. </p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Chooseus Section End -->
+	<!-- Feature Property Section Begin -->
+	<section class="feature-property-section spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 p-0">
+					<div class="fp-slider owl-carousel">
+						<div class="fp-item set-bg" data-setbg="/ClientApp/img/feature-property/fp-1.jpg">
+							<div class="fp-text">
+								<h5 class="title">تبدیل آنلاین اعداد فارسی</h5>
+								<p> چاله باغ قدس 5 مجتمع سنا &nbsp; <span class="icon_pin_alt"></span> </p>
+								<div class="label">اجاره</div>
+								<h5>ریال ۳۵۸۰۰۰<span>/ماه</span></h5>
+								<ul>
+									<li> ۲, ۲۸۳ <i class="fa fa-object-group"></i></li>
+									<li> ۰۳ <i class="fa fa-bathtub"></i></li>
+									<li> 05 <i class="fa fa-bed"></i></li>
+									<li> 01 <i class="fa fa-automobile"></i></li>
+								</ul>
+							</div>
+						</div>
+						<div class="fp-item set-bg" data-setbg="/ClientApp/img/feature-property/fp-2.jpg">
+							<div class="fp-text">
+								<h5 class="title">تبدیل آنلاین اعداد فارسی</h5>
+								<p><span class="icon_pin_alt"></span> 3 Middle Winchendon Rd, Rindge, NH ۰۳461</p>
+								<div class="label">برای اجاره</div>
+								<h5>ریال ۳۵۸۰۰۰<span>/ماه</span></h5>
+								<ul>
+									<li> ۲, ۲۸۳ <i class="fa fa-object-group"></i></li>
+									<li> ۰۳ <i class="fa fa-bathtub"></i></li>
+									<li> 05 <i class="fa fa-bed"></i></li>
+									<li> 01 <i class="fa fa-automobile"></i></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 p-0">
+					<div class="feature-property-left">
+						<div class="section-title">
+							<h4>Feature PROPERTY</h4>
+						</div>
+						<ul>
+							<li>آپارتمان</li>
+							<li>خانه</li>
+							<li>ادراه</li>
+							<li>هتل</li>
+							<li>ویلا</li>
+							<li>رستوران</li>
+						</ul>
+						<a href="#">مشاهده املاک</a>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+	<!-- Feature Property Section End -->
+	<!-- Team Section Begin -->
+	<section class="team-section spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 col-md-4">
+					<div class="team-btn">
+						<a href="#"> مشاوران  &nbsp;<i class="fa fa-user"></i> </a>
+					</div>
+				</div>
+				<div class="col-lg-8 col-md-8">
+					<div class="section-title">
+						<h4>آخرین املاک</h4>
+					</div>
+				</div>
+
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="ts-item">
+						<div class="ts-text">
+							<img src="/ClientApp/img/team/team-1.jpg" alt="">
+							<h5>Ashton Kutcher</h5>
+							<span>123-455-688</span>
+							<p>Ipsum dolor amet, consectetur adipiscing elit, eiusmod tempor incididunt lorem.</p>
+							<div class="ts-social">
+								<a href="#"><i class="fa fa-facebook"></i></a>
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-envelope-o"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="ts-item">
+						<div class="ts-text">
+							<img src="/ClientApp/img/team/team-2.jpg" alt="">
+							<h5>Ashton Kutcher</h5>
+							<span>123-455-688</span>
+							<p>Ipsum dolor amet, consectetur adipiscing elit, eiusmod tempor incididunt lorem.</p>
+							<div class="ts-social">
+								<a href="#"><i class="fa fa-facebook"></i></a>
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-envelope-o"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="ts-item">
+						<div class="ts-text">
+							<img src="/ClientApp/img/team/team-3.jpg" alt="">
+							<h5>Ashton Kutcher</h5>
+							<span>123-455-688</span>
+							<p>Ipsum dolor amet, consectetur adipiscing elit, eiusmod tempor incididunt lorem.</p>
+							<div class="ts-social">
+								<a href="#"><i class="fa fa-facebook"></i></a>
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-envelope-o"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Team Section End -->
+	<!-- Categories Section Begin -->
+	<section class="categories-section">
+		<div class="cs-item-list">
+			<div class="cs-item set-bg" data-setbg="/ClientApp/img/categories/cat-1.jpg">
+				<div class="cs-text">
+					<h5>Apartment</h5>
+					<span>230 property</span>
+				</div>
+			</div>
+			<div class="cs-item set-bg" data-setbg="/ClientApp/img/categories/cat-2.jpg">
+				<div class="cs-text">
+					<h5>Villa</h5>
+					<span>230 property</span>
+				</div>
+			</div>
+			<div class="cs-item set-bg" data-setbg="/ClientApp/img/categories/cat-3.jpg">
+				<div class="cs-text">
+					<h5>House</h5>
+					<span>230 property</span>
+				</div>
+			</div>
+			<div class="cs-item set-bg" data-setbg="/ClientApp/img/categories/cat-4.jpg">
+				<div class="cs-text">
+					<h5>Restaurent</h5>
+					<span>230 property</span>
+				</div>
+			</div>
+			<div class="cs-item set-bg" data-setbg="/ClientApp/img/categories/cat-5.jpg">
+				<div class="cs-text">
+					<h5>Office</h5>
+					<span>230 property</span>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Categories Section End -->
+	<!-- Testimonial Section Begin -->
+	<section class="testimonial-section spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="section-title">
+						<h4> ?آنچه مشتری ما می گوید</h4>
+					</div>
+				</div>
+			</div>
+			<div class="row testimonial-slider owl-carousel">
+				<div class="col-lg-6">
+					<div class="testimonial-item">
+						<div class="ti-text">
+							<p>
+								تبدیل اعداد انگلیسی به فارسی در Wordد استفاه کنید، تغییر تنظیمات داخلی برنامه است، اما کیت ست یک راه حل سادشنهاد می دهد و آن هم استفاده از ابزار آنلاین تبدیل اعداد فارسی به انگلیسی یا انگلیسی به فارسی است.
+							</p>
+						</div>
+						<div class="ti-author">
+							<div class="ta-pic">
+								<img src="/ClientApp/img/testimonial-author/ta-1.jpg" alt="">
+							</div>
+							<div class="ta-text">
+								<h5>صدیقه نیاوند</h5>
+								<span>طراح</span>
+								<div class="ta-rating">
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="testimonial-item">
+						<div class="ti-text">
+							<p>
+								Lorem ipsum dolor amet, consectetur adipiscing elit, seiusmod tempor incididunt ut labore
+								magna aliqua. Quis ipsum suspendisse ultrices gravida accumsan lacus vel facilisis.
+							</p>
+						</div>
+						<div class="ti-author">
+							<div class="ta-pic">
+								<img src="/ClientApp/img/testimonial-author/ta-2.jpg" alt="">
+							</div>
+							<div class="ta-text">
+								<h5>صدیقه نیاوند</h5>
+								<span>طراح</span>
+								<div class="ta-rating">
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="testimonial-item">
+						<div class="ti-text">
+							<p>
+								Lorem ipsum dolor amet, consectetur adipiscing elit, seiusmod tempor incididunt ut labore
+								magna aliqua. Quis ipsum suspendisse ultrices gravida accumsan lacus vel facilisis.
+							</p>
+						</div>
+						<div class="ti-author">
+							<div class="ta-pic">
+								<img src="/ClientApp/img/testimonial-author/ta-1.jpg" alt="">
+							</div>
+							<div class="ta-text">
+								<h5>صدیقه نیاوند</h5>
+								<span>طراح</span>
+								<div class="ta-rating">
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Testimonial Section End -->
+	<!-- Logo Carousel Begin -->
+	<div class="logo-carousel">
+		<div class="container">
+			<div class="lc-slider owl-carousel">
+				<a href="#" class="lc-item">
+					<div class="lc-item-inner">
+						<img src="/ClientApp/img/logo-carousel/lc-1.png" alt="">
+					</div>
+				</a>
+				<a href="#" class="lc-item">
+					<div class="lc-item-inner">
+						<img src="/ClientApp/img/logo-carousel/lc-2.png" alt="">
+					</div>
+				</a>
+				<a href="#" class="lc-item">
+					<div class="lc-item-inner">
+						<img src="/ClientApp/img/logo-carousel/lc-3.png" alt="">
+					</div>
+				</a>
+				<a href="#" class="lc-item">
+					<div class="lc-item-inner">
+						<img src="/ClientApp/img/logo-carousel/lc-4.png" alt="">
+					</div>
+				</a>
+				<a href="#" class="lc-item">
+					<div class="lc-item-inner">
+						<img src="/ClientApp/img/logo-carousel/lc-5.png" alt="">
+					</div>
+				</a>
+				<a href="#" class="lc-item">
+					<div class="lc-item-inner">
+						<img src="/ClientApp/img/logo-carousel/lc-6.png" alt="">
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+	<!-- Logo Carousel End -->
+
+</div>
+
+<style>
+	.cover-image {
+		width: 100%;
+		height: 240px
+	}
+	.sale-price {
+		height: 64px;
+	}
+	.property-title{
+		height:50px;
+	}
+</style>
+<script type="text/html" id="rent-property-card-template">
+	<div class="col-lg-4 col-md-6 mix all house">
+		<div class="property-item">
+			<div class="pi-pic set-bg" data-setbg="/{CoverImagePath}">
+				<img src="/{CoverImagePath}" class="cover-image" />
+				<div class="label">اجاره</div>
+			</div>
+			<div class="pi-text">
+				<a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+				<div class="pt-price"><span>رهن</span>  <span>{MortgagePrice}</span> </div>
+				<div class="pt-price"><span>اجاره</span>  <span>{RentalPrice}</span> </div>
+				<h5 class="property-title"><a href="/{UrlTitle}">{Title}</a></h5>
+				<p>{RegionName} &nbsp;<span class="icon_pin_alt"></span></p>
+				<ul style="direction:rtl">
+					<li><i class="fa fa-object-group"></i> {LandingArea} متر</li>
+					<li><i class="fa fa-building"></i>  {BuildingArea} متر </li>
+					<li><i class="fa fa-bed"></i> {BedRoom}  </li>
+				</ul>
+				<div class="pi-agent">
+					<div class="pa-item">
+						<div class="pa-info">
+							<h6>کد ملک</h6>
+							<img src="~/Attachments/Properties/posted-by/pb-1.jpg" alt="">
+						</div>
+						<div class="pa-text">
+							{PropertyCode}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="sale-property-card-template">
+	<div class="col-lg-4 col-md-6 mix all house">
+		<div class="property-item">
+			<div class="pi-pic set-bg" data-setbg="/{CoverImagePath}" >
+				<img src="/{CoverImagePath}" class="cover-image" />
+				<div class="label c-red">فروش</div>
+			</div>
+			<div class="pi-text">
+				<a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+				<div class="pt-price sale-price"><span>فروش</span>  <span>{SalePrice}</span> </div>
+				<h5 class="property-title"><a href="/{UrlTitle}">{Title}</a></h5>
+				<p>{RegionName} &nbsp;<span class="icon_pin_alt"></span></p>
+				<ul style="direction:rtl">
+					<li><i class="fa fa-object-group"></i> {LandingArea} متر</li>
+					<li><i class="fa fa-building"></i>  {BuildingArea} متر </li>
+					<li><i class="fa fa-bed"></i> {BedRoom}  </li>
+				</ul>
+				<div class="pi-agent">
+					<div class="pa-item">
+						<div class="pa-info">
+							<h6>کد ملک</h6>
+							<img src="~/Attachments/Properties/posted-by/pb-1.jpg" alt="">
+						</div>
+						<div class="pa-text">
+							{PropertyCode}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
+

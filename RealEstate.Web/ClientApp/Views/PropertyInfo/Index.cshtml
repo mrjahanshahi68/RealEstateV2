@@ -2,7 +2,24 @@
     Layout = "~/ClientApp/Views/Shared/_AdminLayout.cshtml";
 }
 
+<style>
+	main{
+		overflow:hidden;
+	}
+	#window {
+		margin: 0;
+		padding: 0;
+		/*border-width: 0;*/
+		height: 100%; /* DO NOT USE !important for setting the Grid height! */
+	}
+	#grid {
+		margin: 0;
+		padding: 0;
+		border-width: 0;
+		height: 85%; /* DO NOT USE !important for setting the Grid height! */
+	}
 
+</style>
 <div class="panel panel-default" ng-controller="propertyInfoController" ng-init="init()">
 	<div class="panel-heading">
 		<span class="title">مدیریت ملک</span>
@@ -24,6 +41,7 @@
 		$scope.temp = {
 			propertyStatuses: null,
 			transactionTypes: null,
+			registerUserType: [{ value: 0, text: "مالک" }, { value: 1, text: "مدیر" }],
 		}
 
 		$scope.init = function () {
@@ -92,6 +110,7 @@
 								ReagentFullName: { type: "string" },
 								ReagentTel: { type: "string" },
 								IsDeleted: { type: "boolean" },
+								RegisterBy: { type: "enum" },
 							}
 						}
 					}
@@ -129,6 +148,18 @@
 				columns:
 				[
 					{
+						width: "200px",
+						template: function (e) {
+							var commandBtn = "<button class=\"btn btn-primary\"style=\"margin:2px;\" type=\"button\" ng-click=\"edit(dataItem)\">ویرایش</button>";
+							commandBtn += "<button class=\"btn btn-danger\" style=\"margin:2px;\" type=\"button\" ng-click=\"delete(dataItem)\">حذف</button>";
+							//commandBtn += "<button class=\"btn btn-success\" type=\"button\" ng-click=\"edit(dataItem)\">انتساب دسترسی</button>";
+							return commandBtn;
+						},
+						attributes: {
+							style: "text-align: center"
+						}
+					},
+					{
 						title: "کدملک",
 						field: "PropertyCode",
 						width: "120px",
@@ -156,18 +187,28 @@
 
 					},
 					{
+						title: "ثبت کننده",
+						field: "RegisterBy",
+						values: $scope.temp.registerUserType,
+						width: "160px",
+						attributes: {
+							style: "text-align: center"
+						},
+						template: function (e) {
+							if (e.RegisterBy) {
+								return "<span>مدیر</span>";
+							}
+							else {
+								return "<span>مالک</span>";
+							}
+						}
+
+					},
+					{
 						title: "معامله",
 						field: "Type",
 						values: $scope.temp.transactionTypes,
 						width: "130px",
-						attributes: {
-							style: "text-align: center"
-						}
-					},
-					{
-						title: "متراژ بنا",
-						field: "BuildingArea",
-						width: "150px",
 						attributes: {
 							style: "text-align: center"
 						}
@@ -178,6 +219,26 @@
 						width: "150px",
 						attributes: {
 							style: "text-align: center"
+						},
+						template: function (e) {
+							if (e.LandingArea) {
+								return "<span>" + e.LandingArea + " متر</span>";
+							}
+							return "<span>-</span>";
+						}
+					},
+					{
+						title: "متراژ بنا",
+						field: "BuildingArea",
+						width: "150px",
+						attributes: {
+							style: "text-align: center"
+						},
+						template: function (e) {
+							if (e.BuildingArea) {
+								return "<span>" + e.BuildingArea +" متر</span>";
+							}
+							return "<span>-</span>";
 						}
 					},
 					{
@@ -186,6 +247,12 @@
 						width: "110px",
 						attributes: {
 							style: "text-align: center"
+						},
+						template: function (e) {
+							if (e.BedRoom) {
+								return "<span>" + e.BedRoom + "</span>";
+							}
+							return "<span>-</span>";
 						}
 					},
 					{
@@ -194,15 +261,26 @@
 						width: "110px",
 						attributes: {
 							style: "text-align: center"
+						},
+						template: function (e) {
+							if (e.BathRoom) {
+								return "<span>" + e.BathRoom + "</span>";
+							}
+							return "<span>-</span>";
 						}
 					},
 					{
 						title: "تعداد طبقه",
 						field: "Floor",
-						values: $scope.temp.userTypes,
 						width: "150px",
 						attributes: {
 							style: "text-align: center"
+						},
+						template: function (e) {
+							if (e.Floor) {
+								return "<span>" + e.Floor + "</span>";
+							}
+							return "<span>-</span>";
 						}
 					},
 					{
@@ -211,6 +289,21 @@
 						width: "150px",
 						attributes: {
 							style: "text-align: center"
+						},
+						template: function (e) {
+							if (e.FloorNumber) {
+								if (e.FloorNumber == 0) {
+									return "<span>همکف</span>";
+								}
+								else if (e.FloorNumber == -1) {
+									return "<span>زیرهمکف</span>";
+								}
+								else {
+									return "<span>" + e.FloorNumber + "</span>";
+								}
+
+							}
+							return "<span>-</span>";
 						}
 					},
 					{
@@ -227,15 +320,26 @@
 						width: "150px",
 						attributes: {
 							style: "text-align: center"
+						},
+						template: function (e) {
+							if (e.Position) {
+								return "<span>" + e.Position + "</span>";
+							}
+							return "<span>-</span>";
 						}
 					},
 					{
 						title: "نما ملک",
 						field: "PropertyView",
-						values: $scope.temp.userTypes,
 						width: "150px",
 						attributes: {
 							style: "text-align: center"
+						},
+						template: function (e) {
+							if (e.PropertyView) {
+								return "<span>" + e.PropertyView + "</span>";
+							}
+							return "<span>-</span>";
 						}
 					},
 					{
@@ -244,6 +348,12 @@
 						width: "150px",
 						attributes: {
 							style: "text-align: center"
+						},
+						template: function (e) {
+							if (e.ConstructorYear) {
+								return "<span>" + e.ConstructorYear + "</span>";
+							}
+							return "<span>-</span>";
 						}
 					},
 					{
@@ -252,6 +362,12 @@
 						width: "300px",
 						attributes: {
 							style: "text-align: center"
+						},
+						template: function (e) {
+							if (e.Address) {
+								return "<span>" + e.Address + "</span>";
+							}
+							return "<span>-</span>";
 						}
 					},
 					{
@@ -260,9 +376,20 @@
 						values: $scope.temp.userTypes,
 						width: "150px",
 						template: function (e) {
-							if (e.SalePrice)
-								return e.SalePrice
-							return "-";
+							if (e.Type == 2 || e.Type==3) {
+								if (e.SalePrice === 0 || e.SalePrice > 0) {
+									if (e.SalePrice === 0) {
+										return "<span>رایگان</span>";
+									}
+									else {
+										return "<span>" + numeral(e.SalePrice).format("0,0") + "</span>"
+									}
+								}
+								return "توافقی";
+							}
+							else {
+								return "-";
+							}
 						},
 						attributes: {
 							style: "text-align: center"
@@ -273,9 +400,21 @@
 						field: "MortgagePrice",
 						width: "150px",
 						template: function (e) {
-							if (e.MortgagePrice)
-								return e.MortgagePrice
-							return "-";
+							if (e.Type == 1) {
+								if (e.MortgagePrice === 0 || e.MortgagePrice >= 0) {
+									if (e.MortgagePrice === 0) {
+										return "<span>رایگان</span>";
+									}
+									else {
+										return "<span>" + numeral(e.MortgagePrice).format("0,0") + "</span>"
+									}
+								}
+								return "توافقی";
+							}
+							else {
+								return "-";
+							}
+							
 						},
 						attributes: {
 							style: "text-align: center"
@@ -286,9 +425,20 @@
 						field: "RentalPrice",
 						width: "150px",
 						template: function (e) {
-							if (e.RentalPrice)
-								return e.RentalPrice
-							return "-";
+							if (e.Type == 1) {
+								if (e.RentalPrice === 0 || e.RentalPrice >= 0) {
+									if (e.RentalPrice === 0) {
+										return "<span>رایگان</span>";
+									}
+									else {
+										return "<span>" + numeral(e.RentalPrice).format("0,0") + "</span>"
+									}
+								}
+								return "توافقی";
+							}
+							else {
+								return "-";
+							}
 						},
 						attributes: {
 							style: "text-align: center"
@@ -370,17 +520,11 @@
 							if (e.RegisterDate)
 								return moment(e.RegisterDate).format('jYYYY/jM/jD');
 							return "-";
+						},
+						attributes: {
+							style: "text-align: center"
 						}
 					},
-					{
-						width:"200px",
-						template: function (e) {
-							var commandBtn = "<button class=\"btn btn-primary\" type=\"button\" ng-click=\"edit(dataItem)\">ویرایش</button>";
-							commandBtn += "<button class=\"btn btn-danger\" type=\"button\" ng-click=\"delete(dataItem)\">حذف</button>";
-							//commandBtn += "<button class=\"btn btn-success\" type=\"button\" ng-click=\"edit(dataItem)\">انتساب دسترسی</button>";
-							return commandBtn;
-						}
-					}
 				]
 			}
 		}
@@ -394,7 +538,7 @@
 			if (dataItem) {
 				var conf = confirm("آیا مطمئن هستید؟");
 				if (conf) {
-					dataService.deleteEntity("propertyInfo", { ID: dataItem.ID }).then(function (result) {
+					dataService.post("propertyInfo/DeleteProperty", { ID: dataItem.ID }).then(function (result) {
 						$scope.gridOptions.dataSource.read();
 						messageService.success("عملیات با موفیت انجام شده");
 					});

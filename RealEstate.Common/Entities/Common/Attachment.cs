@@ -14,7 +14,8 @@ namespace RealEstate.Common.Entities.Common
 		public int ObjectId { get; set; }
 		public string FileName { get; set; }
 		public double? FileSize { get; set; }
+		public FileUnit FileUnit { get; set; }
 		public string ContentType { get; set; }
-		//public bool IsDeleted { get; set; }
+		public bool IsDeleted { get; set; }
 	}
 }

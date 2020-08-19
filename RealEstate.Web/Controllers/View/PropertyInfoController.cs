@@ -17,5 +17,9 @@ namespace RealEstate.Web.Controllers.View
 		{
 			return View();
 		}
+		public ActionResult RegisterPropertyGuest()
+		{
+			return View();
+		}
     }
 }

@@ -75,6 +75,8 @@ namespace RealEstate.Web.Models.Property
 		//public List<Attachment> Attachments { get; set; }
 		public List<AttachmentVM> Attachments { get; set; }
 		//public List<ContentInfo> Attachments { get; set; }
+		public string FullText { get; set; }
+		public int RegisterBy { get; set; }
 
 	}
 }

@@ -26,6 +26,23 @@
     <link rel="stylesheet" href="~/ClientApp/Contents/css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="~/ClientApp/Contents/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="~/ClientApp/Contents/css/style.css" type="text/css">
+	<style>
+		.rtl{
+			direction:rtl;
+		}
+		.hs-item .hc-inner-text {
+			background: #ffffff;
+			padding: 40px;
+			overflow: hidden;
+			opacity: 0;
+			position: relative;
+			top: 100px;
+			display: inline-block;
+			-webkit-transition: all 0.3s ease-out;
+			transition: all 0.3s ease-out;
+			box-shadow: -5px 3px 7px 3px #0000001f;
+		}
+	</style>
 </head>
 
 <body>
@@ -41,24 +58,23 @@
             <span class="icon_close"></span>
         </div>
         <div class="logo">
-            <a href="./index.html">
+            <a href="/">
 
                 <img src="/ClientApp/img/logo.png" />
             </a>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="om-widget">
-            <ul>
-                <li> Aler.support@gmail.com <i class="icon_mail_alt"></i> </li>
-                <li> <span>۰۹۱۱۱۱۱۱۱۱۱</span> &nbsp;&nbsp;  ۰۹۱۱۱۱۱۱۱۱۱ <i class="fa fa-mobile-phone"></i> </li>
-            </ul>
-            <a href="#" class="hw-btn">ثبت ملک</a>
+			<ul>
+				<li> <i class="fa fa-mobile-phone"></i> <span>مهری : 09111780017 - 09113802520</span> &nbsp;&nbsp;  زیارتی : 09113707088 - 09115239459  </li>
+			</ul>
+            <a href="/propertyinfo/registerpropertyguest" class="hw-btn">ثبت ملک</a>
         </div>
         <div class="om-social">
             <a href="#"><i class="fa fa-facebook"></i></a>
             <a href="#"><i class="fa fa-twitter"></i></a>
             <a href="#"><i class="fa fa-youtube-play"></i></a>
-            <a href="#"><i class="fa fa-instagram"></i></a>
+			<a href="https://www.instagram.com/invites/contact/?i=h8jt27jxzfzt&utm_content=c6ry33k"><i class="fa fa-instagram"></i></a>
             <a href="#"><i class="fa fa-pinterest-p"></i></a>
         </div>
     </div>
@@ -70,16 +86,15 @@
                 <div class="row">
                     <div class="col-lg-2">
                         <div class="logo">
-                            <a href="./index.html"><img src="/ClientApp/img/logo.png" alt=""></a>
+                            <a href="/"><img src="/ClientApp/img/logo.png" alt=""></a>
                         </div>
                     </div>
                     <div class="col-lg-10">
                         <div class="ht-widget">
-                            <ul>
-                                <li><i class="icon_mail_alt"></i> Aler.support@gmail.com</li>
-                                <li><i class="fa fa-mobile-phone"></i>۰۹۱۱۱۱۱۱۱۱۱ &nbsp;&nbsp; <span>۰۹۱۱۱۱۱۱۱۱۱</span></li>
-                            </ul>
-                            <a href="#" class="hw-btn">ثبت ملک</a>
+							<ul>
+								<li> <i class="fa fa-mobile-phone"></i> <span>مهری : 09111780017 - 09113802520</span> &nbsp;&nbsp;  زیارتی : 09113707088 - 09115239459  </li>
+							</ul>
+							<a href="/propertyinfo/registerpropertyguest" class="hw-btn">ثبت ملک</a>
                         </div>
                     </div>
                 </div>
@@ -94,23 +109,19 @@
                 <div class="row">
                     <div class="col-lg-9">
                         <nav class="nav-menu">
-                            <ul>
-                                <li class="active"><a href="./index.html">صفحه اصلی</a></li>
-                                <li>
-                                    <a href="#">املاک</a>
-                                    <ul class="dropdown">
-                                        <li><a href="./property.html">لیست املاک</a></li>
-                                        <li><a href="./profile.html">Property List</a></li>
-                                        <li><a href="./property-details.html">جزییات املاک</a></li>
-                                        <li><a href="./property-comparison.html">Property Comperison</a></li>
-                                        <li><a href="./property-submit.html">ثبت ملک</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="./agents.html">مدیریت</a></li>
-                                <li><a href="/home/AboutMe">درباره ما</a></li>
-                                <li><a href="/blogUser">پست ها</a></li>
-                                <li><a href="/message/ContactUs">تماس با ما</a></li>
-                            </ul>
+							<ul>
+								<li class="active"><a href="/home">صفحه اصلی</a></li>
+								<li>
+									<a href="#">املاک</a>
+									<ul class="dropdown">
+										<li><a href="/propertyinfo/registerpropertyguest">ثبت ملک</a></li>
+										<li><a href="/home/PropertyDemand"> تقاضای ملک</a></li>
+									</ul>
+								</li>
+								<li><a href="/blogUser">پست ها</a></li>
+								<li><a href="/message/ContactUs">تماس با ما</a></li>
+								<li><a href="/home/AboutMe">درباره ما</a></li>
+							</ul>
                         </nav>
                     </div>
                     <div class="col-lg-3">
@@ -118,7 +129,7 @@
                             <a href="#"><i class="fa fa-facebook"></i></a>
                             <a href="#"><i class="fa fa-twitter"></i></a>
                             <a href="#"><i class="fa fa-youtube-play"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
+							<a href="https://www.instagram.com/invites/contact/?i=h8jt27jxzfzt&utm_content=c6ry33k"><i class="fa fa-instagram"></i></a>
                             <a href="#"><i class="fa fa-pinterest-p"></i></a>
                         </div>
                     </div>
@@ -130,133 +141,125 @@
 
     @RenderBody()
     <!-- Contact Section Begin -->
-    <section class="contact-section">
-        <div class="cs-map">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d735515.5813275519!2d-80.41163541934742!3d43.93644386501528!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882a55bbf3de23d7%3A0x3ada5af229b47375!2sMono%2C%20ON%2C%20Canada!5e0!3m2!1sen!2sbd!4v1583262687289!5m2!1sen!2sbd"
-                    height="450" style="border:0;" allowfullscreen=""></iframe>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="contact-info">
-                        <div class="ci-item">
-                            <div class="ci-icon">
-                                <i class="fa fa-map-marker"></i>
-                            </div>
-                            <div class="ci-text">
-                                <h5>آدرس</h5>
-                                <p>جاده ناهارخوران بالاتر از پمپ بنزین عدالت 93/1 </p>
-                            </div>
+	<section class="contact-section">
+
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="contact-info">
+						<div class="ci-item">
+							<div class="ci-icon">
+								<i class="fa fa-map-marker"></i>
+							</div>
+							<div class="ci-text">
+								<h5>آدرس</h5>
+								<p>جاده ناهارخوران بالاتر از پمپ بنزین عدالت 93/1 </p>
+							</div>
 
 
-                        </div>
-                        <div class="ci-item">
-                            <div class="ci-icon">
-                                <i class="fa fa-mobile"></i>
-                            </div>
-                            <div class="ci-text">
-                                <h5>اطلاعات تماس</h5>
-                                <ul>
-                                    <li>مهری : 09111780017 - 09113802520</li>
-                                    <li>زیارتی : 09113707088 - 09115239459</li>
+						</div>
+						<div class="ci-item">
+							<div class="ci-icon">
+								<i class="fa fa-mobile"></i>
+							</div>
+							<div class="ci-text">
+								<h5>اطلاعات تماس</h5>
+								<ul>
+									<li>مهری : 09111780017 - 09113802520</li>
+									<li>زیارتی : 09113707088 - 09115239459</li>
 
-                                </ul>
-                                <ul>
-                                    <li>تلفن ثابت : 01732520882</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="ci-item">
-                            <div class="ci-icon">
-                                <i class="fa fa-headphones"></i>
-                            </div>
-                            <div class="ci-text">
-                                <h5>پست الکترونیک</h5>
-                                <p>Support.aler@gmail.com</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+								</ul>
+								<ul>
+									<li>تلفن ثابت : 01732520882</li>
+								</ul>
+							</div>
+						</div>
+						<div class="ci-item">
+							<div class="ci-icon">
+								<i class="fa fa-headphones"></i>
+							</div>
+							<div class="ci-text">
+								<h5>پست الکترونیک</h5>
+								<p>Support.aler@gmail.com</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    </section>
+	</section>
     <!-- Contact Section End -->
     <!-- Footer Section Begin -->
-    <footer class="footer-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <div class="fs-about">
-                        <div class="fs-logo">
-                            <a href="#">
-                                <img src="/ClientApp/img/f-logo.png" alt="">
+	<footer class="footer-section">
+		<div class="container">
+			<div class="row rtl">
+				<div class="col-lg-6 col-md-6">
+					<div class="fs-about">
+						<div class="fs-logo">
+							<a href="#">
+								<img src="/ClientApp/img/f-logo.png" alt="">
 
-                            </a>
-                        </div>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua ut aliquip ex ea
-                        </p>
-                        <div class="fs-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-youtube-play"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="fs-widget">
-                        <h5>راهنما</h5>
-                        <ul>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Contact Support</a></li>
-                            <li><a href="#">Knowledgebase</a></li>
-                            <li><a href="#">Careers</a></li>
-                            <li><a href="#">FAQs</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="fs-widget">
-                        <h5>پیوندها</h5>
-                        <ul>
-                            <li><a href="#">تماس با ما</a></li>
-                            <li><a href="#">ثبت ملک</a></li>
-                            <li><a href="#">املاک</a></li>
-                            <li><a href="#">تقاضای ملک</a></li>
-                            <li>
-                                <a href="#">
-                                    پست ها
-                                </a>
-                            </li>
-                            @*<li><a href="#">Login</a></li>*@
-                        </ul>
-                    </div>
-                </div>
-                @*<div class="col-lg-4 col-md-6">
-                        <div class="fs-widget">
-                            <h5>خبرنامه</h5>
-                            <p>آیا می خواهید در خبرنامه ما عضو شوید.</p>
-                            <form action="#" class="subscribe-form">
-                                <input type="text" placeholder="Email">
-                                <button type="submit" class="site-btn">اشتراک در</button>
-                            </form>
-                        </div>
-                    </div>*@
-            </div>
-            <div class="copyright-text">
-                <p>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    Copyright &copy;
-                    <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="#" target="_blank">املاک VIP</a>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                </p>
-            </div>
-        </div>
-    </footer>
+							</a>
+						</div>
+						<p>
+							<span> املاک </span><span> VIP </span><span>آماده ارائه خدمات بیشتر برای دسترسی راحت تر شما به ملک مورد نظرتان.</span>
+						</p>
+						<div class="fs-social">
+							<a href="#"><i class="fa fa-facebook"></i></a>
+							<a href="#"><i class="fa fa-twitter"></i></a>
+							<a href="#"><i class="fa fa-youtube-play"></i></a>
+							<a href="https://www.instagram.com/invites/contact/?i=h8jt27jxzfzt&utm_content=c6ry33k"><i class="fa fa-instagram"></i></a>
+							<a href="#"><i class="fa fa-pinterest-p"></i></a>
+						</div>
+					</div>
+				</div>
+				@*<div class="col-lg-3 col-sm-6">
+						<div class="fs-widget">
+							<h5>راهنما</h5>
+							<ul>
+								<li><a href="#">Privacy Policy</a></li>
+								<li><a href="#">Contact Support</a></li>
+								<li><a href="#">Knowledgebase</a></li>
+								<li><a href="#">Careers</a></li>
+								<li><a href="#">FAQs</a></li>
+							</ul>
+						</div>
+					</div>*@
+				<div class="col-lg-3 col-sm-6">
+					<div class="fs-widget">
+						<h5>پیوندها</h5>
+						<ul>
+							<li><a href="./property-submit.html">ثبت ملک</a></li>
+							<li><a href="/home/PropertyDemand"> تقاضای ملک</a></li>
+							<li><a href="/blogUser">پست ها</a></li>
+							<li><a href="/message/ContactUs">تماس با ما</a></li>
+							<li><a href="/home/AboutMe">درباره ما</a></li>
+							@*<li><a href="#">Login</a></li>*@
+						</ul>
+					</div>
+				</div>
+				@*<div class="col-lg-4 col-md-6">
+						<div class="fs-widget">
+							<h5>خبرنامه</h5>
+							<p>آیا می خواهید در خبرنامه ما عضو شوید.</p>
+							<form action="#" class="subscribe-form">
+								<input type="text" placeholder="Email">
+								<button type="submit" class="site-btn">اشتراک در</button>
+							</form>
+						</div>
+					</div>*@
+			</div>
+			<div class="copyright-text">
+				<p>
+					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+					Copyright &copy;
+					<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="#" target="_blank">املاک VIP</a>
+					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+				</p>
+			</div>
+		</div>
+	</footer>
     <!-- Footer Section End -->
     <!-- Js Plugins -->
     <script src="~/ClientApp/Scripts/js/jquery-3.3.1.min.js"></script>
@@ -270,9 +273,11 @@
     <script src="~/ClientApp/Scripts/js/jquery.richtext.min.js"></script>
     <script src="~/ClientApp/Scripts/js/image-uploader.min.js"></script>
     <script src="~/ClientApp/Scripts/js/main.js"></script>
-    <script src="~/ClientApp/Scripts/js/main.js"></script>
+    @*<script src="~/ClientApp/Scripts/js/main.js"></script>*@
     <script type="text/javascript" src="~/ClientApp/Scripts/moment.js"></script>
     <script type="text/javascript" src="~/ClientApp/Scripts/moment-jalaali.js"></script>
+	<script src="~/ClientApp/Scripts/Numeral/numeral.js"></script>
+	<script src="~/ClientApp/Scripts/Numeral/locales/fa-IR.js"></script>
 
 </body>
 

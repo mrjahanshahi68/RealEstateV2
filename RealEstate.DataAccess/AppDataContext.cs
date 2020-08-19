@@ -42,6 +42,7 @@ namespace RealEstate.DataAccess
 			modelBuilder.Configurations.Add(new PropertyTypeMapConfig());
 			modelBuilder.Configurations.Add(new DocumentTypeMapConfig());
 			modelBuilder.Configurations.Add(new WelfareMapConfig());
+			modelBuilder.Configurations.Add(new PropertyDemandMapConfig());
 			#endregion
 
 

@@ -10,6 +10,12 @@ namespace RealEstate.Common
 	{
 		public  const int ExpireMinutes = 20;
 		public const int LatestTakeProperty = 6;
+		public const int PropertySearchDefaultTake= 12;
+		public const int GuestUserId = -2;
+		/// <summary>
+		/// Kilobyte
+		/// </summary>
+		public const int Kilobyte = 1_204;
         public static class DatabaseSchema
         {
             public const string Security = "Security";

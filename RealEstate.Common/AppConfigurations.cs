@@ -47,5 +47,15 @@ namespace RealEstate.Common
 				return propertyImageFolder;
 			}
 		}
+		public static string BlogImageFolder
+		{
+			get
+			{
+				var blogImageFolder = ConfigurationManager.AppSettings["BlogImageFolder"];
+				if (string.IsNullOrWhiteSpace(blogImageFolder))
+					throw new NullReferenceException("مسیر پوشه تصاویر بلاگ در فایل وب کانفیگ مشخص نشده است");
+				return blogImageFolder;
+			}
+		}
 	}
 }

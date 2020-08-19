@@ -6,6 +6,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.7.9/angular-sanitize.js"></script>
 
 <style>
+
     #grid {
         border-width: 0;
         height: 100%; /* DO NOT USE !important for setting the Grid height! */
@@ -45,14 +46,14 @@
             <h3 class="modal-title" id="modal-title">{{modalTitle}}</h3>
         </div>
         <div class="modal-body" id="modal-body">
-            <div class="col-xs-12 form-group">
-                <label class="control-label">دسته بندی :</label>
-                <select ng-model="model.CategoryId" class="form-control">
-                    <option value="">--- دسته بندی را انتخاب کنید ---</option>
-                    <option ng-selected="ut.value == model.CategoryId" ng-repeat="ut in temp.categories"
-                            ng-value="ut.value" ng-bind="ut.text"></option>
-                </select>
-            </div>
+            @*<div class="col-xs-12 form-group">
+                    <label class="control-label">دسته بندی :</label>
+                    <select ng-model="model.CategoryId" class="form-control">
+                        <option value="">--- دسته بندی را انتخاب کنید ---</option>
+                        <option ng-selected="ut.value == model.CategoryId" ng-repeat="ut in temp.categories"
+                                ng-value="ut.value" ng-bind="ut.text"></option>
+                    </select>
+                </div>*@
             <div class="col-xs-12 form-group">
                 <label class="control-label"> عنوان : </label>
                 <input type="text" value="" class="form-control" ng-model="model.Title" placeholder="عنوان را وارد نمایید" />
@@ -74,9 +75,9 @@
                 <toggle-btn ng-init="model.IsActive" ng-model="model.IsActive" name="isactive" type="checkbox"></toggle-btn>
             </div>
             <div class="col-xs-12 form-group">
-                    <label class="control-label col-xs-4">تصویر  : </label><span style="font-size:11px">(600 * 600 پیکسل)</span>
-                    <input type="file" image-attachment id="fuCoverImage" />
-              
+                <label class="control-label col-xs-4">تصویر  : </label><span style="font-size:11px">(600 * 600 پیکسل)</span>
+                <input type="file" id="fuImage" />
+                <img src="/{{model.ImagePath}}" style="width:150px;height:auto" />
 
             </div>
             <div class="col-xs-12 form-group">
@@ -86,6 +87,46 @@
         </div>
         <div class="modal-footer" style="text-align:left">
             <button class="btn btn-primary" type="button" ng-click="confirm()">تایید</button>
+            <button class="btn btn-warning" type="button" ng-click="closePopup()">انصراف</button>
+        </div>
+    </div>
+
+</script>
+<script type="text/ng-template" id="popup-blog-show.html">
+    <div ng-init="init()">
+        <div class="modal-header alert-info">
+            <h3 class="modal-title" id="modal-title">{{modalTitle}}</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+
+            <div class="col-xs-12 form-group">
+                <label class="control-label"> عنوان : </label>
+                <input type="text" value="" class="form-control" ng-model="model.Title" />
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label">توصیف : </label>
+                <input type="text" value="" class="form-control" ng-model="model.MetaDescription" />
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label"> خلاصه : </label>
+                <textarea value="" class="form-control" ng-model="model.Summery" />
+            </div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label"> لینک خبر : </label>
+                <input type="text" value="" class="form-control" ng-model="model.SlugUrl" />
+            </div>
+
+			<div class="col-lg-3 col-md-5 col-sm-6 col-xs-12">
+				<label>بارگزاری تصویر : </label>@*<span style="font-size:11px">(500 * 500 پیکسل)</span>*@
+				<input type="file" id="fuImage" />
+				<img src="/{{model.ImagePath}}" style="width:150px;height:auto" />
+			</div>
+            <div class="col-xs-12 form-group">
+                <label class="control-label"> متن : </label>
+                <textarea kendo-editor k-ng-model="html" ng-model="model.Body"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer" style="text-align:left">
             <button class="btn btn-warning" type="button" ng-click="closePopup()">انصراف</button>
         </div>
     </div>
@@ -101,30 +142,30 @@
             Summery: '',
             MetaDescription: null,
             SlugUrl: null,
-            CategoryId: null,
-            Attachment :null,
+            ImagePath: null,
+            ImageFiles: null,
             clear: function () {
                 this.Title = null;
                 this.Body = null;
                 this.MetaDescription = null;
                 this.SlugUrl = null;
                 this.Summery = null;
-                this.CategoryId = null;
+                this.ImagePath = null;
                 this.Attachment = null;
             }
         }
 
         $scope.temp = {
             categories: [],
-            statuses: [{ value: 0, text: "غیرفعال" }, { value: 1, text: "فعال" }]
+			statuses: [{ value: 0, text: "غیرفعال" }, { value: 1, text: "فعال" }],
         }
         $scope.init = function () {
-            for (var key in helper.enums.Categories) {
-                $scope.temp.categories.push({
-                    text: helper.enums.Categories[key].text,
-                    value: helper.enums.Categories[key].value
-                })
-            }
+            //for (var key in helper.enums.Categories) {
+            //    $scope.temp.categories.push({
+            //        text: helper.enums.Categories[key].text,
+            //        value: helper.enums.Categories[key].value
+            //    })
+            //}
         }
 
         $scope.gridOptions = {
@@ -156,12 +197,13 @@
                         id: "ID",
                         fields: {
                             ID: { type: "number", editable: false },
-                            Title: { type: "string" },
-                            MetaDescription: { type: "string" },
-                            Body: { type: "string" },
-                            Summery: { type: "string" },
-                            SlugUrl: { type: "string" },
-                            CategoryId: { type: "enum" },
+							Title: { type: "string" },
+							//CategoryName: { type: "string" },
+                            //MetaDescription: { type: "string" },
+                            //Body: { type: "string" },
+                            //Summery: { type: "string" },
+                            //SlugUrl: { type: "string" },
+                            //CategoryId: { type: "enum" },
                             IsActive: { type: "boolean" },
                             IsDeleted: { type: "enum" }
                         }
@@ -196,14 +238,12 @@
                     {
                         title: "عنوان ",
                         field: "Title",
-                        width: 300,
                     },
-                    {
-                        title: "دسته بندی",
-                        field: "CategoryId",
-                        values: $scope.temp.categories,
-                        width: 130,
-                    },
+      //              {
+      //                  title: "دسته بندی",
+						//field: "CategoryName",
+      //                  width: 130,
+      //              },
                     {
                         title: "وضعیت",
                         field: "IsActive",
@@ -243,41 +283,44 @@
 
         $scope.showBlogInfoPopup = function () {
             showPopupBlogInfo({
-                callback: function (model, closePopup) {
+                callback: function (model,attachments, closePopup) {
                     model.Body = encodeURIComponent(model.Body);
-                    model.Attachment = currentAttachment;
-                    dataService.insertEntity("blog", model).then(function (item) {
+                    model.ImagePath = "/" + model.ImagePath;
+                    var tempImagePath = model.ImagePath;
+					model.ImagePath = null;
+					dataService.postDataAndFiles("blog/SubmitBlog", model, attachments).then(function (item) {
                         messageService.success("عملیات با موفقیت ثبت گردید");
+                        $scope.model.ImagePath = tempImagePath;
                         $scope.model.clear();
                         $scope.gridOptions.dataSource.read();
                         closePopup();
                     });
-                    //console.log(model);
                 }
             })
         }
-        $scope.edit = function (data) {
-            showPopupBlogInfo({
-                model: {
-                    ID: data.ID,
-                    Title: data.Title,
-                    Body:decodeURIComponent( data.Body),
-                    Summery: data.Summery,
-                    MetaDescription: data.MetaDescription,
-                    SlugUrl: data.SlugUrl,
-                    CategoryId: data.CategoryId,
-                    IsActive: data.IsActive
-                },
-                callback: function (model, closePopup) {
-                    dataService.updateEntity("blog", model).then(function (item) {
-                        messageService.success("عملیات با موفقیت ویرایش گردید");
-                        $scope.model.clear();
-                        closePopup();
-                        $scope.gridOptions.dataSource.read();
-                    });
-                    closePopup();
-                }
-            })
+		$scope.edit = function (data) {
+			if (data && data.ID > 0) {
+				dataService.post("blog/GetBlog", { ID: data.ID }).then(function (result) {
+					var model = result;
+					if (result.Attachments && result.Attachments.length > 0) {
+						model.ImagePath = result.Attachments[0].Path;
+					}
+					showPopupBlogInfo({
+						model,
+						callback: function (model, attachments, closePopup) {
+							dataService.postDataAndFiles("blog/SubmitBlog", model, attachments).then(function (item) {
+								messageService.success("عملیات با موفقیت ویرایش گردید");
+								$scope.model.ImagePath = tempImagePath;
+								$scope.model.clear();
+								$scope.gridOptions.dataSource.read();
+								closePopup();
+							});
+							closePopup();
+						}
+					})
+				});
+			}
+            
         }
         $scope.delete = function (data) {
             var id = data.ID;
@@ -285,20 +328,34 @@
             if (cnf) {
                 dataService.deleteEntity("blog", id).then(function () {
                     messageService.success("عملیات با موفقیت حذف گردید");
-                  
+
                     $scope.gridOptions.dataSource.read();
                 })
             }
         }
-        function showPopupBlogInfo(parameters) {
+
+		$scope.showItem = function (data) {
+			if (data && data.ID > 0) {
+				dataService.post("blog/GetBlog", { ID: data.ID }).then(function (result) {
+					var model = result;
+					if (result.Attachments && result.Attachments.length > 0) {
+						model.ImagePath = result.Attachments[0].Path;
+					}
+					showPopupBlogDetails({
+						model,
+						callback: function (model, closePopup) {
+							closePopup();
+						}
+					})
+				});
+			}
+       
+        }
+        function showPopupBlogDetails(parameters) {
             $uibModal.open({
                 animation: true,
-                templateUrl: "popup-blog-info.html",
+                templateUrl: "popup-blog-show.html",
                 controller: function ($scope, $uibModalInstance, controllerScope) {
-                    $scope.temp = {
-                        categories: controllerScope.temp.categories,
-                        isEditMode: false,
-                    }
                     if (parameters["model"]) {
                         $scope.model = parameters.model;
                     }
@@ -306,15 +363,12 @@
                         $scope.model = controllerScope.model;
                     }
                     $scope.init = function () {
-                        if ($scope.temp.isEditMode) {
-                            $scope.modalTitle = "وایرایش پست";
-                        }
-                        else {
-                            $scope.modalTitle = "ثبت پست";
-                        }
+
+                        $scope.modalTitle = "مشاهده پست";
+
                     }
 
-                    $scope.confirm = function () {
+					$scope.confirm = function () {
                         parameters.callback($scope.model, $scope.closePopup)
                     }
                     $scope.closePopup = function () {
@@ -332,28 +386,74 @@
                 //size:""
             })
         }
-        //$scope.gridOptions.dataSource.read();
 
-        $(document).delegate('[image-attachment]', 'change', function (e) {
+        function showPopupBlogInfo(parameters) {
+
+            $uibModal.open({
+                animation: true,
+                templateUrl: "popup-blog-info.html",
+				controller: function ($scope, $uibModalInstance, controllerScope) {
+					debugger
+                    $scope.temp = {
+                        categories: controllerScope.temp.categories,
+                        isEditMode: false,
+                    }
+                    if (parameters["model"]) {
+                        $scope.model = parameters.model;
+                    }
+                    else {
+                        $scope.model = controllerScope.model;
+                    }
+                    $scope.init = function () {
+                        if ($scope.temp.isEditMode) {
+                            $scope.modalTitle = "وایرایش پست";
+                        }
+                        else {
+                            $scope.modalTitle = "ثبت پست";
+						}
+						$scope.$$phase || $scope.$apply();
+                    }
+
+					$scope.confirm = function () {
+						var imageFile = $('#fuImage')[0].files[0];
+						var dataFile;
+						if (imageFile) {
+							dataFile = new DataFileInfo(imageFile, { ExtraInfoString: "blogImage" })
+							if (controllerScope.model.Attachment && controllerScope.model.Attachment.length > 0) {
+								//controllerScope.model.Attachments[0]s.ISD
+							}
+							
+						}
+						parameters.callback($scope.model, dataFile ? [dataFile] : null, $scope.closePopup)
+                    }
+                    $scope.closePopup = function () {
+                        $uibModalInstance.close();
+                    }
+                    $scope.setStatus = function () {
+                        debugger;
+                    }
+                },
+                resolve: {
+                    controllerScope: function () {
+                        return $scope;
+                    }
+                }
+                //size:""
+            })
+        }
+
+
+        $(document).delegate('#fuImage', 'change', function (e) {
             if (e && e.target) {
                 var file = e.target.files[0];
-                console.log(file);
-                file.attachmentUID = helper.uuidv4();
                 helper.getFileInfo(file).start()
-                    .onProgress(function (e, loaded, total) {
-                    }).onComplete(function (result, e) {
-                        if (result) {
-                            var currentAttachment = $scope.model.Attachment;
-                            currentAttachment.Picture = result.fileReader.base64;
-                            currentAttachment.FileName = result.fileName;
-                            currentAttachment.Size = result.size;
-                            currentAttachment.ContentType = result.contentType;
-                            $scope.$$phase || $scope.$apply();
-                        }
+                    .onComplete(function (result) {
+                        $scope.model.ImagePath = result.fileReader.base64;
+                        $scope.$$phase || $scope.$apply();
                     });
             }
         });
     });
 
-  
+
 </script>

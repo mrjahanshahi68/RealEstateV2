@@ -88,7 +88,7 @@ var processResponse = function (result, fullResponse) {
     /*------------------
         Preloader
     --------------------*/
-    $(window).on('load', function () {
+	$(window).on('load', function () {
         $(".loader").fadeOut();
         $("#preloder").delay(200).fadeOut("slow");
 
@@ -99,10 +99,10 @@ var processResponse = function (result, fullResponse) {
             $('.property-controls li').removeClass('active');
             $(this).addClass('active');
         });
-        if ($('.property-filter').length > 0) {
-            var containerEl = document.querySelector('.property-filter');
-            var mixer = mixitup(containerEl);
-        }
+        //if ($('.property-filter').length > 0) {
+        //    var containerEl = document.querySelector('.property-filter');
+        //    var mixer = mixitup(containerEl);
+        //}
     });
 
     /*------------------
@@ -271,7 +271,7 @@ var processResponse = function (result, fullResponse) {
     /*------------------
         Nice Select
     --------------------*/
-    $('select').niceSelect();
+    //$('select').niceSelect();
 
 	$('#drp-state').on("change", function () {
 		var value = $(this).val();
@@ -291,8 +291,8 @@ var processResponse = function (result, fullResponse) {
                                        ${stateCities[i].Name} 
                                   </option>`); 
 		}
-		$('#drp-city').niceSelect('update');
-		$('#drp-region').niceSelect('update');
+		//$('#drp-city').niceSelect('update');
+		//$('#drp-region').niceSelect('update');
 	});
 	$('#drp-city').on("change", function () {
 		var value = $(this).val();
@@ -310,7 +310,7 @@ var processResponse = function (result, fullResponse) {
                                        ${cityRegions[i].Name} 
                                   </option>`);
 		}
-		$('#drp-region').niceSelect('update');
+		//$('#drp-region').niceSelect('update');
 	});
     /*-------------------
 		Radio Btn
@@ -363,162 +363,277 @@ var processResponse = function (result, fullResponse) {
      //Drag Upload
     $('.feature-image-content').imageUploader();
 
-	
-})(jQuery);
-
-$('#btn-search').click(function () {
-	debugger;
-	var state;
-	var city;
-	var region;
-	if ($.trim($('#drp-state').val()) != "") {
-		state = states.filter(function (item) {
-			if (item.ID == $('#drp-state').val())
-				return item;
-		})[0].Name;
-	}
-	if ($.trim($('#drp-city').val()) != "") {
-		city = cities.filter(function (item) {
-			if (item.ID == $('#drp-city').val())
-				return item;
-		})[0].Name;
-	}
-	if ($.trim($('#drp-region').val()) != "") {
-		region = regions.filter(function (item) {
-			if (item.ID == $('#drp-region').val())
-				return item;
-		})[0].Name;
-	}
-	var regionName = $.trim(state) + " " + $.trim(city) + " " + $.trim(region);
-
-	var type;
-	if ($.trim($('#drp-type').val()) != "") {
-		type = $('#drp-type').val();
-	}
-
-	var propertyType;
-	if ($.trim($('#drp-propertytype').val()) != "") {
-		propertyType = $('#drp-propertytype').val();
-	}
-	var bedroom;
-	if ($.trim($('#drp-bedroom').val()) != "") {
-		bedroom = $('#drp-bedroom').val();
-	}
-
-	var filter = {
-		regionName: regionName,
-		propertyType: propertyType,
-		bedroom: bedroom,
-		type: type
-	};
-
-	$.ajax({
-		url: "home/search",
-		method: "POST",
-		contentType: "application/json",
-		dataType: "json",
-		data: JSON.stringify(filter),
-	}).done(function (response) {
-		debugger;
-		var htmlRental = '<div class="col-lg-4 col-md-6 mix all house">' +
-			'<div class="property-item">' +
-			'<div class="col-lg-4 col-md-6 mix all house">' +
-			'<div class="property-item">' +
-			'<div class="pi-pic set-bg" data-setbg="{CoverImagePath}">' +
-			'<img src="{CoverImagePath}" />' +
-			'<div class="label">{TransactionTypeName}</div>' +
-			'</div>' +
-			'<div class="pi-text">' +
-			'<div class="pt-price"><span>رهن</span>  <span>{MortgagePrice}</span> </div>' +
-			'<div class="pt-price"><span>اجاره</span>  <span>{RentalPrice}</span> </div>' +
-			'<h5><a href="#">{Title}</a></h5>' +
-			'<p> {RegionName} &nbsp;<span class="icon_pin_alt"></span></p>' +
-			'<ul>' +
-			'<li> {LandArea} &nbsp;<i class="fa fa-object-group"></i></li>' +
-			'<li> {BuildingArea} &nbsp;<i class="fa fa-building"></i></li>' +
-			'<li> {BedRoom}&nbsp;<i class="fa fa-bed"></i></li>' +
-			'</ul>' +
-			'<div class="pi-agent">' +
-			'<div class="pa-item">' +
-			'<div class="pa-info">' +
-			'<h6>Ashton Kutcher</h6>' +
-			'<img src="~/Attachments/Properties/posted-by/pb-1.jpg" alt="">' +
-			' </div>' +
-			'<div class="pa-text">' +
-			'{{PropertyCode}}' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>';
-		var htmlSale = '<div class="col-lg-4 col-md-6 mix all house">' +
-			'<div class="property-item">' +
-			'<div class="col-lg-4 col-md-6 mix all house">' +
-			'<div class="property-item">' +
-			'<div class="pi-pic set-bg" data-setbg="{CoverImagePath}">' +
-			'<img src="{CoverImagePath}" />' +
-			'<div class="label c-red">{TransactionTypeName}</div>' +
-			'</div>' +
-			'<div class="pi-text">' +
-			'<div class="pt-price"><span>فروش</span>  <span>{RentalPrice}</span> </div>' +
-			'<h5><a href="#">{Title}</a></h5>' +
-			'<p> {RegionName} &nbsp;<span class="icon_pin_alt"></span></p>' +
-			'<ul>' +
-			'<li> {LandArea} &nbsp;<i class="fa fa-object-group"></i></li>' +
-			'<li> {BuildingArea} &nbsp;<i class="fa fa-building"></i></li>' +
-			'<li> {BedRoom}&nbsp;<i class="fa fa-bed"></i></li>' +
-			'</ul>' +
-			'<div class="pi-agent">' +
-			'<div class="pa-item">' +
-			'<div class="pa-info">' +
-			'<h6>کد ملک</h6>' +
-			'<img src="~/Attachments/Properties/posted-by/pb-1.jpg" alt="">' +
-			' </div>' +
-			'<div class="pa-text">' +
-			'{{PropertyCode}}' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>';
-
-		$('.property-filter').html('')
-		if (response) {
-			for (var i = 0; i < response.length; i++) {
-				var item = response[i];
-				var curHtml;
-				if (item.Type == 1) {
-					curHtml = htmlRental;
-				}
-				else {
-					curHtml = htmlSale;
-				}
-				curHtml += curHtml.replace("{CoverImagePath}", item.CoverImagePath);
-				curHtml += curHtml.replace("{CoverImagePath}", item.CoverImagePath);
-				curHtml += curHtml.replace("{TransactionTypeName}", item.TransactionTypeName);
-				if (item.Type == 1) {
-					curHtml += curHtml.replace("{MortgagePrice}", item.MortgagePrice);
-					curHtml += curHtml.replace("{RentalPrice}", item.RentalPrice);
-				}
-				else {
-					curHtml += curHtml.replace("{SalePrice}", item.SalePrice);
-				}
-				curHtml += curHtml.replace("{Title}", item.Title);
-				curHtml += curHtml.replace("{RegionName}", item.RegionName);
-				curHtml += curHtml.replace("{BuildingArea}", item.BuildingArea);
-				curHtml += curHtml.replace("{LandArea}", item.LandArea);
-				curHtml += curHtml.replace("{BedRoom}", item.BedRoom);
-				curHtml += curHtml.replace("{PropertyCode}", item.PropertyCode);
-				$('.property-filter').append($(curHtml));
-			}
+	$('#drp-type').on("change", function () {
+		if ($(this).val() == 1) {
+			$('#sale-container').addClass("d-none");
+			$('#mortgage-container').removeClass("d-none");
+			$('#rental-container').removeClass("d-none");
+		}
+		else if ($(this).val() == 2 || $(this).val() == 3) {
+			$('#sale-container').removeClass("d-none");
+			$('#mortgage-container').addClass("d-none");
+			$('#rental-container').addClass("d-none");
 		}
 		else {
-			$('.property-filter').html('<div class="col-md-12">نتیحه ای یافت نشد</div>')
+			$('#sale-container').addClass("d-none");
+			$('#mortgage-container').addClass("d-none");
+			$('#rental-container').addClass("d-none");
+		}
+	});
+
+	//$('[numeral]').on("change", function (e) {
+	//	$(this).val(numeral($(this).val()).format("0,0"));
+	//});
+	$('[numeral]').on("keyup", function () {
+		var myNumeral = numeral(this.value)
+		if (myNumeral.value()) {
+			this.value = numeral(myNumeral.value()).format("0,0");
+		}
+	});
+
+	function getFilterParameters() {
+		var state;
+		var city;
+		var region;
+		var fullText;;
+		var isAdvanced = false;
+		var salePrice = {
+			minValue: null,
+			maxValue: null,
+		};
+		var mortgagePrice = {
+			minValue: null,
+			maxValue: null,
+		};
+		var rentalPrice = {
+			minValue: null,
+			maxValue: null,
+		};
+		var landingArea = {
+			minValue: null,
+			maxValue: null,
+		}
+		var buildingArea = {
+			minValue: null,
+			maxValue: null,
+		}
+		if ($('#collapseOne').hasClass("show")) {
+			isAdvanced = true;
+		}
+		else {
+			isAdvanced = false;
 		}
 
-	})
+		if ($.trim($('#seach-input').val()) != "") {
+			fullText = $('#search-input').val();
+		}
+		if ($.trim($('#drp-state').val()) != "") {
+			state = states.filter(function (item) {
+				if (item.ID == $('#drp-state').val())
+					return item;
+			})[0].Name;
+		}
+		if ($.trim($('#drp-city').val()) != "") {
+			city = cities.filter(function (item) {
+				if (item.ID == $('#drp-city').val())
+					return item;
+			})[0].Name;
+		}
+		if ($.trim($('#drp-region').val()) != "") {
+			region = regions.filter(function (item) {
+				if (item.ID == $('#drp-region').val())
+					return item;
+			})[0].Name;
+		}
+		var regionName = $.trim(state) + " " + $.trim(city) + " " + $.trim(region);
 
-});
+		var type = $('#drp-type').val();;
+		if (isAdvanced) {
+			if ($.trim($('#drp-type').val()) != "") {
+				var saleMinValue = numeral($('#sale-min-price').val()).value();
+				var saleMaxValue = numeral($('#sale-max-price').val()).value();
+				var mortgageMinValue = numeral($('#mortgage-min-price').val()).value();
+				var morgageMaxValue = numeral($('#mortgage-max-price').val()).value();
+				var rentalMinValue = numeral($('#rental-min-price').val()).value();
+				var rentalMaxValue = numeral($('#rental-max-price').val()).value();
+
+				if (type == 1) {
+
+					mortgagePrice.minValue = mortgageMinValue;
+					mortgagePrice.maxValue = morgageMaxValue;
+					if (!(mortgagePrice.minValue || mortgagePrice.maxValue)) {
+						mortgagePrice = null;
+					}
+
+					rentalPrice.minValue = rentalMinValue;
+					rentalPrice.maxValue = rentalMaxValue;
+					if (!(rentalPrice.minValue || rentalPrice.maxValue)) {
+						rentalPrice = null;
+					}
+				}
+				else if (type == 2 || type == 3) {
+					salePrice.minValue = saleMinValue;
+					salePrice.maxValue = saleMaxValue;
+					if (!(salePrice.minValue || salePrice.maxValue)) {
+						salePrice = null;
+					}
+				}
+			}
+			landingArea.minValue = numeral($('#landing-min-area').val()).value();
+			landingArea.maxValue = numeral($('#landing-max-area').val()).value();
+			if (!(landingArea.minValue || landingArea.maxValue)) {
+				landingArea = null;
+			}
+			buildingArea.minValue = numeral($('#building-min-area').val()).value();
+			buildingArea.maxValue = numeral($('#building-max-area').val()).value();
+			if (!(buildingArea.minValue || buildingArea.maxValue)) {
+				buildingArea = null;
+			}
+
+		}
+
+		var propertyType;
+		if ($.trim($('#drp-propertytype').val()) != "") {
+			propertyType = $('#drp-propertytype').val();
+		}
+		var bedroom;
+		if ($.trim($('#drp-bedroom').val()) != "") {
+			bedroom = $('#drp-bedroom').val();
+		}
+
+		var filter = {
+			isAdvanced: isAdvanced,
+			regionName: regionName,
+			propertyType: propertyType,
+			bedroom: bedroom,
+			type: type,
+			fullText: fullText,
+			salePrice: salePrice,
+			mortgagePrice: mortgagePrice,
+			rentalPrice: rentalPrice,
+			landingArea: landingArea,
+			buildingArea: buildingArea,
+		};
+		return filter;
+	}
+	var pageOptions = {
+		page: 1,
+		take: 12,
+		reset: function () {
+			this.page = 1;
+			this.take = 12;
+		}
+	}
+	function showLoading() {
+		$(".loader").css("opacity","1");
+		$("#preloder").css("opacity", "1")
+		$("#preloder").css("display", "block")
+		$(".loader").css("display", "block")
+		$('#preloder').css("background","#000000bd")
+	}
+	function hideLoading() {
+		$(".loader").fadeOut();
+		$("#preloder").delay(200).fadeOut("slow");
+	}
+	function generatePropertySearch(data) {
+		var renderHtml = "";
+		for (var i = 0; i < data.length; i++) {
+			var item = data[i];
+			var curHtml;
+			if (item.Type == 1) {
+				curHtml = $('#rent-property-card-template').html();
+			}
+			else {
+				curHtml = $('#sale-property-card-template').html();;
+			}
+			curHtml = curHtml.replace("{CoverImagePath}", item.CoverImagePath);
+			curHtml = curHtml.replace("{CoverImagePath}", item.CoverImagePath);
+			curHtml = curHtml.replace("{PropertyTypeName}", item.PropertyTypeName);
+			//curHtml = curHtml.replace("{TransactionTypeName}", item.TransactionTypeName);
+			if (item.Type == 1) {
+				curHtml = curHtml.replace("{MortgagePrice}", numeral(item.MortgagePrice).format("0,0"));
+				curHtml = curHtml.replace("{RentalPrice}", numeral(item.RentalPrice).format("0,0"));
+			}
+			else {
+				curHtml = curHtml.replace("{SalePrice}", numeral(item.SalePrice).format("0,0"));
+			}
+			curHtml = curHtml.replace("{Title}", item.Title);
+			curHtml = curHtml.replace("{UrlTitle}", "property/" + item.HashKey + "/" + item.UrlTitle);
+			curHtml = curHtml.replace("{RegionName}", item.RegionName);
+			if (item.BuildingArea) {
+				curHtml = curHtml.replace("{BuildingArea}", item.BuildingArea);
+			}
+			else {
+				curHtml = curHtml.replace("{BuildingArea}", "نامشخص");
+			}
+			if (item.LandingArea) {
+				curHtml = curHtml.replace("{LandingArea}", item.LandingArea);
+			}
+			else {
+				curHtml = curHtml.replace("{LandingArea}", "نامشخص");
+			}
+			if (item.BedRoom) {
+				curHtml = curHtml.replace("{BedRoom}", item.BedRoom);
+			}
+			else {
+				curHtml = curHtml.replace("{BedRoom}", "فاقد اتاق");
+			}
+			curHtml = curHtml.replace("{PropertyCode}", item.PropertyCode);
+			renderHtml += curHtml;
+
+		}
+		return renderHtml;
+	}
+	$('#btn-search').click(function () {
+		showLoading();
+		pageOptions.reset();
+		var filter = getFilterParameters();
+		$.ajax({
+			url: "home/search",
+			method: "POST",
+			contentType: "application/json",
+			dataType: "json",
+			data: JSON.stringify({ filter: filter, page: pageOptions.page, take: pageOptions.take }),
+		}).done(function (response) {
+			$('#btn-loadmore').css("display", "inline-block");
+			$('.property-filter').html('')
+			if (response && response.length > 0) {
+				var renderHtml = generatePropertySearch(response);
+				$('.property-filter').html('');
+				$('.property-filter').html(renderHtml);
+			}
+			else {
+				$('.property-filter').html('<div class="col-md-12">نتیحه ای یافت نشد</div>')
+			}
+			$('.property-filter-title > h3').html("نتیجه جستجو");
+			}).always(function () {
+				hideLoading();
+			})
+
+	});
+	
+	$('#btn-loadmore').on("click", function () {
+		showLoading();
+		pageOptions.page++;
+		var filter = getFilterParameters();
+		$.ajax({
+			url: "home/search",
+			method: "POST",
+			contentType: "application/json",
+			dataType: "json",
+			data: JSON.stringify({ filter: filter, page: pageOptions.page, take: pageOptions.take }),
+		}).done(function (response) {
+			if (response && response.length>0) {
+				var renderHtml = generatePropertySearch(response);
+				$('.property-filter').append(renderHtml);
+			}
+			else {
+				$('#btn-loadmore').css("display", "none");
+			}
+			}).always(function () {
+				hideLoading();
+			})
+	});
+
+})(jQuery);
 

@@ -66,12 +66,9 @@ namespace RealEstate.Web.Infrastrcuture
         }
         private  Task<bool> SendToLog(RequestResponseLogMetadata logMetadata)
         {
-            //new Thread(new ThreadStart(() =>
-            //{
-            //    LogManager.WriteLog<FileLogger>(Newtonsoft.Json.JsonConvert.SerializeObject(logMetadata), $"{logMetadata.ApiActionName} ( Request-{logMetadata.RequestTimestamp?.ToTimeStamp()} Response-{logMetadata.ResponseTimestamp?.ToTimeStamp()} ).txt");
-            //})).Start();
+			//LogManager.WriteLog<FileLogger>(Newtonsoft.Json.JsonConvert.SerializeObject(logMetadata), $"{logMetadata.ApiActionName} ( Request-{logMetadata.RequestTimestamp?.ToTimeStamp()} Response-{logMetadata.ResponseTimestamp?.ToTimeStamp()} ).txt");
 
-            return Task.FromResult(true);
+			return Task.FromResult(true);
         }
     }
 }

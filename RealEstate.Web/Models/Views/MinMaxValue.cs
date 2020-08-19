@@ -7,7 +7,7 @@ namespace RealEstate.Web.Models.Views
 {
 	public class MinMaxValue
 	{
-		public string MinValue { get; set; }
-		public string MaxValue { get; set; }
+		public object MinValue { get; set; }
+		public object MaxValue { get; set; }
 	}
 }

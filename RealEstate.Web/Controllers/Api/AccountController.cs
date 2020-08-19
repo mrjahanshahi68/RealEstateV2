@@ -16,6 +16,9 @@ using System.Data.Entity;
 using RealEstate.Common.Exceptions;
 using RealEstate.Web.Models;
 using RealEstate.Common;
+using RealEstate.Web.Security;
+using RealEstate.Web.Cache;
+using RealEstate.Common.Entities;
 
 namespace RealEstate.Web.Controllers.Api
 {
@@ -52,6 +55,43 @@ namespace RealEstate.Web.Controllers.Api
 					TotalCount = totalCount,
 					Records = result,
 				});
+			}
+			catch (Exception ex)
+			{
+				return await HandleExceptionAsync(ex);
+			}
+		}
+		[HttpPost]
+		public async Task<HttpResponseMessage> GetInfoUsers()
+		{
+			try
+			{
+				var securityManager = SecurityManager.GetPrinciple(Token);
+				var username = securityManager.Identity.Name;
+				var userInfo = CacheManager.GetValue(username) as AppUserInfo;
+
+				var result = new ChangePassWordVM { UserId = userInfo.UserId };
+
+				return Success(result);
+			}
+			catch (Exception ex)
+			{
+				return await HandleExceptionAsync(ex);
+			}
+		}
+
+		[HttpPost]
+		public async Task<HttpResponseMessage> ChangePass(ChangePassWordVM model)
+		{
+			try
+			{
+				var user = await BusinessRule.Queryable().Where(c => c.ID == model.UserId).SingleAsync();
+
+				user.Password = model.NewPass.ToMd5().ToBase64();
+
+				BusinessRule.UpdateEntity(user);
+
+				return Success();
 			}
 			catch (Exception ex)
 			{

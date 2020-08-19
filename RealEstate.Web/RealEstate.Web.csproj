@@ -162,6 +162,7 @@
     <Content Include="ClientApp\Contents\css\owl.carousel.min.css" />
     <Content Include="ClientApp\Contents\css\richtext.min.css" />
     <Content Include="ClientApp\Contents\css\slicknav.min.css" />
+    <Content Include="ClientApp\Contents\css\mystyle.css" />
     <Content Include="ClientApp\Contents\css\style.css" />
     <Content Include="ClientApp\Contents\FontAwesome\css\font-awesome.min.css" />
     <Content Include="ClientApp\Contents\FontAwesome\fonts\fontawesome-webfont.svg" />
@@ -556,6 +557,7 @@
     <Content Include="ClientApp\fonts\fontawesome-webfont.svg" />
     <Content Include="ClientApp\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="ClientApp\img\about-us.jpg" />
+    <Content Include="ClientApp\img\AboutMe.jpg" />
     <Content Include="ClientApp\img\agents\agent-1.jpg" />
     <Content Include="ClientApp\img\agents\agent-2.jpg" />
     <Content Include="ClientApp\img\agents\agent-3.jpg" />
@@ -605,6 +607,7 @@
     <Content Include="ClientApp\img\logo-carousel\lc-5.png" />
     <Content Include="ClientApp\img\logo-carousel\lc-6.png" />
     <Content Include="ClientApp\img\logo.png" />
+    <Content Include="ClientApp\img\propertyDemand.jpg" />
     <Content Include="ClientApp\img\property\comparison\comparison-1.jpg" />
     <Content Include="ClientApp\img\property\comparison\comparison-2.jpg" />
     <Content Include="ClientApp\img\property\details\agent.jpg" />
@@ -658,6 +661,9 @@
     <Content Include="ClientApp\Scripts\moment.js" />
     <Content Include="ClientApp\Scripts\ng-toggle-btn.js" />
     <Content Include="ClientApp\Scripts\nprogress.js" />
+    <Content Include="ClientApp\Scripts\Numeral\locales.js" />
+    <Content Include="ClientApp\Scripts\Numeral\locales\fa-IR.js" />
+    <Content Include="ClientApp\Scripts\Numeral\numeral.js" />
     <Content Include="ClientApp\Scripts\toastr.min.js" />
     <Content Include="ClientApp\Contents\WebFonts\css\fontiran.css" />
     <Content Include="ClientApp\Contents\WebFonts\css\style.css" />
@@ -694,7 +700,9 @@
     <Compile Include="Controllers\Api\ContactUsController.cs" />
     <Compile Include="Controllers\Api\CustomerInfoController.cs" />
     <Compile Include="Controllers\Api\MessageController.cs" />
+    <Compile Include="Controllers\Api\PropertyDemandController.cs" />
     <Compile Include="Controllers\Api\PropertyInfoController.cs" />
+    <Compile Include="Controllers\Api\PropertyInfoGuestController.cs" />
     <Compile Include="Controllers\Api\PropertyTypeController.cs" />
     <Compile Include="Controllers\Api\StateController.cs" />
     <Compile Include="Controllers\Api\SubmitDataController.cs" />
@@ -746,6 +754,10 @@
     <Compile Include="Models\Common\MessageVM.cs" />
     <Compile Include="Models\Customer\CustomerInfoVM.cs" />
     <Compile Include="Models\FilterQueryRsponse.cs" />
+    <Compile Include="Models\Property\PropertyDemandVM.cs" />
+    <Compile Include="Models\Property\StateVM.cs" />
+    <Compile Include="Models\Property\TransactionTypeVM.cs" />
+    <Compile Include="Models\Security\ChangePassWordVM.cs" />
     <Compile Include="Models\Views\HomeVM.cs" />
     <Compile Include="Models\Property\PropertyInfoVM.cs" />
     <Compile Include="Models\Property\PropertyTypeVM.cs" />
@@ -755,6 +767,7 @@
     <Compile Include="Models\Security\RefereshTokenRequest.cs" />
     <Compile Include="Models\Security\UserVM.cs" />
     <Compile Include="Models\Views\MinMaxValue.cs" />
+    <Compile Include="Models\Views\PropertyDemandCreateVM.cs" />
     <Compile Include="Models\Views\PropertyFilterVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastrcuture\Security\Filters\AddChallengeOnUnauthorizedResult.cs" />
@@ -1031,12 +1044,17 @@
     <Content Include="ClientApp\Views\BlogUser\BlogDetails.cshtml" />
     <Content Include="ClientApp\Views\BlogUser\Index.cshtml" />
     <Content Include="ClientApp\Views\Home\AboutMe.cshtml" />
-    <Content Include="ClientApp\Views\Home\Index.cshtml" />
+    <Content Include="ClientApp\Views\Home\Index-old.cshtml" />
     <Content Include="ClientApp\Views\Message\ContactUs.cshtml" />
     <Content Include="ClientApp\Views\PropertyDemand\Index.cshtml" />
     <Content Include="ClientApp\Views\Account\ChangePassWord.cshtml" />
     <Content Include="ClientApp\Views\Shared\_UserLayout.cshtml" />
+    <Content Include="ClientApp\Views\Home\PropertyDetails.cshtml" />
+    <Content Include="ClientApp\Views\PropertyInfo\RegisterPropertyGuest.cshtml" />
+    <Content Include="ClientApp\Views\Home\PropertyDemand.cshtml" />
+    <Content Include="ClientApp\Views\Home\Index.cshtml" />
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -216,9 +216,13 @@ app.factory("helper", function (cacheManager) {
 			case "neq":
 				return "NotEqual";
 			case "contains":
-				return "contains";
+				return "Contains";
+			case "lte":
+				return "LessThanOrEqual";
+			case "gte":
+				return "GreaterThanOrEqual";
 			default:
-				return "none";
+				return "contains";
 			}
 	} 
 	helper.enums = {
@@ -359,7 +363,7 @@ app.service("messageService", function () {
 	}
 
 	function showMessage(text, title, messageType) {
-		toastr[messageType](text, "املاک معمار")
+		toastr[messageType](text, "املاک vip")
 	}
 
 	this.success = function (text, title) {
@@ -412,7 +416,7 @@ app.service("dataService", function (messageService, cacheManager) {
 				if (failCallback) failCallback(result);
 			}
 			else if (result["ResultCode"] == 4 || result["ResultCode"] == 5) {
-				document.location.href = "/";
+				document.location.href = "/login";
 				if (failCallback) failCallback(result);
 			}
 		}
@@ -575,6 +579,11 @@ app.service("securityManager", function (dataService, cacheManager, helper) {
 
 				});
 		},
+		loggout: function () {
+			cacheManager.removeItem("token");
+			cacheManager.removeItem("userInfo");
+			document.location.href = "/login";
+		},
 		get currentUser() {
 			var userInfo = cacheManager.getItem("userInfo");
 			if (userInfo)
@@ -590,6 +599,8 @@ app.run(function ($rootScope, securityManager) {
 
 		$rootScope.fullName = "کاربر " + $rootScope.currentUser.FullName + " خوش آمدید"
 	}
-	
+	$rootScope.loggout = function () {
+		securityManager.loggout();
+	}
 })
 

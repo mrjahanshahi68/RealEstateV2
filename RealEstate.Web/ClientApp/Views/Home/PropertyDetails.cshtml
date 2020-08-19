@@ -1,0 +1,369 @@
+﻿@model  RealEstate.Web.Models.Property.PropertyInfoVM
+
+@{
+	Layout = "~/ClientApp/Views/Shared/_UserLayout.cshtml";
+}
+<style>
+	.fp-slider .fp-item {
+		height: 520px;
+		position: relative;
+		background-size: contain;
+	}
+</style>
+
+<section class="property-details-section">
+	<section class="feature-property-section spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 p-0">
+					<div class="fp-slider owl-carousel">
+						@if (Model.SlideImage != null)
+						{
+							<div class="fp-item set-bg" data-setbg="/@Model.SlideImagePath"></div>
+						}
+						@if (Model.SlideImage != null)
+						{
+							<div class="fp-item set-bg" data-setbg="/@Model.CoverImagePath"></div>
+						}
+						@foreach (var item in Model.Attachments)
+						{
+							<div class="fp-item set-bg" data-setbg="/@item.Path"></div>
+						}
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+	<div class="container">
+		<div class="row">
+
+
+			<div class="col-lg-12">
+				<div class="pd-text">
+					<div class="row">
+
+						@*<div class="col-lg-6">
+								<div class="pd-social">
+									<a href="#"><i class="fa fa-mail-forward"></i></a>
+									<a href="#"><i class="fa fa-send"></i></a>
+									<a href="#"><i class="fa fa-heart"></i></a>
+									<a href="#"><i class="fa fa-mail-forward"></i></a>
+									<a href="#"><i class="fa fa-cloud-download"></i></a>
+								</div>
+							</div>*@
+						<div class="col-lg-12">
+							<div class="pd-title">
+								<a href="#"><span class="icon_heart_alt"></span></a>
+
+								@if (Model.Type == AppEnums.TransactionType.Rent)
+								{
+									<div class="label">اجاره</div>
+									if (Model.MortgagePrice.HasValue)
+									{
+										if (Model.MortgagePrice.Value == 0)
+										{
+											<div class="pt-price">رایگان<span>/رهن</span></div>
+										}
+										else
+										{
+											<div class="pt-price">@Model.MortgagePrice.Value.ToString("n0")<span>/رهن</span></div>
+										}
+
+									}
+									else
+									{
+										<div class="pt-price">توافقی<span>/رهن</span></div>
+									}
+									if (Model.RentalPrice.HasValue)
+									{
+										if (Model.RentalPrice.Value == 0)
+										{
+											<div class="pt-price">رایگان<span>/اجاره</span></div>
+										}
+										else
+										{
+											<div class="pt-price">@Model.RentalPrice.Value.ToString("n0")<span>/اجاره</span></div>
+										}
+									}
+									else
+									{
+										<div class="pt-price">توافقی<span>/اجاره</span></div>
+									}
+
+
+								}
+								else if (Model.Type == AppEnums.TransactionType.Sale)
+								{
+									<div class="label c-red">فروش</div>
+									if (Model.SalePrice.HasValue)
+									{
+										if (Model.SalePrice.Value == 0)
+										{
+											<div class="pt-price">رایگان<span>/فروش</span></div>
+										}
+										else
+										{
+											<div class="pt-price">@Model.SalePrice.Value.ToString("n0")<span>/فروش</span></div>
+										}
+
+									}
+									else
+									{
+										<div class="pt-price">توافقی<span>/فروش</span></div>
+									}
+
+								}
+								else if (Model.Type == AppEnums.TransactionType.PreSel)
+								{
+									if (Model.SalePrice.HasValue)
+									{
+										if (Model.SalePrice.Value == 0)
+										{
+											<div class="pt-price">رایگان<span>/فروش</span></div>
+										}
+										else
+										{
+											<div class="pt-price">@Model.SalePrice.Value.ToString("n0")<span>/فروش</span></div>
+										}
+
+									}
+									else
+									{
+										<div class="pt-price">توافقی<span>/فروش</span></div>
+									}
+								}
+								else if (Model.Type == AppEnums.TransactionType.Exchange)
+								{
+									<div class="label c-magenta">معاوضه</div>
+								}
+
+								<h3>@Model.Title</h3>
+								<p>@Model.RegionName &nbsp; <span class="icon_pin_alt"></span></p>
+							</div>
+						</div>
+					</div>
+					<div class="pd-board rtl">
+						<div class="tab-board">
+							<ul class="nav nav-tabs" role="tablist">
+								<li class="nav-item">
+									<a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">خلاصه</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">توضیحات</a>
+								</li>
+							</ul><!-- Tab panes -->
+							<div class="tab-content">
+								<div class="tab-pane active" id="tabs-1" role="tabpanel">
+									<div class="tab-details">
+										<ul class="left-table">
+											<li>
+												<span class="type-name">نوع ملک  </span>
+												<span class="type-value">@Model.PropertyTypeName</span>
+											</li>
+											<li>
+
+												<span class="type-name">کد ملک </span>
+												<span class="type-value">#@Model.PropertyCode</span>
+
+											</li>
+											<li>
+												@if (Model.Type == AppEnums.TransactionType.Rent)
+												{
+
+													if (Model.MortgagePrice.HasValue)
+													{
+														<span class="type-name">رهن  </span>
+if (Model.MortgagePrice.Value == 0)
+														{
+															<span class="type-value">رایگان</span>
+}
+														else
+														{
+															<span class="type-value">@Model.MortgagePrice.Value.ToString("n0") تومان</span>
+}
+
+													}
+													else
+													{
+														<span class="type-name">رهن  </span>
+														<span class="type-value">توافقی</span>
+}
+													if (Model.RentalPrice.HasValue)
+													{
+														<span class="type-name">اجاره  </span>
+if (Model.RentalPrice.Value == 0)
+														{
+															<span class="type-value">رایگان</span>
+}
+														else
+														{
+															<span class="type-value">@Model.RentalPrice.Value.ToString("n0") تومان</span>
+}
+													}
+													else
+													{
+														<span class="type-name">اجاره  </span>
+														<span class="type-value">توافقی</span>		
+}
+
+												}
+												else if (Model.Type == AppEnums.TransactionType.Sale)
+												{
+													<span class="type-name">فروش  </span>
+if (Model.SalePrice.HasValue)
+													{
+														if (Model.SalePrice.Value == 0)
+														{
+															<span class="type-value">رایگان</span>
+}
+														else
+														{
+															<span class="type-value">@Model.SalePrice.Value.ToString("n0") تومان</span>
+}
+
+													}
+													else
+													{
+														<span class="type-value">توافقی</span>
+}
+
+												}
+												else if (Model.Type == AppEnums.TransactionType.PreSel)
+												{
+													<span class="type-name">پیش فروش  </span>
+if (Model.SalePrice.HasValue)
+													{
+														if (Model.SalePrice.Value == 0)
+														{
+															<span class="type-value">رایگان</span>
+}
+														else
+														{
+															<span class="type-value">@Model.SalePrice.Value.ToString("n0") تومان</span>
+}
+
+													}
+													else
+													{
+														<span class="type-value">توافقی</span>
+}
+												}
+												else if (Model.Type == AppEnums.TransactionType.Exchange)
+												{
+													<div class="type-name">معاوضه</div>
+}
+											</li>
+											<li>
+												<span class="type-name">سال ساخت</span>
+												@if (Model.ConstructorYear.HasValue)
+												{
+													<span class="type-value">نامشخص</span>
+}
+												else
+												{
+													<span class="type-value">@Model.ConstructorYear</span>
+}
+												
+											</li>
+											<li>
+												<span class="type-name">نوع قرارداد</span>
+												<span class="type-value">@Model.TransactionTypeName</span>
+											</li>
+											@*<li>
+													<span class="type-name">مالک</span>
+													<span class="type-value">Ashton Kutcher</span>
+												</li>*@
+										</ul>
+										<ul class="right-table">
+											<li>
+												<span class="type-name">مساحت </span>
+												@if (Model.BuildingArea.HasValue)
+												{
+													<span class="type-value">@Model.BuildingArea.Value متر </span>
+}
+												else
+												{
+													if (Model.LandingArea.HasValue)
+													{
+														<span class="type-value">@Model.LandingArea.Value متر </span>
+}
+													else
+													{
+														<span class="type-value">نامشخص </span>
+}
+												}
+
+											</li>
+											<li>
+												<span class="type-name">اتاق</span>
+												@if (Model.BedRoom.HasValue)
+												{
+													<span class="type-value">@Model.BedRoom.Value</span>
+}
+												else
+												{
+													<span class="type-value">ندارد</span>
+}
+											</li>
+											<li>
+												<span class="type-name">حمام</span>
+												@if (Model.BathRoom.HasValue)
+												{
+													<span class="type-value">@Model.BathRoom.Value</span>
+}
+												else
+												{
+													<span class="type-value">ندارد</span>
+}
+
+											</li>
+											<li>
+												<span class="type-name">امکانات رفاهی</span>
+											</li>
+											<li>
+												@{ 
+													string welfares = string.Empty;
+													foreach (var item in Model.Welfares)
+													{
+														welfares += item.Name + " - ";
+													}
+												}
+												
+												@if (string.IsNullOrWhiteSpace(welfares))
+												{
+													<span class="type-value">-</span>
+												}
+												else
+												{
+													<span class="type-value">@welfares.Trim(' ').TrimEnd('-')</span>
+												}
+
+											</li>
+											<li>
+
+											</li>
+										</ul>
+									</div>
+								</div>
+								<div class="tab-pane" id="tabs-2" role="tabpanel">
+									<div class="tab-desc">
+										@if (string.IsNullOrWhiteSpace(Model.Description))
+										{
+											<p>فاقد توضیحات</p>
+										}
+										else
+										{
+											<p>@Model.Description</p>
+										}
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
