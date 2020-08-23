@@ -182,17 +182,17 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+			<div class="col-12 col-md-4 col-sm-6 col-lg-2 form-group" ng-if="model.Type==2 || model.Type==3 ">
 				<label>مبلغ فروش : </label>
 				<input type="text" numeral class="form-control" data-toggle="popover" data-content="مبلغ فروش ملک را وارد نمایید" ng-model="model.SalePrice" placeholder="مبلغ فروش" />
 			</div>
-			<div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+			<div class="col-12 col-md-4 col-sm-6 col-lg-2 form-group" ng-if="model.Type==1">
 				<label>مبلغ رهن : </label>
 				<input type="text" numeral class="form-control" data-toggle="popover" data-content="مبلغ رهن ملک را وارد نمایید" ng-model="model.MortgagePrice" placeholder="مبلغ رهن" />
 			</div>
-			<div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+			<div class="col-12 col-md-4 col-sm-6 col-lg-2 form-group" ng-if="model.Type==1">
 				<label>مبلغ اجاره :</label>
-				<input type="text" numeral class="form-control" data-toggle="popover" data-content="مبلغ اجاره ملک را وارد نمایید"  ng-model="model.RentalPrice" placeholder="مبلغ اجاره" />
+				<input type="text" numeral class="form-control" data-toggle="popover" data-content="مبلغ اجاره ملک را وارد نمایید" ng-model="model.RentalPrice" placeholder="مبلغ اجاره" />
 			</div>
 		</div>
 		<div class="row form-group">

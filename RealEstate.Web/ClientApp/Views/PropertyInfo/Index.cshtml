@@ -3,15 +3,17 @@
 }
 
 <style>
-	main{
-		overflow:hidden;
+	main {
+		overflow: hidden;
 	}
+
 	#window {
 		margin: 0;
 		padding: 0;
 		/*border-width: 0;*/
 		height: 100%; /* DO NOT USE !important for setting the Grid height! */
 	}
+
 	#grid {
 		margin: 0;
 		padding: 0;
@@ -19,17 +21,181 @@
 		height: 85%; /* DO NOT USE !important for setting the Grid height! */
 	}
 
+	 .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11 {
+		float: right;
+	}
+
+	.col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11 {
+		float: right;
+	}
+
+	.col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11 {
+		float: right;
+	}
+
+	.input-group-addon:last-child {
+		border-right: 0;
+		border-left: unset;
+	}
+
+	.input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle) {
+		border-top-right-radius: unset;
+		border-bottom-right-radius: unset;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+
+		.input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child > .btn, .input-group-btn:last-child > .dropdown-toggle, .input-group-btn:first-child > .btn:not(:first-child) {
+			border-bottom-right-radius: 0;
+			border-top-right-radius: 0;
+			border-bottom-left-radius: unset;
+			border-top-left-radius: unset;
+		}
+	.btn-success {
+		color: #48956c;
+		background-color: #ffffff;
+		border-color: #48956c;
+		border-style: dashed;
+		padding: 5px 18px;
+		border-width: 2px;
+		font-weight: 800;
+	}
 </style>
-<div class="panel panel-default" ng-controller="propertyInfoController" ng-init="init()">
-	<div class="panel-heading">
-		<span class="title">مدیریت ملک</span>
-	</div>
-	<div class="panel-body" style="height:500px;">
-		<div class="grid-toolbar">
-			<a  class="btn btn-primary" href="/propertyinfo/registerproperty">ثبت ملک</a>
+<div>
+	<div  class="panel panel-default" ng-controller="propertyInfoController" ng-init="init()">
+		<div class="panel-heading">
+			<span class="title">مدیریت ملک</span>
 		</div>
-		<div class="k-rtl" id="window">
-			<div kendo-grid id="grid" k-ng-delay="gridOptions" k-options="gridOptions"></div>
+		<div class="panel-body" style="height:500px;">
+			<div class="grid-toolbar">
+				<a class="btn btn-primary" href="/propertyinfo/registerproperty">ثبت ملک</a>
+				<a class="btn btn-success" ng-click="print()">پرینت</a>
+			</div>
+			<div class="k-rtl" id="window">
+				<div kendo-grid id="grid" k-ng-delay="gridOptions" k-options="gridOptions"></div>
+			</div>
+		</div>
+
+		<div id="print-section" style="display:none">
+			<style>
+				 .print-container {
+					position: relative;
+					direction: rtl;
+					font-family:iranyekan;
+				}
+
+					 .print-container label {
+						/*display: block;*/
+					}
+					.print-container .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11 {
+						float: right;
+					}
+
+					.print-container .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11 {
+						float: right;
+					}
+
+					.print-container .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11 {
+						float: right;
+					}
+
+					.print-container .print-header {
+						padding: 10px;
+						background-color: #f5f5f5;
+					}
+					.print-container .print-body {
+						padding:15px;
+					}
+					
+			</style>
+			<div style="margin:10px">
+				@*<h1>املاک vip</h1>*@
+				<div class="print-container" style="border:1px solid #ddd;margin-bottom:5px" ng-repeat="property in temp.selectedItems">
+					<div class="print-header">
+						<span ng-bind="temp.transactionTypes[property.Type].text"></span> - <span ng-bind="property.Title"></span> - <b ng-bind="property.PropertyCode"></b>
+					</div>
+					<div class="print-body" id="print-area">
+						<div class="row">
+							<div class="col-12 col-md-4 col-lg-2">
+								<label class="col-12">نوع ملک : </label>
+								<span class="col-12" ng-bind="property.PropertyTypeName"></span>
+							</div>
+							<div class="col-12 col-md-4 col-lg-2">
+								<label class="col-12">متراژ زمین : </label>
+								<span class="col-12" ng-bind="property.LandingArea ? property.LandingArea + ' متر' : '-'"></span>
+							</div>
+							<div class="col-12 col-md-4 col-lg-2">
+								<label class="col-12">متراژ بنا : </label>
+								<span class="col-12" ng-bind="property.BuildingArea ? property.BuildingArea + ' متر' : '-'"></span>
+							</div>
+							<div class="col-12 col-md-4 col-lg-2">
+								<label class="col-12">اتاق: </label>
+								<span class="col-12" ng-bind="property.BedRoom ? property.BedRoom : '-'"></span>
+							</div>
+							<div class="col-12 col-md-4 col-lg-2">
+								<label class="col-12">حمام : </label>
+								<span class="col-12" ng-bind="property.BathRoom ? property.BathRoom : '-'"></span>
+							</div>
+							<div class="col-12 col-md-4 col-lg-2">
+								<label class="col-12">تعداد طبقه : </label>
+								<span class="col-12" ng-bind="property.Floor ? property.Floor : '-'"></span>
+							</div>
+							<div class="col-12 col-md-4 col-lg-2">
+								<label class="col-12">طبقه ملک : </label>
+								<span class="col-12" ng-if="property.FloorNumber==null">-</span>
+								<span class="col-12" ng-if="property.FloorNumber==0">همکف</span>
+								<span class="col-12" ng-if="property.FloorNumber==-1">زیرهمکف</span>
+								<span class="col-12" ng-if="property.FloorNumber>0" ng-bind="property.FloorNumber">زیرهمکف</span>
+							</div>
+							<div class="col-12 col-md-4 col-lg-2">
+								<label class="col-12">موقعیت : </label>
+								<span class="col-12" ng-bind="property.Position ? property.Position: '-'"></span>
+							</div>
+							<div class="col-12 col-md-4 col-lg-2">
+								<label class="col-12">نما : </label>
+								<span class="col-12" ng-bind="property.PropertyView ? property.PropertyView : '-'"></span>
+							</div>
+							<div class="col-12 col-md-4 col-lg-2">
+								<label class="col-12">سال ساخت : </label>
+								<span class="col-12" ng-bind="property.ConstructorYear ? property.ConstructorYear : '-'"></span>
+							</div>
+						</div>
+						<div class="col-12">
+							<label class="col-12">امکانات رفاهی : </label>
+							<span class="col-12" ng-repeat="welfare in property.Welfares track by $index" ng-bind="$index==(property.Welfares.length - 1) ? welfare.Name  : welfare.Name + ' - '"></span>
+						</div>
+						<div class="col-12">
+							<label class="col-12">توضیحات : </label>
+							<span class="col-12" ng-bind="property.Description ? property.Description : 'فاقد توضیحات' "></span>
+						</div>
+						<div class="row">
+							<div class="col-xs-12 col-md-4" ng-if="property.Type==1">
+								<label class="col-12">مبلغ رهن : </label>
+								<strong ng-if="property.MortgagePrice==0">رایگان</strong>
+								<strong ng-if="property.MortgagePrice>=0" ng-bind="seperatePrice(property.MortgagePrice) + ' تومان'"></strong>
+								<strong ng-if="property.MortgagePrice==null">توافقی</strong>
+							</div>
+							<div class="col-xs-12 col-md-4" ng-if="property.Type==1">
+								<label class="col-12">مبلغ اجاره : </label>
+								<strong ng-if="property.RentalPrice==0">رایگان</strong>
+								<strong ng-if="property.RentalPrice>=0" ng-bind="seperatePrice(property.RentalPrice) + ' تومان'"></strong>
+								<strong ng-if="property.RentalPrice==null">توافقی</strong>
+							</div>
+							<div class="col-xs-12 col-md-4" ng-if="property.Type!=1">
+								<label class="col-12">مبلغ فروش : </label>
+								<strong ng-if="property.SalePrice==0">رایگان</strong>
+								<strong ng-if="property.SalePrice>=0" ng-bind="seperatePrice(property.SalePrice) + ' تومان'"></strong>
+								<strong ng-if="property.SalePrice==null">توافقی</strong>
+							</div>
+						</div>
+						<div class="col-12">
+							<label class="col-12">آدرس : </label>
+							<span class="col-12" ng-bind="property.RegionName + ' - ' + property.Address"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 		</div>
 	</div>
 
@@ -42,6 +208,7 @@
 			propertyStatuses: null,
 			transactionTypes: null,
 			registerUserType: [{ value: 0, text: "مالک" }, { value: 1, text: "مدیر" }],
+			selectedItems:[],
 		}
 
 		$scope.init = function () {
@@ -157,6 +324,21 @@
 						},
 						attributes: {
 							style: "text-align: center"
+						}
+					},
+					{
+						width: "100px",
+						attributes: {
+							style:"text-align:center;"
+						},
+						template: function (e) {
+							if ($scope.temp.selectedItems.filter(function (item) { return item.ID === e.ID })[0]) {
+								return "<input type=\"checkbox\" checked='checked' ng-click=\"selected(dataItem)\"/>";
+							}
+							else {
+								return "<input type=\"checkbox\" ng-click=\"selected(dataItem)\"/>";
+							}
+							
 						}
 					},
 					{
@@ -329,7 +511,7 @@
 						}
 					},
 					{
-						title: "نما ملک",
+						title: "نما",
 						field: "PropertyView",
 						width: "150px",
 						attributes: {
@@ -525,10 +707,30 @@
 							style: "text-align: center"
 						}
 					},
-				]
+				],
 			}
 		}
-
+		$scope.selected = function (data) {
+			if ($scope.temp.selectedItems.length > 0 && $scope.temp.selectedItems.filter(function (item) { return item.ID === data.ID })[0]) {
+				$scope.temp.selectedItems = $scope.temp.selectedItems.filter(function (item) { return item.ID !== data.ID });
+			} else {
+				$scope.temp.selectedItems.push(data);
+			}
+		}
+		$scope.print = function () {
+			if ($scope.temp.selectedItems.length == 0) {
+				messageService.info("حداقل یک ملک برای پرینت انتخاب نمایید");
+				return;
+			}
+			$scope.printToCart("print-section")
+		}
+		$scope.printToCart = function (printSectionId) {
+			var innerContents = document.getElementById(printSectionId).innerHTML;
+			var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+			popupWinindow.document.open();
+			popupWinindow.document.write('<html><head><link rel="stylesheet" type="text/css" href="/ClientApp/Contents/common.css" /><link rel="stylesheet" type="text/css" href="/ClientApp/Contents/bootstrap.css" /></head><body  onload="window.print()"><div ng-controller="propertyInfoController">' + innerContents + '</div></body></html>');
+			popupWinindow.document.close();
+		}
 		$scope.edit = function (dataItem) {
 			if (dataItem) {
 				document.location.href = "propertyInfo/RegisterProperty?id=" + dataItem.ID;
@@ -545,5 +747,9 @@
 				}
 			}
 		}
+		$scope.seperatePrice = function (price) {
+			return numeral(price).format("0,0");
+		}
+
 	});
 </script>

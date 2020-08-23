@@ -83,13 +83,8 @@ namespace RealEstate.Web.Controllers.Api
 			try
 			{
 				if (IsAuthenticated)
-				{
-					//var restOfExpireMinute = SecurityManager.GetRestOfExpiryAsMinute(Token);
-					//if(restOfExpireMinute<0)
-					//var jwtToken = SecurityManager.GenerateToken(CurrentUser.Context.UserName);
-					//return Success(jwtToken);
-				}
-				return Success(null);
+					return Success(true);
+				return Success(false);
 			}
 			catch(Exception ex)
 			{

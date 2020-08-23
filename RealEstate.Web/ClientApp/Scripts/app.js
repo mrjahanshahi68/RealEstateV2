@@ -1,4 +1,5 @@
-﻿Array.prototype.findById = function (field, value) {
+﻿var routePrefix="/"
+Array.prototype.findById = function (field, value) {
 	for (var i = 0; i < this.length; i++) {
 		var item = this[i];
 		if (item[field] == value) {
@@ -573,7 +574,7 @@ app.service("securityManager", function (dataService, cacheManager, helper) {
 						cacheManager.setItem("token", token);
 						dataService.post("security/GetCurrentUser").then(function (result) {
 							cacheManager.setItem("userInfo", JSON.stringify(result));
-							document.location.href = "/Profile";
+							document.location.href = routePrefix + "Profile";
 						})
 					}
 
@@ -582,7 +583,12 @@ app.service("securityManager", function (dataService, cacheManager, helper) {
 		loggout: function () {
 			cacheManager.removeItem("token");
 			cacheManager.removeItem("userInfo");
-			document.location.href = "/login";
+			document.location.href = routePrefix + "login";
+		},
+		checkAuthenticate: function (callbcack) {
+			var req = dataService.post("security/refereshToken");
+			if (callbcack && typeof (callbcack) === "function")
+				req.then(callbcack);
 		},
 		get currentUser() {
 			var userInfo = cacheManager.getItem("userInfo");
@@ -596,8 +602,16 @@ app.service("securityManager", function (dataService, cacheManager, helper) {
 app.run(function ($rootScope, securityManager) {
 	if (securityManager.currentUser) {
 		$rootScope.currentUser = securityManager.currentUser;
-
 		$rootScope.fullName = "کاربر " + $rootScope.currentUser.FullName + " خوش آمدید"
+
+		var intVal = setInterval(function () {
+			securityManager.checkAuthenticate(function (isAuth) {
+				if (!isAuth) {
+					clearInterval(intVal);
+					document.location.href = routePrefix + "login";
+				}
+			});
+		}, 30000)
 	}
 	$rootScope.loggout = function () {
 		securityManager.loggout();
